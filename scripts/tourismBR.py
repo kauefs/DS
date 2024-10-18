@@ -36,7 +36,7 @@ st.sidebar.markdown('''
                     ''')
 # MAIN:
 st.divider(            )
-st.title(   'International Tourists Arrival in Brazil')
+st.title(    'International Tourists Arrival in Brazil')
 st.divider(            )
 st.markdown('''
 International tourist arrivals in Brazil have seen dynamic fluctuations, reflecting the country's rich cultural diversity, stunning landscapes, and vibrant cities.
@@ -44,12 +44,12 @@ Known for its iconic attractions like the Amazon rainforest, Christ the Redeemer
 Recent trends indicate a gradual recovery in tourism following global disruptions, with travelers increasingly seeking authentic experiences that highlight Brazil's unique heritage, gastronomy, and natural wonders.
 As the country continues to invest in its tourism infrastructure and promote sustainable travel, Brazil remains a captivating destination for international visitors.
             ''')
-# st.subheader('International Tourists Arrivals in Brazil')
+# st.subheader('Annual Time Series')
 values=df['chegadas'].groupby(df.index).sum().values
 fig=plt.figure(figsize = (15, 15), frameon=True)
 ax =plt.subplot(111)
-ax =sns.barplot(      x=df.index,        y='chegadas',       data=df, hue=values, palette='viridis', saturation=.75)
-plt.title('International Tourists Arrival in Brazil',   fontsize=20,          fontweight='bold')
+ax =sns.barplot(      x=df.index,        y='chegadas',           data=df, hue=values, palette='viridis', saturation=.75)
+plt.title('Annual International Tourists Arrival in Brazil', fontsize=20,          fontweight='bold')
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
 plt.xticks(fontsize=15, fontweight='semibold', rotation='vertical')
 plt.ylabel(None)
