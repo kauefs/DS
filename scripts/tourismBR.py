@@ -16,7 +16,7 @@ df     = LoadData()
 # SIDE:
 st.sidebar.title(    'ƊⱭȾɅViƧi🧿Ƞ'       )
 st.sidebar.divider(                      )
-st.sidebar.header(   'Annual International Tourists Arrival in Brazil')
+st.sidebar.header(   'Annual International Tourist Arrivals in Brazil')
 st.sidebar.subheader('Data Analysis'     )
 st.sidebar.divider(                      )
 st.sidebar.markdown('''Source:    [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)''')
@@ -36,7 +36,7 @@ st.sidebar.markdown('''
                     ''')
 # MAIN:
 st.divider(            )
-st.title(    'International Tourists Arrival in Brazil')
+st.title(    'International Tourist Arrivals in Brazil')
 st.divider(            )
 st.markdown('''
 International tourist arrivals in Brazil have seen dynamic fluctuations, reflecting the country's rich cultural diversity, stunning landscapes, and vibrant cities.
@@ -49,7 +49,7 @@ values=df['chegadas'].groupby(df.index).sum().values
 fig=plt.figure(figsize = (15, 15), frameon=True)
 ax =plt.subplot(111)
 ax =sns.barplot(      x=df.index,        y='chegadas',           data=df, hue=values, palette='viridis', saturation=.75)
-plt.title('Annual International Tourists Arrival in Brazil', fontsize=20,          fontweight='bold')
+plt.title('Annual International Tourist Arrivals in Brazil', fontsize=20,          fontweight='bold')
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
 plt.xticks(fontsize=15, fontweight='semibold', rotation='vertical')
 plt.ylabel(None)
