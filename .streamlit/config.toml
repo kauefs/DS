@@ -19,14 +19,9 @@ showSidebarNavigation                =  true
 [runner]
 
 magicEnabled                         =  true
-postScriptGC                         =  true
 fastReruns                           =  true
 enforceSerializableSessionState      =  false
 enumCoercion                         = 'nameOnly'
-
-[browser]
-
-gatherUsageStats                     =  false
 
 [server]
 
@@ -39,6 +34,10 @@ maxUploadSize                        =  200
 maxMessageSize                       =  200
 enableWebsocketCompression           =  false
 enableStaticServing                  =  false
+
+[browser]
+
+gatherUsageStats                     =  false
 
 [theme]
 
