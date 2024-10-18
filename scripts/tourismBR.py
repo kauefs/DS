@@ -12,6 +12,7 @@ DATA  ='https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
 def LoadData():
     df = pd.read_csv('https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv', index_col=0)
     return df
+df     = LoadData()
 # SIDE:
 st.sidebar.title(    'ƊⱭȾɅViƧi🧿Ƞ'       )
 st.sidebar.divider(                      )
@@ -68,7 +69,6 @@ for c in ax.containers:
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=-80, fontweight='bold', rotation='vertical', color='#FFFFFF')
 st.pyplot(fig)
 st.markdown('''
-…
             ''')
 st.divider(    )
 st.toast('Travel!', icon='😎')
