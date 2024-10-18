@@ -44,7 +44,7 @@ Known for its iconic attractions like the Amazon rainforest, Christ the Redeemer
 Recent trends indicate a gradual recovery in tourism following global disruptions, with travelers increasingly seeking authentic experiences that highlight Brazil's unique heritage, gastronomy, and natural wonders.
 As the country continues to invest in its tourism infrastructure and promote sustainable travel, Brazil remains a captivating destination for international visitors.
             ''')
-st.subheader('International Tourists Arrivals in Brazil')
+# st.subheader('International Tourists Arrivals in Brazil')
 values=df['chegadas'].groupby(df.index).sum().values
 fig=plt.figure(figsize = (15, 15), frameon=True)
 ax =plt.subplot(111)
