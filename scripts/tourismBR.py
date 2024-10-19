@@ -20,7 +20,7 @@ st.sidebar.header(   'Annual International Tourist Arrivals in Brazil')
 st.sidebar.subheader('Data Analysis'     )
 st.sidebar.divider(                      )
 st.sidebar.markdown('''Source:    [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)''')
-st.sidebar.write(    'Yearly reports from {} to {}'.format(df.index.min(), df.index.max()))
+st.sidebar.write(    'Annual reports from {} to {}'.format(df.index.min(), df.index.max()))
 st.sidebar.divider(                      )
 st.sidebar.markdown('''
 ![2024.10.17](  https://img.shields.io/badge/2024.10.17-000000)
