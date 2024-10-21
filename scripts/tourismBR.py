@@ -49,7 +49,7 @@ it stands as an interesting destination for international visitors, showcasing t
 AA=df['arrivals'].groupby(df['year']).sum()
 aa=pd.DataFrame(AA)
 values=aa['arrivals'].groupby(aa.index).sum().values
-fig=plt.figure(figsize=(15,15), frameon=True)
+fig1=plt.figure(figsize=(15,15), frameon=True)
 ax =plt.subplot(111)
 ax =sns.barplot(     y='arrivals',    x=aa.index,                data=aa, hue=values, palette='viridis', saturation=.75)
 plt.title('Annual International Tourist Arrivals in Brazil', fontsize=20,          fontweight='bold'                   )
@@ -58,7 +58,7 @@ plt.xticks(fontsize=15, fontweight='semibold', rotation='vertical')
 plt.ylabel(None)
 plt.xlabel(None)
 plt.legend([], frameon=False)
-plt.grid(visible=True, which='major', axis='y' ,linestyle=':', linewidth=.75, color='#DCDCDC')
+plt.grid(      visible=False)
 for spine in ['top','right','left','bottom']:ax.spines[spine].set_visible(False)
 plt.gca().axes.get_yaxis().set_visible(False)
 plt.tick_params(axis  = 'both',
@@ -68,22 +68,22 @@ plt.tick_params(axis  = 'both',
 for c in ax.containers:
     values = df.value_counts(ascending=False).iloc[0:0].values
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=-80, fontweight='bold', rotation='vertical', color='#FFFFFF')
-st.pyplot(fig)
+st.pyplot(fig1)
 st.divider()
 # st.subheader('By Month')
 MM=df['arrivals'].groupby(df['month']).sum()
 mm=pd.DataFrame(MM)
 mm.index=pd.Categorical(mm.index , categories=['Jan','Feb','Mar','Abr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
-fig=plt.figure(figsize=(15,15)   ,    frameon=True)
+fig2=plt.figure(figsize=(15,15)   ,    frameon=True)
 ax=plt.subplot(111)
 ax=sns.barplot(      y='arrivals',          x=mm.index, data=mm, hue=mm.index, palette='brg_r', saturation=.75)
 plt.title('Total International Tourist Arrivals in Brazil ({}–{}) by Month'.format(df['year'].min(), df['year'].max()), fontsize=20, fontweight='bold')
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
-plt.xticks(fontsize=15, fontweight='semibold', rotation='vertical')
+plt.xticks(fontsize=15, fontweight='semibold', rotation='horizontal')
 plt.ylabel(None)
 plt.xlabel(None)
 plt.legend([], frameon=False)
-plt.grid(visible=True, which='major', axis='y' ,linestyle=':', linewidth=.75, color='#DCDCDC')
+plt.grid(      visible=False)
 for spine in ['top','right','left','bottom']:ax.spines[spine].set_visible(False)
 plt.gca().axes.get_yaxis().set_visible(False)
 plt.tick_params(axis  = 'both',
@@ -92,14 +92,14 @@ plt.tick_params(axis  = 'both',
                 bottom=  False)
 for c in ax.containers:
     values = df.value_counts(ascending=False).iloc[0:0].values
-    ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=-80, fontweight='bold', rotation='horizontal', color='#FFFFFF')
-st.pyplot(fig)
+    ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=-80, fontweight='bold', rotation='vertical', color='#FFFFFF')
+st.pyplot(fig2)
 # st.subheader('By Continents')
 CC=df['arrivals'].groupby(df['continent']).sum()
 cc=pd.DataFrame(CC)
 values=cc['arrivals'].groupby(cc.index, observed=True).sum().values
 sort=cc.sort_values(by='arrivals',     ascending=False)
-fig=plt.figure(figsize=(15,15)   ,       frameon=True )
+fig3=plt.figure(figsize=(15,15)   ,       frameon=True )
 ax =plt.subplot(111)
 ax =sns.barplot(     y=sort.index,             x='arrivals', data=sort, hue=sort.index, palette='autumn', saturation=.75)
 plt.title('Total International Tourist Arrivals in Brazil ({}–{}) by Continent'.format(df['year'].min(), df['year'].max()), fontsize=20, fontweight='bold')
@@ -108,7 +108,7 @@ plt.xticks([])
 plt.ylabel(None)
 plt.xlabel(None)
 plt.legend([], frameon=False)
-plt.grid(visible=False)
+plt.grid(      visible=False)
 for spine in ['top','right','left','bottom']:ax.spines[spine].set_visible(False)
 plt.gca().axes.get_yaxis().set_visible(True)
 plt.tick_params(axis  = 'both',
@@ -118,7 +118,7 @@ plt.tick_params(axis  = 'both',
 for c in ax.containers:
     values = df.value_counts(ascending=False).iloc[0:0].values
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=0, fontweight='bold', rotation='horizontal', color='#000000')
-st.pyplot(fig)
+st.pyplot(fig3)
 st.divider()
 st.markdown('''
             ''')
