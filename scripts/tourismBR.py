@@ -75,7 +75,7 @@ st.divider()
 st.subheader('By Month')
 MM=df['arrivals'].groupby(df['month']).sum()
 mm=pd.DataFrame(MM)
-mm.index=pd.Categorical(mm.index , categories=['Jan','Feb','Mar','Abr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
+mm.index=pd.Categorical(mm.index, categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
 values=mm['arrivals'].groupby(mm.index, observed=True).sum().values
 fig2=plt.figure(figsize=(15,15), frameon=True)
 ax =plt.subplot(111)
