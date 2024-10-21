@@ -46,7 +46,7 @@ As the country continues to enhance its tourism infrastructure and to promote su
 it stands as an interesting destination for international visitors, showcasing the warmth and diversity of its people and landscapes.
             ''')
 # st.subheader('Annual Time Series')
-AA=df['chegadas'].groupby(df.index).sum()
+AA=df['chegadas'].groupby(df['ano']).sum()
 aa=pd.DataFrame(AA)
 values=aa['chegadas'].groupby(aa.index).sum().values
 fig=plt.figure(figsize = (15, 15), frameon=True)
