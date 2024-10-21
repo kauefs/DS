@@ -45,7 +45,8 @@ from the lush Amazon rainforest to the sun-kissed beaches of Rio de Janeiro, the
 As the country continues to enhance its tourism infrastructure and to promote sustainable travel initiatives,
 it stands as an interesting destination for international visitors, showcasing the warmth and diversity of its people and landscapes.
             ''')
-# st.subheader('Annual Time Series')
+# By Year:
+st.subheader('Annual Time Series')
 AA=df['arrivals'].groupby(df['year']).sum()
 aa=pd.DataFrame(AA)
 values=aa['arrivals'].groupby(aa.index).sum().values
@@ -70,14 +71,16 @@ for c in ax.containers:
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=-80, fontweight='bold', rotation='vertical', color='#FFFFFF')
 st.pyplot(fig1)
 st.divider()
-# st.subheader('By Month')
+# By Month:
+st.subheader('By Month')
 MM=df['arrivals'].groupby(df['month']).sum()
 mm=pd.DataFrame(MM)
 mm.index=pd.Categorical(mm.index , categories=['Jan','Feb','Mar','Abr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
-fig2=plt.figure(figsize=(15,15)   ,    frameon=True)
-ax=plt.subplot(111)
-ax=sns.barplot(      y='arrivals',          x=mm.index, data=mm, hue=mm.index, palette='brg_r', saturation=.75)
-plt.title('Total International Tourist Arrivals in Brazil ({}–{}) by Month'.format(df['year'].min(), df['year'].max()), fontsize=20, fontweight='bold')
+values=mm['arrivals'].groupby(mm.index, observed=True).sum().values
+fig2=plt.figure(figsize=(15,15), frameon=True)
+ax =plt.subplot(111)
+ax =sns.barplot(      y='arrivals',    x=mm.index,                             data=mm, hue=values, palette='plasma_r', saturation=.75,     legend=False )
+plt.title('Total International Tourist Arrivals in Brazil ({}–{}) by Month'.format(DD['year'].min(), DD['year'].max()),   fontsize= 20, fontweight='bold')
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
 plt.xticks(fontsize=15, fontweight='semibold', rotation='horizontal')
 plt.ylabel(None)
@@ -94,7 +97,8 @@ for c in ax.containers:
     values = df.value_counts(ascending=False).iloc[0:0].values
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=-80, fontweight='bold', rotation='vertical', color='#FFFFFF')
 st.pyplot(fig2)
-# st.subheader('By Continents')
+# By Continent:
+st.subheader('By Continents')
 CC=df['arrivals'].groupby(df['continent']).sum()
 cc=pd.DataFrame(CC)
 values=cc['arrivals'].groupby(cc.index, observed=True).sum().values
