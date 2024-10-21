@@ -35,7 +35,6 @@ st.sidebar.markdown('''
 [![ƊⱭȾɅViƧi🧿Ƞ](https://img.shields.io/badge/ƊⱭȾɅViƧi🧿Ƞ&trade;-0065FF?style=plastic&logo=&logoColor=0065FF&label=&copy;2024&labelColor=0065FF&color=0065FF)](https://datavision.one/)
                     ''')
 # MAIN:
-# st.divider(            )
 st.title(    'International Tourist Arrivals in Brazil')
 st.divider(            )
 st.markdown('''
@@ -79,7 +78,7 @@ mm.index=pd.Categorical(mm.index, categories=['Jan','Feb','Mar','Apr','May','Jun
 values=mm['arrivals'].groupby(mm.index, observed=True).sum().values
 fig2=plt.figure(figsize=(15,15), frameon=True)
 ax =plt.subplot(111)
-ax =sns.barplot(      y='arrivals',    x=mm.index,                             data=mm, hue=values, palette='brg_r', saturation=.75,     legend=False )
+ax =sns.barplot(      y='arrivals',    x=mm.index,                             data=mm, hue=values, palette='turbo',    saturation=.75,     legend=False )
 plt.title('Total International Tourist Arrivals in Brazil ({}–{}) by Month'.format(df['year'].min(), df['year'].max()),   fontsize= 20, fontweight='bold')
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
 plt.xticks(fontsize=15, fontweight='semibold', rotation='horizontal')
@@ -99,7 +98,7 @@ for c in ax.containers:
 st.pyplot(fig2)
 st.divider()
 # By Continent:
-st.subheader('By Continents')
+st.subheader('By Continent')
 CC=df['arrivals'].groupby(df['continent']).sum()
 cc=pd.DataFrame(CC)
 values=cc['arrivals'].groupby(cc.index, observed=True).sum().values
