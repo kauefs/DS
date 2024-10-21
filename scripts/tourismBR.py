@@ -1,4 +1,4 @@
-# Libraries:
+r# Libraries:
 import numpy               as np
 import pandas              as pd
 import matplotlib.pyplot   as plt
@@ -46,7 +46,7 @@ As the country continues to enhance its tourism infrastructure and to promote su
 it stands as an interesting destination for international visitors, showcasing the warmth and diversity of its people and landscapes.
             ''')
 # st.subheader('Annual Time Series')
-AA=df['arrivals'].groupby(df['ano']).sum()
+AA=df['arrivals'].groupby(df['year']).sum()
 aa=pd.DataFrame(AA)
 values=aa['arrivals'].groupby(aa.index).sum().values
 fig=plt.figure(figsize=(15,15), frameon=True)
