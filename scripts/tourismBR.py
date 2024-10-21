@@ -80,7 +80,7 @@ values=mm['arrivals'].groupby(mm.index, observed=True).sum().values
 fig2=plt.figure(figsize=(15,15), frameon=True)
 ax =plt.subplot(111)
 ax =sns.barplot(      y='arrivals',    x=mm.index,                             data=mm, hue=values, palette='plasma_r', saturation=.75,     legend=False )
-plt.title('Total International Tourist Arrivals in Brazil ({}–{}) by Month'.format(DD['year'].min(), DD['year'].max()),   fontsize= 20, fontweight='bold')
+plt.title('Total International Tourist Arrivals in Brazil ({}–{}) by Month'.format(df['year'].min(), df['year'].max()),   fontsize= 20, fontweight='bold')
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
 plt.xticks(fontsize=15, fontweight='semibold', rotation='horizontal')
 plt.ylabel(None)
