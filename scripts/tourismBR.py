@@ -10,7 +10,7 @@ st.set_page_config(page_title='TourismBR', page_icon='🇧🇷', layout='wide', 
 DATA  ='https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
 @st.cache_data
 def LoadData():
-    df = pd.read_csv('https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv', index_col=0)
+    df = pd.read_csv('https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv')
     return df
 df     = LoadData()
 # SIDE:
