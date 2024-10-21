@@ -13,6 +13,7 @@ def LoadData():
     df = pd.read_csv('https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv', index_col=0)
     return df
 df     = LoadData()
+df     =   df.loc[df['chegadas']!=0]
 # SIDE:
 st.sidebar.title(    'ƊⱭȾɅViƧi🧿Ƞ'       )
 st.sidebar.divider(                      )
@@ -45,11 +46,13 @@ Recent trends indicate a gradual recovery in tourism following global disruption
 As the country continues to invest in its tourism infrastructure and promote sustainable travel, Brazil remains a captivating destination for international visitors.
             ''')
 # st.subheader('Annual Time Series')
-values=df['chegadas'].groupby(df.index).sum().values
+AA=df['chegadas'].groupby(df.index).sum()
+aa=pd.DataFrame(AA)
+values=aa['chegadas'].groupby(aa.index).sum().values
 fig=plt.figure(figsize = (15, 15), frameon=True)
 ax =plt.subplot(111)
-ax =sns.barplot(      x=df.index,        y='chegadas',           data=df, hue=values, palette='viridis', saturation=.75)
-plt.title('Annual International Tourist Arrivals in Brazil', fontsize=20,          fontweight='bold')
+ax =sns.barplot(      y='chegadas',      x=aa.index,             data=aa, hue=values, palette='viridis', saturation=.75)
+plt.title('Annual International Tourist Arrivals in Brazil', fontsize=20,            fontweight='bold'                   )
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
 plt.xticks(fontsize=15, fontweight='semibold', rotation='vertical')
 plt.ylabel(None)
@@ -62,8 +65,6 @@ plt.tick_params(axis  = 'both',
                 which = 'both',
                 left  =  False,
                 bottom=  False)
-# for p in ax.patches:ax.annotate(format(p.get_height(), ',.0f'), (p.get_x() + p.get_width()/2., p.get_height()), 
-#             ha='center', va='center', xytext=(0,-40), textcoords='offset points', rotation='vertical', fontweight='semibold')
 for c in ax.containers:
     values = df.value_counts(ascending=False).iloc[0:0].values
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=-80, fontweight='bold', rotation='vertical', color='#FFFFFF')
