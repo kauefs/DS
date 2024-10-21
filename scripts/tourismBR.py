@@ -14,9 +14,9 @@ def LoadData():
     return df
 df     = LoadData()
 # SIDE:
-st.sidebar.title(    'ƊⱭȾɅViƧi🧿Ƞ'       )
+st.sidebar.title(    'ƊⱭȾɅViƧi🧿Ƞ'      )
 st.sidebar.divider(                      )
-st.sidebar.header(   'Annual International Tourist Arrivals in Brazil')
+st.sidebar.header(   'International Tourist Arrivals in Brazil')
 st.sidebar.subheader('Data Analysis'     )
 st.sidebar.divider(                      )
 st.sidebar.markdown('''Source:    [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)''')
