@@ -94,7 +94,7 @@ plt.tick_params(axis  = 'both',
                 bottom=  False)
 for c in ax.containers:
     values = df.value_counts(ascending=False).iloc[0:0].values
-    ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=-80, fontweight='bold', rotation='vertical', color='#FFFFFF')
+    ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=-85, fontweight='bold', rotation='vertical', color='#FFFFFF')
 st.pyplot(fig2)
 st.divider()
 # By Continent:
@@ -121,7 +121,7 @@ plt.tick_params(axis  = 'both',
                 bottom=  False)
 for c in ax.containers:
     values = df.value_counts(ascending=False).iloc[0:0].values
-    ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=0, fontweight='bold', rotation='horizontal', color='#000000')
+    ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
 st.pyplot(fig3)
 st.divider()
 st.markdown('''
