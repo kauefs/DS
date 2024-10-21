@@ -181,7 +181,7 @@ st.pyplot(fig)
 st.divider()
 # By Arrival Estate:
 st.subheader('By Arrival Estate')
-UU=df['arrivals'].groupby(df['country']).sum()
+UU=df['arrivals'].groupby(df['UF']).sum()
 uu=pd.DataFrame(UU)
 values=uu['arrivals'].groupby(uu.index, observed=True ).sum().values
 sort=uu.sort_values( by='arrivals'    ,ascending=False)
