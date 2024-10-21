@@ -13,7 +13,6 @@ def LoadData():
     df = pd.read_csv('https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv', index_col=0)
     return df
 df     = LoadData()
-df     =   df.loc[df['chegadas']!=0]
 # SIDE:
 st.sidebar.title(    'ƊⱭȾɅViƧi🧿Ƞ'       )
 st.sidebar.divider(                      )
@@ -40,10 +39,11 @@ st.divider(            )
 st.title(    'International Tourist Arrivals in Brazil')
 st.divider(            )
 st.markdown('''
-International tourist arrivals in Brazil have seen dynamic fluctuations, reflecting the country's rich cultural diversity, stunning landscapes, and vibrant cities.
-Known for its iconic attractions like the Amazon rainforest, Christ the Redeemer, and the lively beaches of Rio de Janeiro, Brazil draws millions of visitors each year.
-Recent trends indicate a gradual recovery in tourism following global disruptions, with travelers increasingly seeking authentic experiences that highlight Brazil's unique heritage, gastronomy, and natural wonders.
-As the country continues to invest in its tourism infrastructure and promote sustainable travel, Brazil remains a captivating destination for international visitors.
+Brazil's rich tapestry of cultures, breathtaking landscapes, and iconic landmarks, has long captivated a dynamic fluctuation of millions of visitors each year.
+In recent times, Brazil has seen a resurgence in tourist arrivals, as travelers seek to explore its rich heritage, vibrant festivals, and culinary delights,
+from the lush Amazon rainforest to the sun-kissed beaches of Rio de Janeiro, the country offers a diverse array of experiences.
+As the country continues to enhance its tourism infrastructure and to promote sustainable travel initiatives,
+it stands as an interesting destination for international visitors, showcasing the warmth and diversity of its people and landscapes.
             ''')
 # st.subheader('Annual Time Series')
 AA=df['chegadas'].groupby(df.index).sum()
@@ -68,6 +68,32 @@ plt.tick_params(axis  = 'both',
 for c in ax.containers:
     values = df.value_counts(ascending=False).iloc[0:0].values
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=-80, fontweight='bold', rotation='vertical', color='#FFFFFF')
+st.pyplot(fig)
+st.divider()
+# st.subheader('By Continents')
+CC=df['chegadas'].groupby(df['continente']).sum()
+cc=pd.DataFrame(CC)
+values=cc['chegadas'].groupby(cc.index, observed=True).sum().values
+sort=cc.sort_values(by='chegadas', ascending=False)
+fig=plt.figure(figsize = (15, 15), frameon=True)
+ax =plt.subplot(111)
+ax =sns.barplot(y=sort.index, x='chegadas', data=sort, hue=sort.index, palette='autumn', saturation=.75)
+plt.title('Total Continetal International Tourist Arrivals in Brazil ({}–{})'.format(df.index.min(), df.index.max()), fontsize=20, fontweight='bold')
+plt.yticks(fontsize=15, fontweight='semibold', rotation='horizontal')
+plt.xticks([])
+plt.ylabel(None)
+plt.xlabel(None)
+plt.legend([], frameon=False)
+plt.grid(visible=False)
+for spine in ['top', 'right', 'left', 'bottom']:ax.spines[spine].set_visible(False)
+plt.gca().axes.get_yaxis().set_visible(True)
+plt.tick_params(axis  = 'both',
+                which = 'both',
+                left  =  False,
+                bottom=  False)
+for c in ax.containers:
+    values = df.value_counts(ascending=False).iloc[0:0].values
+    ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=0, fontweight='bold', rotation='horizontal', color='#000000')
 st.pyplot(fig)
 st.markdown('''
             ''')
