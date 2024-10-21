@@ -7,12 +7,12 @@ import seaborn             as sns
 import streamlit           as st
 st.set_page_config(page_title='TourismBR', page_icon='🇧🇷', layout='wide', initial_sidebar_state='collapsed')
 # DATA:
-DATA   ='https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
+DATA   =  'https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
 @st.cache_data
 def LoadData():
-    df = pd.read_csv(DATA)
+    df =   pd.read_csv(DATA)
     return df
-df     = LoadData()
+df     =   LoadData()
 # SIDE:
 st.sidebar.title(    'ƊⱭȾɅViƧi🧿Ƞ'      )
 st.sidebar.divider(                      )
