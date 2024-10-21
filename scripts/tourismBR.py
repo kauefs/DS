@@ -20,7 +20,7 @@ st.sidebar.header(   'International Tourist Arrivals in Brazil')
 st.sidebar.subheader('Data Analysis'     )
 st.sidebar.divider(                      )
 st.sidebar.markdown('''Source:    [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)''')
-st.sidebar.write(    'Annual reports from {} to {}'.format(df['ano'].min(), df['ano'].max()))
+st.sidebar.write(    'Annual reports from {} to {}'.format(df['year'].min(), df['year'].max()))
 st.sidebar.divider(                      )
 st.sidebar.markdown('''
 ![2024.10.17](  https://img.shields.io/badge/2024.10.17-000000)
@@ -46,12 +46,12 @@ As the country continues to enhance its tourism infrastructure and to promote su
 it stands as an interesting destination for international visitors, showcasing the warmth and diversity of its people and landscapes.
             ''')
 # st.subheader('Annual Time Series')
-AA=df['chegadas'].groupby(df['ano']).sum()
+AA=df['arrivals'].groupby(df['ano']).sum()
 aa=pd.DataFrame(AA)
-values=aa['chegadas'].groupby(aa.index).sum().values
+values=aa['arrivals'].groupby(aa.index).sum().values
 fig=plt.figure(figsize=(15,15), frameon=True)
 ax =plt.subplot(111)
-ax =sns.barplot(     y='chegadas',    x=aa.index,                data=aa, hue=values, palette='viridis', saturation=.75)
+ax =sns.barplot(     y='arrivals',    x=aa.index,                data=aa, hue=values, palette='viridis', saturation=.75)
 plt.title('Annual International Tourist Arrivals in Brazil', fontsize=20,          fontweight='bold'                   )
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
 plt.xticks(fontsize=15, fontweight='semibold', rotation='vertical')
@@ -70,15 +70,38 @@ for c in ax.containers:
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=-80, fontweight='bold', rotation='vertical', color='#FFFFFF')
 st.pyplot(fig)
 st.divider()
+# st.subheader('By Month')
+mm=df['arrivals'].groupby(df['month']).sum()
+mm.index=pd.Categorical(mm.index , categories=['Jan','Feb','Mar','Abr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
+fig=plt.figure(figsize=(15,15)   ,    frameon=True)
+ax=plt.subplot(111)
+ax=sns.barplot(      y='arrivals',          x=mm.index, data=mm, hue=mm.index, palette='brg_r', saturation=.75)
+plt.title('Total International Tourist Arrivals in Brazil ({}–{}) by Month'.format(df['year'].min(), df['year'].max()), fontsize=20, fontweight='bold')
+plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
+plt.xticks(fontsize=15, fontweight='semibold', rotation='vertical')
+plt.ylabel(None)
+plt.xlabel(None)
+plt.legend([], frameon=False)
+plt.grid(visible=True, which='major', axis='y' ,linestyle=':', linewidth=.75, color='#DCDCDC')
+for spine in ['top','right','left','bottom']:ax.spines[spine].set_visible(False)
+plt.gca().axes.get_yaxis().set_visible(False)
+plt.tick_params(axis  = 'both',
+                which = 'both',
+                left  =  False,
+                bottom=  False)
+for c in ax.containers:
+    values = df.value_counts(ascending=False).iloc[0:0].values
+    ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=-80, fontweight='bold', rotation='horizontal', color='#FFFFFF')
+st.pyplot(fig)
 # st.subheader('By Continents')
-CC=df['chegadas'].groupby(df['continente']).sum()
+CC=df['arrivals'].groupby(df['continent']).sum()
 cc=pd.DataFrame(CC)
-values=cc['chegadas'].groupby(cc.index, observed=True).sum().values
-sort=cc.sort_values(by='chegadas', ascending=False)
-fig=plt.figure(figsize=(15,15)   ,   frameon=True )
+values=cc['arrivals'].groupby(cc.index, observed=True).sum().values
+sort=cc.sort_values(by='arrivals',     ascending=False)
+fig=plt.figure(figsize=(15,15)   ,       frameon=True )
 ax =plt.subplot(111)
-ax =sns.barplot(     y=sort.index,         x='chegadas', data=sort, hue=sort.index, palette='autumn', saturation=.75)
-plt.title('Total International Tourist Arrivals in Brazil ({}–{}) by Continent'.format(df['ano'].min(), df['ano'].max()), fontsize=20, fontweight='bold')
+ax =sns.barplot(     y=sort.index,             x='arrivals', data=sort, hue=sort.index, palette='autumn', saturation=.75)
+plt.title('Total International Tourist Arrivals in Brazil ({}–{}) by Continent'.format(df['year'].min(), df['year'].max()), fontsize=20, fontweight='bold')
 plt.yticks(fontsize=15, fontweight='semibold', rotation='horizontal')
 plt.xticks([])
 plt.ylabel(None)
@@ -96,30 +119,6 @@ for c in ax.containers:
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=0, fontweight='bold', rotation='horizontal', color='#000000')
 st.pyplot(fig)
 st.divider()
-# st.subheader('By Month')
-MM=df['chegadas'].groupby(df['mes']).sum()
-mm=pd.DataFrame(MM)
-mm.index=pd.Categorical(mm.index, categories=['Janeiro','Fevereiro','Março'   ,'Abril'  ,'Maio'    ,'Junho','Julho'  ,'Agosto'   ,'Setembro','Outubro','Novembro','Dezembro'], ordered=True)
-fig=plt.figure(figsize=(15,15)  ,    frameon=True)
-ax=plt.subplot(111)
-ax=sns.barplot(     y='chegadas',          x=mm.index, data=mm, hue=mm.index, palette='brg_r', saturation=.75)
-plt.title('Total International Tourist Arrivals in Brazil ({}–{}) by Month'.format(df['ano'].min(), df['ano'].max()), fontsize=20, fontweight='bold')
-plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
-plt.xticks(fontsize=15, fontweight='semibold', rotation='vertical')
-plt.ylabel(None)
-plt.xlabel(None)
-plt.legend([], frameon=False)
-plt.grid(visible=True, which='major', axis='y' ,linestyle=':', linewidth=.75, color='#DCDCDC')
-for spine in ['top','right','left','bottom']:ax.spines[spine].set_visible(False)
-plt.gca().axes.get_yaxis().set_visible(False)
-plt.tick_params(axis  = 'both',
-                which = 'both',
-                left  =  False,
-                bottom=  False)
-for c in ax.containers:
-    values = df.value_counts(ascending=False).iloc[0:0].values
-    ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=-80, fontweight='bold', rotation='vertical', color='#FFFFFF')
-st.pyplot(fig)
 st.markdown('''
             ''')
 st.divider(    )
