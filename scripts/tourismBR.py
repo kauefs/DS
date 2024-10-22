@@ -14,7 +14,7 @@ def LoadData():
     return df
 DD     = LoadData(       )
 # SIDE:
-st.sidebar.title(    'ƊⱭȾɅViƧi🧿Ƞ'  )
+st.sidebar.title(    'ƊⱭȾɅViƧi🧿Ƞ' )
 st.sidebar.divider(                 )
 st.sidebar.header(   'International Tourist Arrivals in Brazil')
 st.sidebar.subheader('Data Analysis')
