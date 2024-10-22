@@ -20,7 +20,7 @@ st.sidebar.header(   'International Tourist Arrivals in Brazil')
 st.sidebar.subheader('Data Analysis')
 st.sidebar.divider(                 )
 st.sidebar.markdown('''Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)''')
-st.sidebar.write(    'Annual Reports from {} to {}'.format(DD['year'].min(), DD['year'].max()))
+# st.sidebar.write(    'Annual Reports from {} to {}'.format(DD['year'].min(), DD['year'].max()))
 st.sidebar.write(    'Total Visitors: {}'.format(f"{DD['arrivals'].sum():,.0f}"))
 st.sidebar.divider(                 )
 st.sidebar.markdown('''
