@@ -45,7 +45,7 @@ from the lush Amazon rainforest to the sun-kissed beaches of Rio de Janeiro, the
 As the country continues to enhance its tourism infrastructure and to promote sustainable travel initiatives,
 it stands as an interesting destination for international visitors, showcasing the warmth and diversity of its people and landscapes.
             ''')
-# By Year:
+# Annual:
 st.subheader('Annual Time Series')
 DF=DD['arrivals'].groupby(DD['year']).sum()
 df=pd.DataFrame(DF)
@@ -71,8 +71,8 @@ for c in ax.containers:
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=-80, fontweight='bold', rotation='vertical', color='#FFFFFF')
 st.pyplot(fig   )
 st.divider(     )
-# By Month:
-st.subheader('By Month')
+# Monthly:
+st.subheader('Monthly')
 DF=DD['arrivals'].groupby(DD['month']).sum()
 df=pd.DataFrame(DF)
 df.index=pd.Categorical(df.index, categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
@@ -108,7 +108,7 @@ values=df['arrivals'].groupby(df.index, observed= True).sum().values
 sort=df.sort_values(by='arrivals'     ,ascending=False)
 fig=plt.figure(frameon= True )
 ax =plt.subplot(111)
-ax =sns.barplot(     y=sort.index     ,        x='arrivals',   data=sort       ,         hue=sort.index, palette='Accent' ,saturation=.75,     legend=False )
+ax =sns.barplot(     y=sort.index     ,        x='arrivals',   data=sort       ,         hue=sort.index, palette='GnBu_r' ,saturation=.75,     legend=False )
 plt.title('International Tourist Arrivals in Brazil ({}–{}) by Means of Travel'.format(DD['year'].min(), DD['year'].max()),  fontsize= 15, fontweight='bold')
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.xticks([])
@@ -189,8 +189,8 @@ values=df['arrivals'].groupby(df.index, observed= True).sum().values
 sort=df.sort_values(by='arrivals'     ,ascending=False)
 fig=plt.figure(figsize=(15,12)        ,  frameon= True)
 ax =plt.subplot(111)
-ax =sns.barplot(     y=sort.index,             x='arrivals',      data=sort   ,         hue=sort.index, palette='tab20_r', saturation=.75,     legend=False )
-plt.title('International Tourist Arrivals in Brazil ({}–{}) by Arrival Estate'.format(DD['year'].min(), DD['year'].max()),   fontsize= 20, fontweight='bold')
+ax =sns.barplot(     y=sort.index,             x='arrivals',      data=sort   ,         hue=sort.index, palette='Purples_r', saturation=.75,     legend=False )
+plt.title('International Tourist Arrivals in Brazil ({}–{}) by Arrival Estate'.format(DD['year'].min(), DD['year'].max())  ,   fontsize= 20, fontweight='bold')
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.xticks([])
 plt.ylabel(None)
