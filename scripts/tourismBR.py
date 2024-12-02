@@ -20,8 +20,8 @@ st.sidebar.header(   'Brazil 🇧🇷 International Tourist Arrivals')
 st.sidebar.subheader('Time Series Data Analysis')
 st.sidebar.divider(                 )
 st.sidebar.markdown('''Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)''')
-st.sidebar.write(    'Annual Reports from {} to {}'.format(DD['year'].min(), DD['year'].max()))
-st.sidebar.write(    'Total Tourists ({}–{}): {}'.format(DD['year'].min()  , DD['year'].max(), f"{DD['arrivals'].sum():,.0f}"))
+st.sidebar.write(    'Annual Reports from {} to {}'.format(DD['year'].min(), DD['year'].max()                                ))
+st.sidebar.write(      'Total Tourists ({}–{}): {}'.format(DD['year'].min(), DD['year'].max(), f"{DD['arrivals'].sum():,.0f}"))
 st.sidebar.divider(                 )
 st.sidebar.markdown('''
 ![2024.10.17](  https://img.shields.io/badge/2024.10.17-000000)
@@ -181,8 +181,8 @@ for c in ax.containers:
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
 st.pyplot(fig   )
 st.divider(     )
-# By Arrival Estate:
-st.subheader('By Arrival Estate')
+# By Estate of Arrival:
+st.subheader('By Estate of Arrival')
 DF=DD['arrivals'].groupby(DD['UF']).sum()
 df=pd.DataFrame(DF)
 values=df['arrivals'].groupby(df.index, observed= True).sum().values
