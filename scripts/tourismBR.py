@@ -181,8 +181,8 @@ for c in ax.containers:
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
 st.pyplot(fig   )
 st.divider(     )
-# By Estate of Arrival:
-st.subheader('By Estate of Arrival')
+# By Arrival Estate:
+st.subheader('By Arrival Estate')
 DF=DD['arrivals'].groupby(DD['UF']).sum()
 df=pd.DataFrame(DF)
 values=df['arrivals'].groupby(df.index, observed= True).sum().values
@@ -190,7 +190,7 @@ sort=df.sort_values(by='arrivals'     ,ascending=False)
 fig=plt.figure(figsize=(15,12)        ,  frameon= True)
 ax =plt.subplot(111)
 ax =sns.barplot(     y=sort.index     ,    x='arrivals',       data=sort         ,         hue=sort.index, palette='Purples_r', saturation=.75,     legend=False )
-plt.title('International Tourist Arrivals in Brazil ({}–{}) by Estate of Arrival'.format(DD['year'].min(), DD['year'].max())  ,   fontsize= 20, fontweight='bold')
+plt.title('International Tourist Arrivals in Brazil ({}–{}) by Arrival Estate'.format(DD['year'].min(), DD['year'].max())  ,   fontsize= 20, fontweight='bold')
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.xticks([])
 plt.ylabel(None)
