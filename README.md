@@ -13,3 +13,5 @@
 ## [Brazil 🇧🇷 International Tourist Arrivals](https://tourismbr.streamlit.app/)
 
 ![AnnualTimeSeries](https://tourismbr.streamlit.app/~/+/media/5917ca94d042a6b650a992cb1b0ce0cdd6983d62f282437365de23fd.png)
+
+![TopCountries    ](https://tourismbr.streamlit.app/~/+/media/e378316f66795905947f7b8e56a70075a6fcfa3d0a7fb939ad596ea2.png)
