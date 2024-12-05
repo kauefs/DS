@@ -7,4 +7,9 @@
 [![License    ](https://img.shields.io/badge/Apache_2.0-D22128?style=flat&logo=apache&logoColor=CB2138&label=License&labelColor=6D6E71)](https://www.apache.org/licenses/LICENSE-2.0)
 
 # DS
-Data Science
+
+**Data Science**
+
+## [Brazil 🇧🇷 International Tourist Arrivals](https://tourismbr.streamlit.app/)
+
+![AnnualTimeSeries](https://tourismbr.streamlit.app/~/+/media/5917ca94d042a6b650a992cb1b0ce0cdd6983d62f282437365de23fd.png)
