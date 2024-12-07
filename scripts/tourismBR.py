@@ -1,10 +1,13 @@
 # Libraries:
-import numpy               as np
-import pandas              as pd
-import matplotlib.pyplot   as plt
-import matplotlib.ticker   as ticker
-import seaborn             as sns
-import streamlit           as st
+import      numpy          as   np
+import     pandas          as   pd
+import  streamlit          as   st
+import    seaborn          as   sns
+import matplotlib.pyplot   as   plt
+import matplotlib.ticker   as   ticker
+import matplotlib.cm       as   cm
+from   matplotlib.colors import Normalize
+from     datetime        import date
 st.set_page_config(page_title='TourismBR', page_icon='🇧🇷', layout='wide', initial_sidebar_state='collapsed')
 # DATA:
 DATA     =     'https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
@@ -14,7 +17,7 @@ def LoadData():
     return DD
 DD       = LoadData(       )
 # SIDE:
-st.sidebar.title(    'ƊⱭȾɅViƧi🧿Ƞ' )
+st.sidebar.title(    'ƊⱭȾɅViƧi🧿Ƞ&trade;' )
 st.sidebar.divider(                 )
 st.sidebar.header(   'Brazil 🇧🇷 International Tourist Arrivals')
 st.sidebar.subheader('Time Series Data Analysis')
@@ -208,4 +211,58 @@ for c in ax.containers:
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
 st.pyplot(fig   )
 st.divider(     )
+# Monthly (2010–2019):
+st.subheader('Monthly (2010–2019)')
+years         = range(2010, 2020)
+fig, axes     = plt.subplots(5, 2, figsize=(10, 25))
+for i, year in enumerate(years):
+    df_year   = DD[DD['year']==year]
+    df_grouped= df_year.groupby('month')['arrivals'].sum().reset_index()
+    df_grouped['month']=pd.Categorical(df_grouped['month'], categories=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], ordered=True)
+    df_grouped= df_grouped.sort_values('month')
+    norm=plt.Normalize(vmin=df_grouped['arrivals'].min(), vmax=df_grouped['arrivals'].max(), clip=False)
+    cmap=cm.cividis_r
+    data=norm(df_grouped['arrivals']).tolist()
+    ax=axes[i // 2, i % 2]
+    sns.barplot(x='month' , y='arrivals', hue='month', data=df_grouped, ax=ax, palette=cmap(data), legend=False)
+    ax.set_title(f'{year}', fontweight='bold')
+    labels = ax.get_xticklabels()
+    plt.setp(labels, rotation=90, ha='right')
+    ax.set_xlabel('')
+    ax.set_ylabel('')
+    ax.set_yticks([])
+    ax.spines['top'   ].set_visible(False)
+    ax.spines['right' ].set_visible(False)
+    ax.spines['bottom'].set_visible(False)
+    ax.spines['left'  ].set_visible(False)
+    for c in ax.containers:
+        values=df_year.value_counts(ascending=False).iloc[0:0].values
+        ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=-65, fontweight='bold', rotation='vertical', color='#F0F0F0')
+plt.tight_layout(pad=1.15)
+st.pyplot(fig)
+st.divider(  )
+# Top Countries (2010–2019):
+st.subheader('Top Countries (2010–2019)')
+df_filtered=DD[(DD['year']>=2010)&(DD['year']<=2019)]
+df_grouped = df_filtered.groupby(['year', 'country'])['arrivals'].sum().reset_index()
+df_grouped = df_grouped.sort_values(['year', 'arrivals'], ascending=[True, False])
+fig , axes = plt.subplots(5, 2, figsize=(12.5, 20))
+axes = axes.flatten()
+for i, year in enumerate(range(2010, 2020)):
+    df_year=df_grouped[df_grouped['year'] == year][:11]
+    sns.barplot(x='arrivals', y='country', hue='country', data=df_year, ax=axes[i], orient='h', palette='Blues_r', legend=False)
+    axes[i].set_title(f'Top Arrivals in {year}', fontweight='bold')
+    axes[i].set_xlabel('')
+    axes[i].set_ylabel('')
+    axes[i].set_xticks([])
+    axes[i].spines['top'   ].set_visible(False)
+    axes[i].spines['right' ].set_visible(False)
+    axes[i].spines['bottom'].set_visible(False)
+    axes[i].spines['left'  ].set_visible(False)
+    for c in axes[i].containers:
+        values=df_grouped.value_counts(ascending=False).iloc[0:0].values
+        axes[i].bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
+plt.tight_layout(pad=1.15)
+st.pyplot(fig)
+st.divider(  )
 st.toast('Travel!', icon='😎')
