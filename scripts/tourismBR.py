@@ -8,6 +8,7 @@ import matplotlib.ticker   as   ticker
 import matplotlib.cm       as   cm
 from   matplotlib.colors import Normalize
 from     datetime        import date
+from   adjustText        import adjust_text
 st.set_page_config(page_title='TourismBR', page_icon='🇧🇷', layout='wide', initial_sidebar_state='collapsed')
 # DATA:
 DATA     =     'https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
