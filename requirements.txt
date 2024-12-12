@@ -12,6 +12,7 @@ mplfinance
 ta
 datetime
 wordcloud
+adjusttext
 folium
 streamlit
 streamlit_folium
