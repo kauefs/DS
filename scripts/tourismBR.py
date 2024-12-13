@@ -18,15 +18,15 @@ def LoadData():
     return DF
 DF       = LoadData(       )
 # SIDE:
-st.sidebar.title(    'ƊⱭȾɅViƧi🧿Ƞ&trade;' )
-st.sidebar.divider(                 )
+st.sidebar.title(    'ƊⱭȾɅViƧi🧿Ƞ&trade;'   )
+st.sidebar.divider(                          )
 st.sidebar.header(   'Brazil 🇧🇷 International Tourist Arrivals')
 st.sidebar.subheader('Time Series Data Analysis')
-st.sidebar.divider(                 )
+st.sidebar.divider(                          )
 st.sidebar.markdown('''Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)''')
 st.sidebar.write(    'Annual Reports from {} to {}'.format(DF['year'].min(), DF['year'].max()                                ))
 st.sidebar.write(      'Total Tourists ({}–{}): {}'.format(DF['year'].min(), DF['year'].max(), f"{DF['arrivals'].sum():,.0f}"))
-st.sidebar.divider(                 )
+st.sidebar.divider(                          )
 st.sidebar.markdown('''
 ![2024.10.17](  https://img.shields.io/badge/2024.10.17-000000)
 
@@ -297,8 +297,8 @@ st.divider(  )
 # Selected Countries (2010–2019):
 filter   =DF[(DF['year']>=2010)&(DF['year']<=2019)]
 st.subheader('Selected Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()))
-group    =filter.groupby(['country','year'])['arrivals'].sum().reset_index()
-countries=  ['Austrália', 'Canadá' ,'Estados Unidos','Japão']
+group    =filter.groupby(['country','year'])['arrivals'].sum( ).reset_index()
+countries=  ['Austrália', 'Canadá' ,'Estados Unidos', 'Japão' ]
 top      = group[group[   'country'].isin(countries)]
 piv      =   top.pivot_table(index ='year', columns='country', values='arrivals')
 texts    =  []
