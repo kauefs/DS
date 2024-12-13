@@ -266,4 +266,37 @@ for i, year in enumerate(range(2010, 2020)):
 plt.tight_layout(pad=1.15)
 st.pyplot(fig)
 st.divider(  )
+# Top 10 Arrivals (2010–2019):
+filter   =DF[(DF['year']>=2010)&(DF['year']<=2019)]
+st.subheader('Top 10 Arrivals ({}–{})'.format(filter['year'].min(), filter['year'].max()))
+group    =filter.groupby(['country','year'])['arrivals'].sum().reset_index()
+countries= group.groupby( 'country')[        'arrivals'].sum().nlargest(10).index
+top      = group[group[   'country'].isin(countries)]
+piv      =   top.pivot_table(index ='year', columns='country', values='arrivals')
+texts    =[]
+colors   =['#00BFFF','#FF4500','#0065FF','#4CAF50','#7B70EE','#00FF00','#00FFFF','#800000','#FFA500','#FFD700']
+fig      =plt.figure(figsize=(10, 5))
+for i  ,country in enumerate(countries):
+    plt.plot(piv.index, piv[country], label=country, color=colors[i])
+    x_end   =piv.index[-1]+    .05
+    y_end   =piv[ country].iloc[-1]
+    text=plt.annotate(f'{country} { y_end:,.0f}',
+                      xy=(    x_end,y_end),
+                      xytext=(x_end,y_end),
+                      textcoords='data',
+                      fontsize  =    8 ,
+                      fontweight='semibold',
+                      arrowprops=dict(arrowstyle='-', connectionstyle='arc3, rad=.15', color=colors[i]))
+    texts.append(text)
+adjust_text(texts, avoid_self=False, pull_threshold=2.5, ensure_inside_axes=False, only_move={'explode':'x+,y+'})
+plt.title('Top 10 Arrivals ({}–{})'.format(filter['year'].min(), filter['year'].max()),   fontsize= 15, fontweight='bold')
+plt.xlabel(''        )
+plt.ylabel(''        )
+plt.tick_params(axis='y', which='both', left=False, labelleft=False)
+plt.yscale('log'     )
+plt.grid(True        )
+plt.box(False        )
+plt.tight_layout(pad=1.15)
+st.pyplot(fig)
+st.divider(  )
 st.toast('Travel!', icon='😎')
