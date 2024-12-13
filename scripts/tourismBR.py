@@ -272,7 +272,7 @@ piv      =   top.pivot_table(index ='year', columns='country', values='arrivals'
 texts    =[]
 fig      =plt.figure(figsize=(10, 5))
 for i  ,country in enumerate(countries):
-    plt.plot(piv.index, piv[country], label=country, color=plt.cm.tab10(i), linewidth=2)
+    plt.plot(piv.index, piv[country], label=country, color=plt.cm.tab10(i), linewidth=2.25)
     x_end   =piv.index[-1]+    .05
     y_end   =piv[ country].iloc[-1]
     text=plt.annotate(f'{country} { y_end:,.0f}',
@@ -305,7 +305,7 @@ texts    =  []
 colors   =  ['#00BFFF','#FF4500','#0065FF','#4CAF50']
 fig      =plt.figure(figsize=(10, 5))
 for i  ,country in enumerate(countries):
-    plt.plot(piv.index, piv[country], label=country, color=colors[i], linewidth=3)
+    plt.plot(piv.index, piv[country], label=country, color=colors[i], linewidth=2.25)
     x_end   =piv.index[-1]+    .05
     y_end   =piv[ country].iloc[-1]
     text=plt.annotate(f'{country} { y_end:,.0f}',
