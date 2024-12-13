@@ -228,15 +228,13 @@ for i, year in enumerate(years):
     sns.barplot(x='month' , y='arrivals', hue='month', data=df_grouped, ax=ax, palette=cmap(data), legend=False)
     ax.set_title(f'{year}', fontweight='bold')
     labels = ax.get_xticklabels()
-    plt.setp(labels, rotation=90, ha='right')
+    plt.setp(labels, rotation=90, ha='center')
+    ax.tick_params(axis='both', which='both', length=0)
     ax.set_xlabel('')
     ax.set_ylabel('')
     ax.set_yticks([])
-    ax.spines['top'   ].set_visible(False)
-    ax.spines['right' ].set_visible(False)
-    ax.spines['bottom'].set_visible(False)
-    ax.spines['left'  ].set_visible(False)
-    for c in ax.containers:
+    for spine in ['top','right','left','bottom']:ax.spines[spine].set_visible(False)
+    for   c   in ax.containers:
         values=df_year.value_counts(ascending=False).iloc[0:0].values
         ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=-65, fontweight='bold', rotation='vertical', color='#F0F0F0')
 plt.tight_layout(pad=1.15)
@@ -256,11 +254,9 @@ for i, year in enumerate(range(2010, 2020)):
     axes[i].set_xlabel('')
     axes[i].set_ylabel('')
     axes[i].set_xticks([])
-    axes[i].spines['top'   ].set_visible(False)
-    axes[i].spines['right' ].set_visible(False)
-    axes[i].spines['bottom'].set_visible(False)
-    axes[i].spines['left'  ].set_visible(False)
-    for c in axes[i].containers:
+    axes[i].tick_params(axis='both', which='both', length=0)
+    for spine in ['top','right','left','bottom']:axes[i].spines[spine].set_visible(False)
+    for   c   in axes[i].containers:
         values=group.value_counts(ascending=False).iloc[0:0].values
         axes[i].bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
 plt.tight_layout(pad=1.15)
