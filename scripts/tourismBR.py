@@ -214,18 +214,18 @@ st.pyplot(fig   )
 st.divider(     )
 # Monthly (2010–2019):
 st.subheader('Monthly (2010–2019)')
-years         = range(2010, 2020)
+years         = range( 2010,2020)
 fig, axes     = plt.subplots(5, 2, figsize=(10, 25))
 for i, year in enumerate(years):
     df_year   = DF[DF['year']==year]
-    df_grouped= df_year.groupby('month')['arrivals'].sum().reset_index()
-    df_grouped['month']=pd.Categorical(df_grouped['month'], categories=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], ordered=True)
-    df_grouped= df_grouped.sort_values('month')
-    norm=plt.Normalize(vmin=df_grouped['arrivals'].min(), vmax=df_grouped['arrivals'].max(), clip=False)
+    group= df_year.groupby('month')['arrivals'].sum().reset_index()
+    group['month']=pd.Categorical(group['month'], categories=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], ordered=True)
+    group= group.sort_values('month')
+    norm=plt.Normalize(vmin=group['arrivals'].min(), vmax=group['arrivals'].max(), clip=False)
     cmap=cm.cividis_r
-    data=norm(df_grouped['arrivals']).tolist()
+    data=norm(group['arrivals']).tolist()
     ax=axes[i // 2, i % 2]
-    sns.barplot(x='month' , y='arrivals', hue='month', data=df_grouped, ax=ax, palette=cmap(data), legend=False)
+    sns.barplot(x='month' , y='arrivals', hue='month', data=group, ax=ax, palette=cmap(data), legend=False)
     ax.set_title(f'{year}', fontweight='bold')
     labels = ax.get_xticklabels()
     plt.setp(labels, rotation=90, ha='center')
@@ -243,11 +243,11 @@ st.divider(  )
 # Top Countries (2010–2019):
 st.subheader('Top Countries (2010–2019)')
 filter=DF[(DF['year']>=2010)&(DF['year']<=2019)]
-group = filter.groupby(   ['year', 'country'])['arrivals'].sum().reset_index()
-group = group.sort_values(['year', 'arrivals'], ascending=[True, False])
-fig , axes = plt.subplots(5, 2, figsize=(12.5, 20))
-axes = axes.flatten()
-for i, year in enumerate(range(2010, 2020)):
+group =filter.groupby(   ['year', 'country'])['arrivals'].sum().reset_index()
+group =group.sort_values(['year', 'arrivals'], ascending=[True, False])
+fig   ,axes=plt.subplots(5,    2,                figsize=(12.5,    20))
+axes  =axes.flatten()
+for i ,year in enumerate(range(2010, 2020)):
     df_year=group[group['year'] == year][:11]
     sns.barplot(x='arrivals', y='country', hue='country', data=df_year, ax=axes[i], orient='h', palette='Blues_r', legend=False)
     axes[i].set_title(f'Top Arrivals in {year}', fontweight='bold')
