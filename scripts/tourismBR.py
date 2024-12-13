@@ -241,11 +241,11 @@ plt.tight_layout(pad=1.15)
 st.pyplot(fig)
 st.divider(  )
 # Top Countries (2010–2019):
-st.subheader('Top Countries (2010–2019)')
 filter=DF[(DF['year']>=2010)&(DF['year']<=2019)]
-group =filter.groupby(   ['year', 'country'])['arrivals'].sum().reset_index()
-group =group.sort_values(['year', 'arrivals'], ascending=[True, False])
-fig   ,axes=plt.subplots(5,    2,                figsize=(12.5,    20))
+st.subheader('Top Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()))
+group =filter.groupby(   ['year','country'])['arrivals'].sum().reset_index()
+group =group.sort_values(['year',            'arrivals'], ascending=[True, False])
+fig   ,axes=plt.subplots(5,    2,                           figsize=(12.5,    20))
 axes  =axes.flatten()
 for i ,year in enumerate(range(2010, 2020)):
     df_year=group[group['year'] == year][:11]
