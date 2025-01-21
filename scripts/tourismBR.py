@@ -37,7 +37,7 @@ st.sidebar.markdown('''
 
 [![License](    https://img.shields.io/badge/Apache--2.0-D22128?style=flat&logo=apache&logoColor=CB2138&label=License&labelColor=6D6E71)](https://www.apache.org/licenses/LICENSE-2.0)
 
-[![ƊⱭȾɅViƧi🧿Ƞ](https://img.shields.io/badge/ƊⱭȾɅViƧi🧿Ƞ&trade;-0065FF?style=plastic&label=&copy;2024&labelColor=0065FF&color=0065FF)](https://datavision.one/)
+[![ƊⱭȾɅViƧi🧿Ƞ](https://img.shields.io/badge/ƊⱭȾɅViƧi🧿Ƞ&trade;-0065FF?style=plastic&label=&copy;2025&labelColor=0065FF&color=0065FF)](https://datavision.one/)
                     ''')
 # MAIN:
 st.title(            'Brazil 🇧🇷 International Tourist Arrivals')
@@ -263,7 +263,7 @@ plt.tight_layout(pad=1.15)
 st.pyplot(fig)
 st.divider(  )
 # Top 10 Arrivals (2010–2019):
-filter   =DF[(DF['year']>=2010)&(DF['year']<=2019)]
+filter   =DF[(DF['year']>=2010)&(DF['year']<=2023)]
 st.subheader('Top 10 Arrivals ({}–{})'.format(filter['year'].min(), filter['year'].max()))
 group    =filter.groupby(['country','year'])['arrivals'].sum().reset_index()
 countries= group.groupby( 'country')[        'arrivals'].sum().nlargest(10).index
@@ -295,7 +295,7 @@ plt.tight_layout(pad=1.15)
 st.pyplot(fig)
 st.divider(  )
 # Selected Countries (2010–2019):
-filter   =DF[(DF['year']>=2010)&(DF['year']<=2019)]
+filter   =DF[(DF['year']>=2010)&(DF['year']<=2023)]
 st.subheader('Selected Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()))
 group    =filter.groupby(['country','year'])['arrivals'].sum( ).reset_index()
 countries=  ['Austrália', 'Canadá' ,'Estados Unidos', 'Japão' ]
