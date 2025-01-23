@@ -264,7 +264,7 @@ st.pyplot(fig)
 st.divider(  )
 # Top 10 Arrivals (2010–2019):
 filter   =DF[(DF['year']>=2010)&(DF['year']<=2023)]
-st.subheader('Top 10 Arrivals ({}–{})'.format(filter['year'].min(), filter['year'].max()), loc='left')
+st.subheader('Top 10 Arrivals ({}–{})'.format(filter['year'].min(), filter['year'].max()))
 group    =filter.groupby(['country','year'])['arrivals'].sum().reset_index()
 countries= group.groupby( 'country')[        'arrivals'].sum().nlargest(10).index
 top      = group[group[   'country'].isin(countries)]
@@ -284,7 +284,7 @@ for i  ,country in enumerate(countries):
                       arrowprops=dict(arrowstyle='-', connectionstyle='arc3, rad=.15', color=plt.cm.tab10(i)))
     texts.append(text)
 adjust_text(texts, avoid_self=False, pull_threshold=2.5, ensure_inside_axes=False, only_move={'explode':'x+,y+'})
-plt.title('Top 10 Arrivals ({}–{})'.format(filter['year'].min(), filter['year'].max()), fontsize= 15, fontweight='bold')
+plt.title('Top 10 Arrivals ({}–{})'.format(filter['year'].min(), filter['year'].max()), fontsize= 15, fontweight='bold', loc='left')
 plt.xlabel(''        )
 plt.ylabel(''        )
 plt.tick_params(axis='both', which='both', length=0, labelleft=False)
@@ -296,7 +296,7 @@ st.pyplot(fig)
 st.divider(  )
 # Selected Countries (2010–2019):
 filter   =DF[(DF['year']>=2010)&(DF['year']<=2023)]
-st.subheader('Selected Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()), loc='left')
+st.subheader('Selected Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()))
 group    =filter.groupby(['country','year'])['arrivals'].sum( ).reset_index()
 countries=  ['Austrália', 'Canadá' ,'Estados Unidos', 'Japão' ]
 top      = group[group[   'country'].isin(countries)]
@@ -317,7 +317,7 @@ for i  ,country in enumerate(countries):
                       arrowprops=dict(arrowstyle='-', connectionstyle='arc3, rad=.15', color=colors[i]))
     texts.append(text)
 adjust_text(texts, avoid_self=False, pull_threshold=2.5, ensure_inside_axes=False, only_move={'explode':'x+,y+'})
-plt.title('Selected Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()), fontsize= 15, fontweight='bold')
+plt.title('Selected Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()), fontsize= 15, fontweight='bold', loc='left')
 plt.xlabel(''        )
 plt.ylabel(''        )
 plt.tick_params(axis='both', which='both', length=0, labelleft=False)
