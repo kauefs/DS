@@ -213,13 +213,13 @@ for c in ax.containers:
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
 st.pyplot(fig   )
 st.divider(     )
-# Monthly (2009–2024):
-st.subheader('Monthly (2009–2024)')
-start=2009
+# Monthly (2011–2024):
+st.subheader('Monthly (2011–2024)')
+start=2011
 end  =DF['year'].max()+1
 years         = range(start, end)
 # years         = range( 2009,2024)
-fig, axes     = plt.subplots(8, 2, figsize=(10, 55))
+fig, axes     = plt.subplots(6, 2, figsize=(10, 40))
 for i, year in enumerate(years):
     df_year   = DF[DF['year']==year]
     group= df_year.groupby('month')['arrivals'].sum().reset_index()
@@ -244,12 +244,12 @@ for i, year in enumerate(years):
 plt.tight_layout(pad=1.15)
 st.pyplot(fig)
 st.divider(  )
-# Top Countries (2009–2024):
-filter=DF[(DF['year']>=2009)&(DF['year']<=2024)]
+# Top Countries (2011–2024):
+filter=DF[(DF['year']>=2011)&(DF['year']<=2024)]
 st.subheader('Top Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()))
 group =filter.groupby(   ['year','country'])['arrivals'].sum().reset_index()
 group =group.sort_values(['year',            'arrivals'], ascending=[True, False])
-fig   ,axes=plt.subplots(8,    2,                           figsize=(12.5,    30))
+fig   ,axes=plt.subplots(6,    2,                           figsize=(12.5,    25))
 axes  =axes.flatten()
 for i ,year in enumerate(range(start, end)):
     df_year=group[group['year'] == year][:11]
@@ -266,8 +266,7 @@ for i ,year in enumerate(range(start, end)):
 plt.tight_layout(pad=1.15)
 st.pyplot(fig)
 st.divider(  )
-# Top 10 Arrivals (2009–2024):
-filter   =DF[(DF['year']>=2009)&(DF['year']<=2024)]
+# Top 10 Arrivals (2011–2024):
 st.subheader('Top 10 Arrivals ({}–{})'.format(filter['year'].min(), filter['year'].max()))
 group    =filter.groupby(['country','year'])['arrivals'].sum().reset_index()
 countries= group.groupby( 'country')[        'arrivals'].sum().nlargest(10).index
@@ -298,8 +297,7 @@ plt.box( False       )
 plt.tight_layout(pad=1.15)
 st.pyplot(fig)
 st.divider(  )
-# Selected Countries (2009–2024):
-filter   =DF[(DF['year']>=2009)&(DF['year']<=2024)]
+# Selected Countries (2011–2024):
 st.subheader('Selected Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()))
 group    =filter.groupby(['country','year'])['arrivals'].sum( ).reset_index()
 countries=  ['Austrália', 'Canadá' ,'Estados Unidos', 'Japão' ]
