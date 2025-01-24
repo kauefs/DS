@@ -219,7 +219,7 @@ start=2009
 end  =DF['year'].max()+1
 years         = range(start, end)
 # years         = range( 2009,2024)
-fig, axes     = plt.subplots(8, 2, figsize=(10, 25))
+fig, axes     = plt.subplots(8, 2, figsize=(10, 55))
 for i, year in enumerate(years):
     df_year   = DF[DF['year']==year]
     group= df_year.groupby('month')['arrivals'].sum().reset_index()
@@ -240,7 +240,7 @@ for i, year in enumerate(years):
     for spine in ['top','right','left','bottom']:ax.spines[spine].set_visible(False)
     for   c   in ax.containers:
         values=df_year.value_counts(ascending=False).iloc[0:0].values
-        ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=-65, fontweight='bold', rotation='vertical', color='#F0F0F0')
+        ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=0, fontweight='bold', rotation='vertical', color='#000000')
 plt.tight_layout(pad=1.15)
 st.pyplot(fig)
 st.divider(  )
