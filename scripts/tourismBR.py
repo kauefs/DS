@@ -299,7 +299,7 @@ plt.tight_layout(pad=1.15)
 st.pyplot(fig)
 st.divider(  )
 # Selected Countries (2009–2024):
-filter   =DF[(DF['year']>=2010)&(DF['year']<=2024)]
+filter   =DF[(DF['year']>=2009)&(DF['year']<=2024)]
 st.subheader('Selected Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()))
 group    =filter.groupby(['country','year'])['arrivals'].sum( ).reset_index()
 countries=  ['Austrália', 'Canadá' ,'Estados Unidos', 'Japão' ]
