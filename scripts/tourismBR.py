@@ -25,8 +25,8 @@ st.sidebar.subheader('Time Series Data Analysis'               )
 st.sidebar.divider(                          )
 st.sidebar.markdown('''Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)''')
 st.sidebar.write(    'Annual Reports from {} to {}'.format(DF['year'].min(), DF['year'].max()                                ))
-st.sidebar.write(      'Total Tourists ({}–{}): {}'.format(DF['year'].min(), DF['year'].max(), f"{DF['arrivals'].sum():,.0f}"))
-st.sidebar.write(      'Year with highest visitors: {} with {} arrivals.' .format(DF.groupby('year')['arrivals'].sum().idxmax(), f"{DF.groupby('year')['arrivals'].sum().max():,.0f}"))
+st.sidebar.success(  'Total Tourists ({}–{}): {}'.format(DF['year'].min(), DF['year'].max(), f"{DF['arrivals'].sum():,.0f}"))
+st.sidebar.info(     'Year with highest visitors: {} with {} arrivals.' .format(DF.groupby('year')['arrivals'].sum().idxmax(), f"{DF.groupby('year')['arrivals'].sum().max():,.0f}"))
 st.sidebar.divider(                          )
 st.sidebar.markdown('''
 ![2024.10.17](  https://img.shields.io/badge/2024.10.17-000000)
@@ -218,7 +218,7 @@ st.subheader('Monthly (2011–2024)')
 start=2011
 end  =DF['year'].max()+1
 years         = range(start, end)
-fig, axes     = plt.subplots(7, 2, figsize=(10, 40))
+fig, axes     = plt.subplots(7, 2, figsize=(10, 50))
 for i, year in enumerate(years):
     df_year   = DF[DF['year']==year]
     group= df_year.groupby('month')['arrivals'].sum().reset_index()
