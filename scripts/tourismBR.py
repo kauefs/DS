@@ -218,8 +218,7 @@ st.subheader('Monthly (2011–2024)')
 start=2011
 end  =DF['year'].max()+1
 years         = range(start, end)
-# years         = range( 2009,2024)
-fig, axes     = plt.subplots(6, 2, figsize=(10, 40))
+fig, axes     = plt.subplots(7, 2, figsize=(10, 40))
 for i, year in enumerate(years):
     df_year   = DF[DF['year']==year]
     group= df_year.groupby('month')['arrivals'].sum().reset_index()
@@ -249,7 +248,7 @@ filter=DF[(DF['year']>=2011)&(DF['year']<=2024)]
 st.subheader('Top Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()))
 group =filter.groupby(   ['year','country'])['arrivals'].sum().reset_index()
 group =group.sort_values(['year',            'arrivals'], ascending=[True, False])
-fig   ,axes=plt.subplots(6,    2,                           figsize=(12.5,    25))
+fig   ,axes=plt.subplots(7,    2,                           figsize=(12.5,    25))
 axes  =axes.flatten()
 for i ,year in enumerate(range(start, end)):
     df_year=group[group['year'] == year][:11]
