@@ -26,6 +26,7 @@ st.sidebar.divider(                          )
 st.sidebar.markdown('''Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)''')
 st.sidebar.write(    'Annual Reports from {} to {}'.format(DF['year'].min(), DF['year'].max()                                ))
 st.sidebar.write(      'Total Tourists ({}–{}): {}'.format(DF['year'].min(), DF['year'].max(), f"{DF['arrivals'].sum():,.0f}"))
+st.sidebar.write(      'Year with highest visitors: {} with {} arrivals.' .format(DD.groupby('year')['arrivals'].sum().idxmax(), f"{DD.groupby('year')['arrivals'].sum().max():,.0f}"))
 st.sidebar.divider(                          )
 st.sidebar.markdown('''
 ![2024.10.17](  https://img.shields.io/badge/2024.10.17-000000)
@@ -37,7 +38,7 @@ st.sidebar.markdown('''
 
 [![License](    https://img.shields.io/badge/Apache--2.0-D22128?&logo=apache&logoColor=CB2138&label=License&labelColor=6D6E71)](https://www.apache.org/licenses/LICENSE-2.0)
 
-[![ƊⱭȾɅViƧi🧿Ƞ](https://img.shields.io/badge/ƊⱭȾɅViƧi🧿Ƞ&trade;-0065FF?style=plastic&logoColor=0065FF&label=&copy;2024&labelColor=0065FF)](https://datavision.one/)
+[![ƊⱭȾɅViƧi🧿Ƞ](https://img.shields.io/badge/ƊⱭȾɅViƧi🧿Ƞ&trade;-0065FF?style=plastic&logoColor=0065FF&label=&copy;2025&labelColor=0065FF)](https://datavision.one/)
                     ''')
 # MAIN:
 st.title(            'Brazil 🇧🇷 International Tourist Arrivals')
@@ -212,10 +213,13 @@ for c in ax.containers:
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
 st.pyplot(fig   )
 st.divider(     )
-# Monthly (2010–2019):
-st.subheader('Monthly (2010–2019)')
-years         = range( 2010,2020)
-fig, axes     = plt.subplots(5, 2, figsize=(10, 25))
+# Monthly (2009–2024):
+st.subheader('Monthly (2009–2024)')
+start=2009
+end  =DF['year'].max()+1
+years         = range(start, end)
+# years         = range( 2009,2024)
+fig, axes     = plt.subplots(8, 2, figsize=(10, 25))
 for i, year in enumerate(years):
     df_year   = DF[DF['year']==year]
     group= df_year.groupby('month')['arrivals'].sum().reset_index()
@@ -240,14 +244,14 @@ for i, year in enumerate(years):
 plt.tight_layout(pad=1.15)
 st.pyplot(fig)
 st.divider(  )
-# Top Countries (2010–2019):
-filter=DF[(DF['year']>=2010)&(DF['year']<=2019)]
+# Top Countries (2009–2024):
+filter=DF[(DF['year']>=2009)&(DF['year']<=2024)]
 st.subheader('Top Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()))
 group =filter.groupby(   ['year','country'])['arrivals'].sum().reset_index()
 group =group.sort_values(['year',            'arrivals'], ascending=[True, False])
-fig   ,axes=plt.subplots(5,    2,                           figsize=(12.5,    20))
+fig   ,axes=plt.subplots(8,    2,                           figsize=(12.5,    30))
 axes  =axes.flatten()
-for i ,year in enumerate(range(2010, 2020)):
+for i ,year in enumerate(range(start, end)):
     df_year=group[group['year'] == year][:11]
     sns.barplot(x='arrivals', y='country', hue='country', data=df_year, ax=axes[i], orient='h', palette='Blues_r', legend=False)
     axes[i].set_title(f'Top Arrivals in {year}', fontweight='bold')
@@ -262,8 +266,8 @@ for i ,year in enumerate(range(2010, 2020)):
 plt.tight_layout(pad=1.15)
 st.pyplot(fig)
 st.divider(  )
-# Top 10 Arrivals (2010–2019):
-filter   =DF[(DF['year']>=2010)&(DF['year']<=2023)]
+# Top 10 Arrivals (2009–2024):
+filter   =DF[(DF['year']>=2009)&(DF['year']<=2024)]
 st.subheader('Top 10 Arrivals ({}–{})'.format(filter['year'].min(), filter['year'].max()))
 group    =filter.groupby(['country','year'])['arrivals'].sum().reset_index()
 countries= group.groupby( 'country')[        'arrivals'].sum().nlargest(10).index
@@ -294,8 +298,8 @@ plt.box( False       )
 plt.tight_layout(pad=1.15)
 st.pyplot(fig)
 st.divider(  )
-# Selected Countries (2010–2019):
-filter   =DF[(DF['year']>=2010)&(DF['year']<=2023)]
+# Selected Countries (2009–2024):
+filter   =DF[(DF['year']>=2010)&(DF['year']<=2024)]
 st.subheader('Selected Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()))
 group    =filter.groupby(['country','year'])['arrivals'].sum( ).reset_index()
 countries=  ['Austrália', 'Canadá' ,'Estados Unidos', 'Japão' ]
