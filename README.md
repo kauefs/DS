@@ -12,10 +12,10 @@
 
 ## [Brazil 🇧🇷 International Tourist Arrivals](https://tourismbr.streamlit.app/)
 
-<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://tourismbr.streamlit.app/~/+/media/5917ca94d042a6b650a992cb1b0ce0cdd6983d62f282437365de23fd.png></a></p>
+<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://tourismbr.streamlit.app/~/+/media/d818406b09436a5248e3235acf6c072f0600fe51f5d04530df16f561.png></a></p>
 
-<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://tourismbr.streamlit.app/~/+/media/e378316f66795905947f7b8e56a70075a6fcfa3d0a7fb939ad596ea2.png></a></p>
+<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://tourismbr.streamlit.app/~/+/media/d8128d355d842eeb49c89920edf90a1738e045c0a2463cc241362f98.png></a></p>
 
-<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://tourismbr.streamlit.app/~/+/media/9898e9a451acfc265a242968a2bdc2a9af2c918f24bdb89285e0d59a.png></a></p>
+<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://tourismbr.streamlit.app/~/+/media/0fc1beed7bceda66f792cbfeaef50834cb878ba891068ed3ca7d5b81.png></a></p>
 
-<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://tourismbr.streamlit.app/~/+/media/5a024110092e687f4584f49f4c7caf21475abfb9f01b1b289af09632.png></a></p>
+<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://tourismbr.streamlit.app/~/+/media/e9141baf44534ed9e89a3913cf2cc71914fa432a38eaf6848cc7906a.png></a></p>
