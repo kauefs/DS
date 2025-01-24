@@ -26,7 +26,7 @@ st.sidebar.divider(                          )
 st.sidebar.markdown('''Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)''')
 st.sidebar.write(    'Annual Reports from {} to {}'.format(DF['year'].min(), DF['year'].max()                                ))
 st.sidebar.write(      'Total Tourists ({}–{}): {}'.format(DF['year'].min(), DF['year'].max(), f"{DF['arrivals'].sum():,.0f}"))
-st.sidebar.write(      'Year with highest visitors: {} with {} arrivals.' .format(DD.groupby('year')['arrivals'].sum().idxmax(), f"{DD.groupby('year')['arrivals'].sum().max():,.0f}"))
+st.sidebar.write(      'Year with highest visitors: {} with {} arrivals.' .format(DF.groupby('year')['arrivals'].sum().idxmax(), f"{DF.groupby('year')['arrivals'].sum().max():,.0f}"))
 st.sidebar.divider(                          )
 st.sidebar.markdown('''
 ![2024.10.17](  https://img.shields.io/badge/2024.10.17-000000)
