@@ -50,7 +50,7 @@ from the lush Amazon rainforest to the sun-kissed beaches of Rio de Janeiro, the
 As the country continues to enhance its tourism infrastructure and to promote sustainable travel initiatives,
 it stands as an interesting destination for international visitors, showcasing the warmth and diversity of its people and landscapes.
 
-2024 has shown a full recovery from COVID-19 pandemic of previous years, breaking the previous record of visitors from 2018.
+2024 has shown a full recovery from COVID-19 pandemic, breaking the previous record of visitors from 2018.
             ''')
 # Annual:
 st.subheader('Annual Time Series')
@@ -104,7 +104,7 @@ plt.tick_params(axis  ='both',
 for c in ax.containers:
     values=df.value_counts(ascending=False).iloc[0:0].values
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=-75, fontweight='bold', rotation='vertical', color='#FFFFFF')
-plt.tight_layout(pad=1.15    )
+plt.tight_layout(pad=1    )
 st.pyplot(fig   )
 st.divider(     )
 # By Means of Travel:
@@ -242,7 +242,7 @@ for i, year in enumerate(years):
     for   c   in ax.containers:
         values=df_year.value_counts(ascending=False).iloc[0:0].values
         ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=5, fontweight='bold', rotation='vertical', color='#000000')
-plt.tight_layout(pad=1.15)
+plt.tight_layout(pad=1)
 st.pyplot(fig)
 st.divider(  )
 # Top Countries (2011–2024):
@@ -264,7 +264,7 @@ for i ,year in enumerate(range(start, end)):
     for   c   in axes[i].containers:
         values=group.value_counts(ascending=False).iloc[0:0].values
         axes[i].bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
-plt.tight_layout(pad=1.15)
+plt.tight_layout(pad=1   )
 st.pyplot(fig)
 st.divider(  )
 # Top 10 Arrivals (2011–2024):
@@ -289,15 +289,15 @@ for i  ,country in enumerate(countries):
     texts.append(text)
 adjust_text(texts, avoid_self=False, pull_threshold=2.5, ensure_inside_axes=False, only_move={'explode':'x+,y+'})
 plt.title('    Top 10 Arrivals ({}–{})'.format(filter['year'].min(), filter['year'].max()), fontsize= 15, fontweight='bold', loc='left')
-plt.xlabel(''        )
-plt.ylabel(''        )
+plt.xlabel(''         )
+plt.ylabel(''         )
 plt.tick_params(axis='both', which='both', length=0, labelleft=False)
-plt.yscale('log'     )
-plt.grid(False       )
-plt.box( False       )
-plt.tight_layout(pad=1.15)
-st.pyplot(fig)
-st.divider(  )
+plt.yscale('log'      )
+plt.grid(False        )
+plt.box( False        )
+plt.tight_layout(pad=1)
+st.pyplot(fig         )
+st.divider(           )
 # Selected Countries (2011–2024):
 st.subheader('Selected Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()))
 group    =filter.groupby(['country','year'])['arrivals'].sum( ).reset_index()
@@ -321,13 +321,13 @@ for i  ,country in enumerate(countries):
     texts.append(text)
 adjust_text(texts, avoid_self=False, pull_threshold=2.5, ensure_inside_axes=False, only_move={'explode':'x+,y+'})
 plt.title('    Selected Countries ({}–{})'.format(filter['year'].min(), filter['year'].max()), fontsize= 15, fontweight='bold', loc='left')
-plt.xlabel(''        )
-plt.ylabel(''        )
+plt.xlabel(''         )
+plt.ylabel(''         )
 plt.tick_params(axis='both', which='both', length=0, labelleft=False)
-plt.yscale('log'     )
-plt.grid(False       )
-plt.box( False       )
-plt.tight_layout(pad=1.15)
-st.pyplot(fig)
-st.divider(  )
+plt.yscale('log'      )
+plt.grid(False        )
+plt.box( False        )
+plt.tight_layout(pad=1)
+st.pyplot(fig         )
+st.divider(           )
 st.toast('Travel!', icon='😎')
