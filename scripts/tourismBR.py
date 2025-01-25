@@ -49,6 +49,8 @@ In recent times, Brazil has seen a resurgence in tourist arrivals, as travelers 
 from the lush Amazon rainforest to the sun-kissed beaches of Rio de Janeiro, the country offers a diverse array of experiences.
 As the country continues to enhance its tourism infrastructure and to promote sustainable travel initiatives,
 it stands as an interesting destination for international visitors, showcasing the warmth and diversity of its people and landscapes.
+
+2024 has shown a full recovery from COVID-19 pandemic of previous years, breaking the previous record of visitor from 2018.
             ''')
 # Annual:
 st.subheader('Annual Time Series')
