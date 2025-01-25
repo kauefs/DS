@@ -239,7 +239,7 @@ for i, year in enumerate(years):
     for spine in ['top','right','left','bottom']:ax.spines[spine].set_visible(False)
     for   c   in ax.containers:
         values=df_year.value_counts(ascending=False).iloc[0:0].values
-        ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=0, fontweight='bold', rotation='vertical', color='#000000')
+        ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=5, fontweight='bold', rotation='vertical', color='#000000')
 plt.tight_layout(pad=1.15)
 st.pyplot(fig)
 st.divider(  )
