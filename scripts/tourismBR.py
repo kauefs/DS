@@ -229,10 +229,10 @@ for i, year in enumerate(years):
     data=norm(group['arrivals']).tolist()
     ax=axes[i // 2, i % 2]
     sns.barplot(x='month' , y='arrivals', hue='month', data=group, ax=ax, palette=cmap(data), legend=False)
-    ax.set_title(f'{year}', fontweight='bold', pad=40)
+    ax.set_title(f'{year}', fontweight='bold',   pad=50)
     labels = ax.get_xticklabels()
     plt.setp(labels, rotation=90, ha='center')
-    ax.tick_params(axis='both', which='both', length=0)
+    ax.tick_params(axis='both', which='both', length= 0)
     ax.set_xlabel('')
     ax.set_ylabel('')
     ax.set_yticks([])
