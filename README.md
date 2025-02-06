@@ -16,13 +16,13 @@
 
 ## [Brazil 🇧🇷 International Tourist Arrivals](https://tourismbr.streamlit.app/)
 
-<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://tourismbr.streamlit.app/~/+/media/d818406b09436a5248e3235acf6c072f0600fe51f5d04530df16f561.png></a></p>
+<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://raw.githubusercontent.com/kauefs/StreamLit/%40/img/AnnualTimeSeries.png></a></p>
 
-<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://tourismbr.streamlit.app/~/+/media/d8128d355d842eeb49c89920edf90a1738e045c0a2463cc241362f98.png></a></p>
+<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://raw.githubusercontent.com/kauefs/StreamLit/%40/img/TopArrivals.png></a></p>
 
-<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://tourismbr.streamlit.app/~/+/media/0fc1beed7bceda66f792cbfeaef50834cb878ba891068ed3ca7d5b81.png></a></p>
+<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://raw.githubusercontent.com/kauefs/StreamLit/%40/img/Top10.png></a></p>
 
-<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://tourismbr.streamlit.app/~/+/media/e9141baf44534ed9e89a3913cf2cc71914fa432a38eaf6848cc7906a.png></a></p>
+<p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://raw.githubusercontent.com/kauefs/StreamLit/%40/img/Selected.png></a></p>
 
 ##
 
