@@ -23,20 +23,20 @@ st.sidebar.divider  (                          )
 st.sidebar.header   ('Brazil 🇧🇷 International Tourist Arrivals')
 st.sidebar.subheader('Time Series Data Analysis'               )
 st.sidebar.divider  (                          )
-st.sidebar.markdown ('''Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)'''  )
-st.sidebar.write    (          'Annual Reports from {} to {}'          .format(DF['year'].min(), DF['year'].max()                                ))
-st.sidebar.info     (            'Total Tourists ({}–{}): {}'          .format(DF['year'].min(), DF['year'].max(), f"{DF['arrivals'].sum():,.0f}"))
+st.sidebar.markdown ('''Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)''')
+st.sidebar.write    (          'Annual Reports from {} to {}'          .format(DF['year'].min(),   DF['year'].max()                                                               ))
+st.sidebar.info     (            'Total Tourists ({}–{}): {}'          .format(DF['year'].min(),   DF['year'].max(),          f"{DF                ['arrivals'].sum()      :,.0f}"))
 st.sidebar.success  ('Year with highest visitors: {} with {} arrivals.'.format(DF.groupby('year')['arrivals'].sum().idxmax(), f"{DF.groupby('year')['arrivals'].sum().max():,.0f}"))
 st.sidebar.divider  (                          )
 st.sidebar.markdown ('''
 ![2024.10.17   ](https://img.shields.io/badge/2024.10.17-000000)
 
+[![License     ](https://img.shields.io/badge/Apache--2.0-D22128?&logo=apache&logoColor=CB2138&label=License&labelColor=6D6E71)](https://www.apache.org/licenses/LICENSE-2.0)
+
 [![GitHub      ](https://img.shields.io/badge/-000000?logo=github&logoColor=FFFFFF)](https://github.com/kauefs/)
 [![Medium      ](https://img.shields.io/badge/-000000?logo=medium&logoColor=FFFFFF)](https://medium.com/@kauefs)
 [![LinkedIn    ](https://img.shields.io/badge/in-0077B5?logo=linkedin&logoColor=FFFFFF)](https://www.linkedin.com/in/kauefs/)
 [![Python      ](https://img.shields.io/badge/3-646464?logo=python&logoColor=FFDE57&labelColor=4584B6)](https://www.python.org/)
-
-[![License     ](https://img.shields.io/badge/Apache--2.0-D22128?&logo=apache&logoColor=CB2138&label=License&labelColor=6D6E71)](https://www.apache.org/licenses/LICENSE-2.0)
 
 [![ƊⱭȾɅViƧi🧿Ƞ](https://img.shields.io/badge/ƊⱭȾɅViƧi🧿Ƞ&trade;-0065FF?style=plastic&logoColor=0065FF&label=&copy;2025&labelColor=0065FF)](https://datavision.one/)
                     ''')
