@@ -12,8 +12,8 @@ messageFormat                        = '%(asctime)s %(message)s'
 
 [client]
 
-showErrorDetails                     =  true
-toolbarMode                          = 'auto'
+showErrorDetails                     = 'none'
+toolbarMode                          = 'minimal'
 showSidebarNavigation                =  true
 
 [runner]
@@ -45,5 +45,5 @@ base                                 = 'dark'
 primaryColor                         = '#6595EE'
 backgroundColor                      = '#000000'
 secondaryBackgroundColor             = '#252525'
-textColor                            = '#FFFFFF'
+textColor                            = '#F0F0F0'
 font                                 = 'sans serif'
