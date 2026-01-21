@@ -121,7 +121,7 @@ fig=plt.figure(figsize=(12,8), frameon= True)
 sns.heatmap(pivot_heatmap,
             annot= False ,
             cmap ='coolwarm',
-            center=pivot_heatmap.stack( ).mean( ) # Colors shift at the average value
+            center=pivot_heatmap.stack( ).mean( ), # Colors shift at the average value
             linewidths=.5,
             cbar_kws={'label':'Total Arrivals'})
 plt.title('HeatMap: Monthly Arrivals Intensity per Year', fontsize=15, fontweight='bold')
