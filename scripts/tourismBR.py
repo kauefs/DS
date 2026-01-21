@@ -118,7 +118,12 @@ heatmap_data['month']=pd.Categorical(heatmap_data['month'], categories=['Jan','F
 pivot_heatmap=heatmap_data.pivot_table(index='year', columns='month', values='arrivals')
 #fig,ax=plt.subplots(figsize=(12, 8))
 fig=plt.figure(figsize=(12,8), frameon= True)
-sns.heatmap(pivot_heatmap, annot=False, cmap='coolwarm',linewidths=.5, cbar_kws={'label':'Total Arrivals'})
+sns.heatmap(pivot_heatmap,
+            annot= False ,
+            cmap ='coolwarm',
+            center=pivot_heatmap.stack( ).mean( ) # Colors shift at the average value
+            linewidths=.5,
+            cbar_kws={'label':'Total Arrivals'})
 plt.title('HeatMap: Monthly Arrivals Intensity per Year', fontsize=15, fontweight='bold')
 plt.xlabel('')
 plt.ylabel('')
