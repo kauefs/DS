@@ -38,7 +38,7 @@ st.sidebar.markdown ('''
 [![LinkedIn    ](https://img.shields.io/badge/in-0077B5?logo=linkedin&logoColor=FFFFFF)](https://www.linkedin.com/in/kauefs/)
 [![Python      ](https://img.shields.io/badge/3-646464?logo=python&logoColor=FFDE57&labelColor=4584B6)](https://www.python.org/)
 
-[![ƊⱭȾɅViƧi🧿Ƞ](https://img.shields.io/badge/ƊⱭȾɅViƧi🧿Ƞ&trade;-0065FF?style=plastic&logoColor=0065FF&label=&copy;2025&labelColor=0065FF)](https://datavision.one/)
+[![ƊⱭȾɅViƧi🧿Ƞ](https://img.shields.io/badge/ƊⱭȾɅViƧi🧿Ƞ&trade;-0065FF?style=plastic&logoColor=0065FF&label=&copy;2026&labelColor=0065FF)](https://datavision.one/)
                     ''')
 # MAIN:
 st.title   ('Brazil 🇧🇷 International Tourist Arrivals')
@@ -57,9 +57,11 @@ st.subheader('Annual Time Series')
 DD=DF['arrivals'].groupby(DF['year']).sum( )
 df=pd.DataFrame(DD)
 values=df['arrivals'].groupby(df.index).sum( ).values
+norm=Normalize(df['arrivals'].min( ), df['arrivals'].max( ))
+annual_palette=cm.viridis(norm(df['arrivals'])).tolist( )
 fig=plt.figure(figsize=(15,15), frameon=True)
 ax =plt.subplot(111)
-ax =sns.barplot(     y='arrivals',    x=df.index,          data=df, hue=values,    palette='viridis'    ,       saturation=.75,     legend=False )
+ax =sns.barplot(     y='arrivals',    x=df.index,          data=df, hue=values,    palette=annual_palette,      saturation=.75,     legend=False )
 plt.title('Annual International Tourist Arrivals in Brazil ({}–{})'.format(DF['year'].min( ), DF['year'].max( )), fontsize= 20, fontweight='bold')
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
 plt.xticks(fontsize=13 ,fontweight='semibold' ,          rotation='vertical'  )
@@ -83,12 +85,13 @@ st.subheader('Monthly')
 DD=DF['arrivals'].groupby(DF['month']).sum( )
 df=pd.DataFrame(DD)
 df.index=pd.Categorical(df.index, categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
-values=df['arrivals'].groupby(df.index, observed= True).sum().values
+#df=df.sort_index( )
+values=df['arrivals'].groupby(df.index, observed= True).sum( ).values
 sort=df.sort_values(by='arrivals'     ,ascending=False)
-palette=sns.color_palette('brg_r', 12)
+monthly_palette=sns.color_palette('brg_r', 12)
 fig=plt.figure(frameon= True )
 ax =plt.subplot(111)
-ax =sns.barplot(     y='arrivals'     ,        x=df.index,  data=df, hue=values,    palette=palette      ,         saturation=.75,     legend=False )
+ax =sns.barplot(     y='arrivals'     ,        x=df.index,  data=df, hue=values,    palette=monthly_palette      , saturation=.75,     legend=False )
 plt.title('Monthly International Tourist Arrivals in Brazil ({}–{})'.format(DF['year'].min( ), DF['year'].max( )),   fontsize= 15, fontweight='bold')
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
 plt.xticks(fontsize=13, fontweight='semibold', rotation='horizontal')
@@ -108,6 +111,19 @@ for c in ax.containers:
 plt.tight_layout(pad=1    )
 st.pyplot ( fig )
 st.divider(     )
+# Seasonality HeatMap:
+st.subheader('Seasonality HeatMap (Arrivals by Year & Month)')
+heatmap_data=DF.groupby(['year','month'])['arrivals'].sum( ).reset_index( )
+heatmap_data['month']=pd.Categorical(heatmap_data['month'], categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
+pivot_heatmap=heatmap_data.pivot_table(index='year', columns='month', values='arrivals')
+#fig,ax=plt.subplots(figsize=(12, 8))
+fig=plt.figure(figsize=(12,8), frameon= True)
+sns.heatmap(pivot_heatmap, annot=False, cmap='YlGnBu',  linewidths=.5, cbar_kws={'label':'Total Arrivals'})
+plt.title('HeatMap: Monthly Arrivals Intensity per Year', fontsize=15, fontweight='bold')
+plt.xlabel('')
+plt.ylabel('')
+st.pyplot(fig)
+st.divider(  )
 # By Means of Travel:
 st.subheader('By Means of Travel')
 DD=DF['arrivals'].groupby(DF['via']).sum( )
@@ -225,11 +241,11 @@ fig, axes     = plt.subplots(7, 2, figsize=(10, 50))
 for i, year in enumerate(years):
     df_year   = DF[DF['year']==year]
     group= df_year.groupby('month')['arrivals'].sum( ).reset_index( )
-    group['month']=pd.Categorical(group['month'], categories=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], ordered=True)
+    group['month']=pd.Categorical(group['month'], categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
     group= group.sort_values('month')
     norm=plt.Normalize(vmin=group['arrivals'].min( ), vmax=group['arrivals'].max( ), clip=False)
     cmap=cm.cividis_r
-    palette=cmap(norm(group['arrivals'])).tolist()
+    palette=cmap(norm(group['arrivals'])).tolist( )
     data=norm(group['arrivals']).tolist( )
     ax=axes[i // 2, i % 2]
     sns.barplot(x='month' , y='arrivals', hue='month', data=group, ax=ax, palette=palette, legend=False)
@@ -276,19 +292,20 @@ countries= group.groupby( 'country')[        'arrivals'].sum( ).nlargest(10).ind
 top      = group[group[   'country'].isin(countries)]
 piv      =   top.pivot_table(index ='year', columns='country', values='arrivals')
 texts    =[]
+colors   =sns.color_palette('tab10', len(countries))
 fig      =plt.figure(figsize=(10, 5))
 for i  ,country in enumerate(countries):
-    plt.plot(piv.index, piv[country], label=country, color=plt.cm.tab10(i), linewidth=2.25)
+    plt.plot(piv.index, piv[country], label=country, color=colors[i], linewidth=2.25)
     x_end   =piv.index[-1]+    .05
     y_end   =piv[ country].iloc[-1]
-    text=plt.annotate(f'{country} { y_end:,.0f}',
-                      xy=(    x_end,y_end),
-                      xytext=(x_end,y_end),
-                      textcoords='data',
-                      fontsize  =    8 ,
-                      fontweight='semibold',
-                      arrowprops=dict(arrowstyle='-', connectionstyle='arc3, rad=.15', color=plt.cm.tab10(i)))
-    texts.append(text)
+    txt     =plt.annotate(f'{country} { y_end:,.0f}',
+                          xy=(    x_end,y_end),
+                          xytext=(x_end,y_end),
+                          textcoords='data',
+                          fontsize  =    8 ,
+                          fontweight='semibold',
+                          arrowprops=dict(arrowstyle='-', connectionstyle='arc3, rad=.15', color=colors[i]))
+    texts.append(txt)
 adjust_text(texts, avoid_self=False, pull_threshold=2.5, ensure_inside_axes=False, only_move={'explode':'x+,y+'})
 plt.title ('Top 10 Arrivals ({}–{})'.format(filter['year'].min( ), filter['year'].max( )), fontsize= 15, fontweight='bold', loc='left')
 plt.xlabel(''         )
