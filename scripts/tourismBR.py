@@ -229,9 +229,10 @@ for i, year in enumerate(years):
     group= group.sort_values('month')
     norm=plt.Normalize(vmin=group['arrivals'].min( ), vmax=group['arrivals'].max( ), clip=False)
     cmap=cm.cividis_r
+    palette=cmap(norm(group['arrivals'])).tolist()
     data=norm(group['arrivals']).tolist( )
     ax=axes[i // 2, i % 2]
-    sns.barplot(x='month' , y='arrivals', hue='month', data=group, ax=ax, palette=cmap(data), legend=False)
+    sns.barplot(x='month' , y='arrivals', hue='month', data=group, ax=ax, palette=palette, legend=False)
     ax.set_title(f'{year}', fontweight='bold',   pad=55)
     labels=ax.get_xticklabels( )
     plt.setp(labels, rotation=90, ha='center')
