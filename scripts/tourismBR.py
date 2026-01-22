@@ -11,22 +11,29 @@ from     datetime        import date
 from   adjustText        import adjust_text
 st.set_page_config(page_title='TourismBR', page_icon='🇧🇷', layout='wide', initial_sidebar_state='collapsed')
 # DATA:
-DATA     =     'https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
+DATA     =      'https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
 @st.cache_data
-def LoadData():
+def LoadData( ):
     DF   = pd.read_csv(DATA)
     return DF
 DF       = LoadData   (    )
 # SIDE:
-st.sidebar.title    ('ƊⱭȾɅViƧi🧿Ƞ&trade;'     )
+st.sidebar.title    ('ƊⱭȾɅViƧi🧿Ƞ&trade;'      )
 st.sidebar.divider  (                          )
 st.sidebar.header   ('Brazil 🇧🇷 International Tourist Arrivals')
 st.sidebar.subheader('Time Series Data Analysis'               )
 st.sidebar.divider  (                          )
+# Year Range Slider:
+min=int(DF['year'].min( ))
+max=int(DF['year'].max( ))
+selected_years=st.sidebar.slider('Year Range', min, max, (min, max))
+#theme=st.sidebar.selectbox('HeatMap Palette', ['Spectral_r'], index=0)
+st.sidebar.divider  (                          )
 st.sidebar.markdown ('''Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)''')
 st.sidebar.write    (          'Annual Reports from {} to {}'          .format(DF['year'] .min( ),  DF['year'].max( )                                                                  ))
-st.sidebar.info     (            'Total Tourists ({}–{}): {}'          .format(DF['year'] .min( ),  DF['year'].max( ),           f"{DF                ['arrivals'].sum( )       :,.0f}"))
+st.sidebar.info     (            'Total Arrivals ({}–{}): {}'          .format(DF['year'] .min( ),  DF['year'].max( ),           f"{DF                ['arrivals'].sum( )       :,.0f}"))
 st.sidebar.success  ('Year with highest visitors: {} with {} arrivals.'.format(DF.groupby('year') ['arrivals'].sum( ).idxmax( ), f"{DF.groupby('year')['arrivals'].sum( ).max( ):,.0f}"))
+st.sidebar.warning  ('Year with  lowest visitors: {} with {} arrivals.'.format(DF.groupby('year') ['arrivals'].sum( ).idxmin( ), f"{DF.groupby('year')['arrivals'].sum( ).min( ):,.0f}"))
 st.sidebar.divider  (                          )
 st.sidebar.markdown ('''
 ![2024.10.17   ](https://img.shields.io/badge/2024.10.17-000000)
@@ -51,7 +58,91 @@ As the country continues to enhance its tourism infrastructure and to promote su
 it stands as an interesting destination for international visitors, showcasing the warmth and diversity of its people and landscapes.
 
 2024 has shown a full recovery from COVID-19 pandemic, breaking the previous record of visitors from 2018.
+
+Now, 2025 holds the record of the highest number of arrivals.
             ''')
+st.divider( )
+# KPI:
+st.subheader('KPI Metrics')
+mask=(DF['year']>=selected_years[0])&(DF['year']<=selected_years[1])
+filtered_data=DF[mask]
+current_total=filtered_data['arrivals'].sum( )
+# Year-Over-Year Logic (comparing max selected year vs previous year):
+latest_year =selected_years[1]
+prev_year   =  latest_year -1
+total_latest=DF[DF['year'] == latest_year]['arrivals'].sum( )
+total_prev  =DF[DF['year'] ==   prev_year]['arrivals'].sum( )
+if total_prev > 0:yoy_growth=((total_latest-total_prev)/total_prev)*100
+else             :yoy_growth=0
+# Pandemic Recovery (comparing latest vs 2019):
+total_2019  = DF[DF['year']==2019]['arrivals'].sum( )
+recovery_pct=(total_latest/total_2019)*100 if total_2019 > 0 else 0
+recovery_delta=recovery_pct           -100
+col1, col2, col3=st.columns(3)
+with col1:
+    st.metric(label= 'Total Arrivals from Selected Range',
+              value=f'{current_total:,.0f}',
+              help = 'Sum of all international arrivals within the slider range.')
+with col2:
+    st.metric(label=f'YoY Growth ({latest_year} $vs.$ {prev_year})', 
+              value=f'{yoy_growth:+.1f}%',
+              delta=f'{yoy_growth:+.1f}%',
+              help = 'Percentage change compared to the previous calendar year.')
+with col3:
+    st.metric(label=f'Recovery $vs.$ 2019', 
+              value=f'{recovery_pct  : .1f}%',
+              delta=f'{recovery_delta:+.1f}%', # Color the delta green if > 100% (recovered)
+              help = 'Compares current year arrivals to the 2019 pre-pandemic benchmark.')
+plt.close('all')
+st.divider(   )
+# InterActive Seasonality HeatMap:
+st.subheader('Seasonality HeatMap ({}–{})'.format(selected_years[0], selected_years[1]))
+filter=DF[(DF['year']>=selected_years[0])&(DF['year']<=selected_years[1])]
+heatmap_data=filter.groupby(['year','month'])['arrivals'].sum( ).reset_index( )
+heatmap_data['month']=pd.Categorical(heatmap_data['month'], categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
+pivot_heatmap=heatmap_data.pivot_table(index='year', columns='month', values='arrivals', observed=False)
+#fig,ax=plt.subplots(figsize=(12, 8))
+fig,ax=plt.subplots(figsize=(12,8), frameon= True, tight_layout=True)
+def format (x, pos):
+    if x >= 1e6:return f'{x/1e6:.0f}M'
+    else       :return f'{x/1e3:.0f}K'
+formatter=ticker.FuncFormatter(format)
+sns.heatmap(pivot_heatmap,
+            annot= False ,
+            cmap ='RdYlGn_r', # Spectral_r
+           #center=pivot_heatmap.stack( ).mean( ), # Colors shift at the average value
+            linewidths=.5,
+            cbar_kws={'label':'Total Arrivals','format':formatter})
+plt.title ('Monthly Arrivals Intensity per Year', fontsize=15, fontweight='bold')
+plt.xlabel('')
+plt.ylabel('')
+st.pyplot(fig)
+plt.close(fig)
+st.divider(  )
+# Seasonality Index:
+st.subheader('Seasonality Index ({}–{})'.format(selected_years[0], selected_years[1]))
+st.markdown ('It represents the relative volume of arrivals compared to the annual average.')
+monthly_avg = filtered_data.groupby('month')['arrivals'].mean( )
+overall_avg = monthly_avg.mean( )
+seasonality_index=(monthly_avg/overall_avg).reset_index( )
+# Ensure Chronological Order:
+seasonality_index['month']=pd.Categorical(seasonality_index['month'], categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
+seasonality_index=seasonality_index.sort_values('month')
+# Visualization:
+fig,ax=plt.subplots(figsize=(12,8), frameon=True, tight_layout=True)
+sns.barplot(x='month', y='arrivals', data=seasonality_index, palette='RdYlGn_r', hue='month', legend=False, ax=ax) # (RdYlGn_r) Red for Low & Green for High
+# BseLine @ 1.0:
+ax.axhline(y=1., color='#000000', linestyle='--', linewidth=1.25, alpha=.75)
+ax.text(x=11.5, y=1., s='Average', fontsize=10, fontweight='semibold', color='#000000', ha='right', va='bottom')
+plt.title ('Seasonality Index ({}–{})'.format(selected_years[0], selected_years[1]), fontsize=15, fontweight='bold')
+plt.ylabel('Index')
+plt.xlabel('')
+plt.ylim(0, seasonality_index['arrivals']  .max( )+.2 )
+for p in ax.patches:ax.annotate(f'{p.get_height( ):.2f}',(p.get_x( )+p.get_width( )/2., p.get_height( )), ha='center', va='center', xytext=(0,9), textcoords='offset points')
+for spine in ['top','left','right','bottom']:ax.spines[spine].set_visible(False)
+st.pyplot(fig)
+plt.close(fig)
+st.divider(  )
 # Annual:
 st.subheader('Annual Time Series')
 DD=DF['arrivals'].groupby(DF['year']).sum( )
@@ -67,10 +158,10 @@ plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
 plt.xticks(fontsize=13 ,fontweight='semibold' ,          rotation='vertical'  )
 plt.ylabel(None)
 plt.xlabel(None)
-plt.legend([], frameon= False)
-plt.grid(      visible= False)
+plt.legend( [], frameon= False)
+plt.grid(       visible= False)
 for spine in ['top'   ,'left','right','bottom']:ax.spines[spine].set_visible(False)
-plt.gca().axes.get_yaxis().set_visible(False)
+plt.gca( ).axes.get_yaxis( ).set_visible(False)
 plt.tick_params(axis  ='both',
                 which ='both',
                 left  = False,
@@ -79,6 +170,7 @@ for c in ax.containers:
     values=df.value_counts(ascending=False).iloc[0:0].values
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=-80, fontweight='bold', rotation='vertical', color='#FFFFFF')
 st.pyplot ( fig )
+plt.close ( fig )
 st.divider(     )
 # Monthly:
 st.subheader('Monthly')
@@ -89,7 +181,7 @@ df.index=pd.Categorical(df.index, categories=['Jan','Feb','Mar','Apr','May','Jun
 values=df['arrivals'].groupby(df.index, observed= True).sum( ).values
 sort=df.sort_values(by='arrivals'     ,ascending=False)
 monthly_palette=sns.color_palette('brg_r', 12)
-fig=plt.figure(frameon= True )
+fig=plt.figure(frameon= True, tight_layout=True)
 ax =plt.subplot(111)
 ax =sns.barplot(     y='arrivals'     ,        x=df.index,  data=df, hue=values,    palette=monthly_palette      , saturation=.75,     legend=False )
 plt.title('Monthly International Tourist Arrivals in Brazil ({}–{})'.format(DF['year'].min( ), DF['year'].max( )),   fontsize= 15, fontweight='bold')
@@ -97,10 +189,10 @@ plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
 plt.xticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.ylabel(None)
 plt.xlabel(None)
-plt.legend([], frameon= False)
-plt.grid(      visible= False)
+plt.legend( [ ], frameon= False)
+plt.grid(        visible= False)
 for spine in ['top'   ,'left','right','bottom']:ax.spines[spine].set_visible(False)
-plt.gca().axes.get_yaxis().set_visible(False)
+plt.gca( ).axes.get_yaxis( ).set_visible(False)
 plt.tick_params(axis  ='both',
                 which ='both',
                 left  = False,
@@ -108,27 +200,9 @@ plt.tick_params(axis  ='both',
 for c in ax.containers:
     values=df.value_counts(ascending=False).iloc[0:0].values
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=-75, fontweight='bold', rotation='vertical', color='#FFFFFF')
-plt.tight_layout(pad=1    )
 st.pyplot ( fig )
+plt.close ( fig )
 st.divider(     )
-# Seasonality HeatMap:
-st.subheader('Seasonality HeatMap (Arrivals by Year & Month)')
-heatmap_data=DF.groupby(['year','month'])['arrivals'].sum( ).reset_index( )
-heatmap_data['month']=pd.Categorical(heatmap_data['month'], categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
-pivot_heatmap=heatmap_data.pivot_table(index='year', columns='month', values='arrivals')
-#fig,ax=plt.subplots(figsize=(12, 8))
-fig=plt.figure(figsize=(12,8), frameon= True)
-sns.heatmap(pivot_heatmap,
-            annot= False ,
-            cmap ='coolwarm',
-            center=pivot_heatmap.stack( ).mean( ), # Colors shift at the average value
-            linewidths=.5,
-            cbar_kws={'label':'Total Arrivals'})
-plt.title('HeatMap: Monthly Arrivals Intensity per Year', fontsize=15, fontweight='bold')
-plt.xlabel('')
-plt.ylabel('')
-st.pyplot(fig)
-st.divider(  )
 # By Means of Travel:
 st.subheader('By Means of Travel')
 DD=DF['arrivals'].groupby(DF['via']).sum( )
@@ -140,11 +214,11 @@ ax =plt.subplot(111)
 ax =sns.barplot(     y=sort.index     ,        x='arrivals',   data=sort       ,         hue=sort.index , palette='GnBu_r'  ,saturation=.75,     legend=False )
 plt.title('International Tourist Arrivals in Brazil ({}–{}) by Means of Travel'.format(DF['year'].min( ), DF['year'].max( )),  fontsize= 15, fontweight='bold')
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
-plt.xticks([])
+plt.xticks( [] )
 plt.ylabel(None)
 plt.xlabel(None)
-plt.legend([], frameon= False)
-plt.grid(      visible= False)
+plt.legend( [], frameon= False)
+plt.grid(       visible= False)
 for spine in ['top'   ,'left','right','bottom']:ax.spines[spine].set_visible(False)
 plt.gca().axes.get_yaxis().set_visible(True)
 plt.tick_params(axis  ='both',
@@ -155,6 +229,7 @@ for c in ax.containers:
     values=df.value_counts(ascending=False).iloc[0:0].values
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
 st.pyplot ( fig )
+plt.close ( fig )
 st.divider(     )
 # By Continent:
 st.subheader('By Continent')
@@ -167,11 +242,11 @@ ax =plt.subplot(111)
 ax =sns.barplot(     y=sort.index,             x='arrivals',   data=sort ,         hue=sort.index,   palette='autumn' , saturation=.75,     legend=False )
 plt.title('International Tourist Arrivals in Brazil ({}–{}) by Continent'.format(DF['year'].min( ), DF['year'].max( )),   fontsize= 20, fontweight='bold')
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
-plt.xticks([])
+plt.xticks( [] )
 plt.ylabel(None)
 plt.xlabel(None)
-plt.legend([], frameon= False)
-plt.grid(      visible= False)
+plt.legend( [], frameon= False)
+plt.grid(       visible= False)
 for spine in ['top'   ,'left','right','bottom']:ax.spines[spine].set_visible(False)
 plt.gca().axes.get_yaxis().set_visible(True)
 plt.tick_params(axis  ='both',
@@ -182,6 +257,7 @@ for c in ax.containers:
     values=df.value_counts(ascending=False).iloc[0:0].values
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
 st.pyplot ( fig )
+plt.close ( fig )
 st.divider(     )
 # By Country:
 st.subheader('By Country')
@@ -194,11 +270,11 @@ ax =plt.subplot(111)
 ax =sns.barplot(     y=sort.index,             x='arrivals',  data=sort    ,         hue=sort.index , palette='Blues_r' , saturation=.75,     legend=False )
 plt.title('Top International Tourist Arrivals in Brazil ({}–{}) by Country'.format(DF['year'].min( ), DF['year'].max( )),   fontsize= 15, fontweight='bold')
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
-plt.xticks([])
+plt.xticks( [] )
 plt.ylabel(None)
 plt.xlabel(None)
-plt.legend([], frameon= False)
-plt.grid(      visible= False)
+plt.legend( [], frameon= False)
+plt.grid(       visible= False)
 for spine in ['top'   ,'left','right','bottom']:ax.spines[spine].set_visible(False)
 plt.gca().axes.get_yaxis().set_visible(True)
 plt.tick_params(axis  ='both',
@@ -209,6 +285,7 @@ for c in ax.containers:
     values=df.value_counts(ascending=False).iloc[0:0].values
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
 st.pyplot ( fig )
+plt.close ( fig )
 st.divider(     )
 # By Arrival Estate:
 st.subheader('By Arrival Estate')
@@ -221,11 +298,11 @@ ax =plt.subplot(111)
 ax =sns.barplot(     y=sort.index     ,    x='arrivals',       data=sort         ,      hue=sort.index , palette='Purples_r', saturation=.75,     legend=False )
 plt.title('International Tourist Arrivals in Brazil ({}–{}) by Arrival Estate'.format(DF['year'].min( ), DF['year'].max( )) ,   fontsize= 20, fontweight='bold')
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
-plt.xticks([])
+plt.xticks( [] )
 plt.ylabel(None)
 plt.xlabel(None)
-plt.legend([], frameon= False)
-plt.grid(      visible= False)
+plt.legend( [], frameon= False)
+plt.grid(       visible= False)
 for spine in ['top'   ,'left','right','bottom']:ax.spines[spine].set_visible(False)
 plt.gca().axes.get_yaxis().set_visible(True)
 plt.tick_params(axis  ='both',
@@ -236,13 +313,14 @@ for c in ax.containers:
     values=df.value_counts(ascending=False).iloc[0:0].values
     ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
 st.pyplot ( fig )
+plt.close ( fig )
 st.divider(     )
 # Monthly (2011–2024):
 st.subheader('Monthly (2011–2024)')
 start=2011
-end  =DF['year'].max()+1
+end  =DF['year'].max( )+1
 years         = range(start, end)
-fig, axes     = plt.subplots(7, 2, figsize=(10, 50))
+fig, axes     = plt.subplots(7, 2, figsize=(10, 50), tight_layout=True)
 for i, year in enumerate(years):
     df_year   = DF[DF['year']==year]
     group= df_year.groupby('month')['arrivals'].sum( ).reset_index( )
@@ -265,15 +343,15 @@ for i, year in enumerate(years):
     for   c   in ax.containers:
         values=df_year.value_counts(ascending=False).iloc[0:0].values
         ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=5, fontweight='bold', rotation='vertical', color='#000000')
-plt.tight_layout(pad=1)
-st.pyplot(fig)
-st.divider(  )
+st.pyplot (fig)
+plt.close (fig)
+st.divider(   )
 # Top Countries (2011–2024):
 filter=DF[(DF['year']>=2011)&(DF['year']<=2024)]
 st.subheader('Top Countries ({}–{})'.format(filter['year'].min( ), filter['year'].max( )))
 group =filter.groupby(   ['year','country'])['arrivals']  .sum( )        .reset_index( )
 group =group.sort_values(['year',            'arrivals'], ascending=[True, False])
-fig   ,axes=plt.subplots(7,    2,                           figsize=(12.5,    25))
+fig   ,axes=plt.subplots(7,    2,                           figsize=(12.5,    25), tight_layout=True)
 axes  =axes.flatten()
 for i ,year in enumerate(range(start, end)):
     df_year=group[group['year'] == year][:11]
@@ -287,8 +365,8 @@ for i ,year in enumerate(range(start, end)):
     for   c   in axes[i].containers:
         values=group.value_counts(ascending=False).iloc[0:0].values
         axes[i].bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
-plt.tight_layout(pad=1   )
-st.pyplot       (fig     )
+st.pyplot       (   fig  )
+plt.close       (   fig  )
 st.divider      (        )
 # Top 10 Arrivals (2011–2024):
 st.subheader('Top 10 Arrivals ({}–{})'.format(filter['year'].min( ), filter['year'].max( )))
@@ -298,7 +376,7 @@ top      = group[group[   'country'].isin(countries)]
 piv      =   top.pivot_table(index ='year', columns='country', values='arrivals')
 texts    =[]
 colors   =sns.color_palette('tab10', len(countries))
-fig      =plt.figure(figsize=(10, 5))
+fig      =plt.figure(figsize=(10, 5), tight_layout=True)
 for i  ,country in enumerate(countries):
     plt.plot(piv.index, piv[country], label=country, color=colors[i], linewidth=2.25)
     x_end   =piv.index[-1]+    .05
@@ -319,8 +397,8 @@ plt.tick_params(axis='both', which='both', length=0, labelleft=False)
 plt.yscale(     'log' )
 plt.grid  (False      )
 plt.box   (False      )
-plt.tight_layout(pad=1)
 st.pyplot (      fig  )
+plt.close (      fig  )
 st.divider(           )
 # Selected Countries (2011–2024):
 st.subheader('Selected Countries ({}–{})'.format(filter['year'].min(), filter['year'].max( )))
@@ -330,7 +408,7 @@ top      = group[group[   'country'].isin(countries)]
 piv      =   top.pivot_table(index ='year', columns='country', values='arrivals')
 texts    =  []
 colors   =  ['#00BFFF','#FF4500','#0065FF','#4CAF50']
-fig      =plt.figure(figsize=(10, 5))
+fig      =plt.figure(figsize=(10, 5), tight_layout=True)
 for i  ,country in enumerate(countries):
     plt.plot(piv.index, piv[country], label=country, color=colors[i], linewidth=2.25)
     x_end   =piv.index[-1]+    .05
@@ -351,7 +429,8 @@ plt.tick_params(axis='both', which='both', length=0, labelleft=False)
 plt.yscale (    'log' )
 plt.grid   (False     )
 plt.box    (False     )
-plt.tight_layout(pad=1)
 st.pyplot  (     fig  )
+plt.close  (     fig  )
 st.divider (          )
+plt.close  (    'all' )
 st.toast   ('Travel!', icon='😎')
