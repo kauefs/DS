@@ -19,7 +19,7 @@ def LoadData( ):
 DF       = LoadData   (    )
 # SIDE:
 st.sidebar.title    ('ƊⱭȾɅViƧi🧿Ƞ&trade;'      )
-st.sidebar.divider( )
+st.sidebar.divider  (                          )
 st.sidebar.header   ('Brazil 🇧🇷 International Tourist Arrivals')
 st.sidebar.subheader('Time Series Data Analysis'               )
 st.sidebar.divider  (                          )
