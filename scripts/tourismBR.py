@@ -18,11 +18,11 @@ def LoadData( ):
     return DF
 DF       = LoadData   (    )
 # SIDE:
-st.sidebar.title    ('ƊⱭȾɅViƧi🧿Ƞ&trade;'      )
-st.sidebar.divider  (                          )
+st.sidebar.title    ('ƊⱭȾɅViƧi🧿Ƞ&trade;')
+st.sidebar.divider  ( )
 st.sidebar.header   ('Brazil 🇧🇷 International Tourist Arrivals')
-st.sidebar.subheader('Time Series Data Analysis'               )
-st.sidebar.divider  (                          )
+st.sidebar.subheader('Time Series Data Analysis')
+st.sidebar.divider  ( )
 # Year Range Slider:
 min=int(DF['year'].min( ))
 max=int(DF['year'].max( ))
