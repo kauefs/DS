@@ -6,7 +6,6 @@ matplotlib
 seaborn
 pydeck
 plotly
-#altair
 yfinance
 mplfinance
 ta
