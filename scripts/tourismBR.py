@@ -63,7 +63,7 @@ Now, 2025 holds the record of the highest number of arrivals.
             ''')
 st.divider( )
 # KPI:
-st.subheader('KPI Metrics')
+#st.subheader('KPI Metrics')
 mask=(DF['year']>=selected_years[0])&(DF['year']<=selected_years[1])
 filtered_data=DF[mask]
 current_total=filtered_data['arrivals'].sum( )
@@ -116,6 +116,10 @@ sns.heatmap(pivot_heatmap,
 plt.title ('Monthly Arrivals Intensity per Year', fontsize=15, fontweight='bold')
 plt.xlabel('')
 plt.ylabel('')
+plt.tick_params(axis  ='both',
+                which ='both',
+                left  = False,
+                bottom= False)
 st.pyplot(fig)
 plt.close(fig)
 st.divider(  )
@@ -138,6 +142,10 @@ plt.title ('Seasonality Index ({}–{})'.format(selected_years[0], selected_year
 plt.ylabel('Index')
 plt.xlabel('')
 plt.ylim(0, seasonality_index['arrivals']  .max( )+.2 )
+plt.tick_params(axis  ='both',
+                which ='both',
+                left  =  True,
+                bottom= False)
 for p in ax.patches:ax.annotate(f'{p.get_height( ):.2f}',(p.get_x( )+p.get_width( )/2., p.get_height( )), ha='center', va='center', xytext=(0,9), textcoords='offset points')
 for spine in ['top','left','right','bottom']:ax.spines[spine].set_visible(False)
 st.pyplot(fig)
@@ -180,7 +188,8 @@ df.index=pd.Categorical(df.index, categories=['Jan','Feb','Mar','Apr','May','Jun
 #df=df.sort_index( )
 values=df['arrivals'].groupby(df.index, observed= True).sum( ).values
 sort=df.sort_values(by='arrivals'     ,ascending=False)
-monthly_palette=sns.color_palette('brg_r', 12)
+norm=Normalize(df['arrivals'].min( ), df['arrivals'].max( ))
+monthly_palette=cm.brg_r(norm(df['arrivals'])).tolist( )
 fig=plt.figure(frameon= True, tight_layout=True)
 ax =plt.subplot(111)
 ax =sns.barplot(     y='arrivals'     ,        x=df.index,  data=df, hue=values,    palette=monthly_palette      , saturation=.75,     legend=False )
