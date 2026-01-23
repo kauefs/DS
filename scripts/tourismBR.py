@@ -18,11 +18,11 @@ def LoadData( ):
     return DF
 DF       = LoadData   (    )
 # SIDE:
-st.sidebar.title    ('ƊⱭȾɅViƧi🧿Ƞ&trade;')
-st.sidebar.divider  ( )
+st.sidebar.title    ('ƊⱭȾɅViƧi🧿Ƞ&trade;'      )
+st.sidebar.divider  (                           )
 st.sidebar.header   ('Brazil 🇧🇷 International Tourist Arrivals')
 st.sidebar.subheader('Time Series Data Analysis')
-st.sidebar.divider  ( )
+st.sidebar.divider  (                           )
 # Year Range Slider:
 min=int(DF['year'].min( ))
 max=int(DF['year'].max( ))
@@ -135,7 +135,7 @@ seasonality_index=seasonality_index.sort_values('month')
 # Visualization:
 fig,ax=plt.subplots(figsize=(12,8), frameon=True, tight_layout=True)
 sns.barplot(x='month', y='arrivals', data=seasonality_index, palette='RdYlGn_r', hue='month', legend=False, ax=ax) # (RdYlGn_r) Red for Low & Green for High
-# BseLine @ 1.0:
+# BaseLine @ 1.0:
 ax.axhline(y=1., color='#000000', linestyle='--', linewidth=1.25, alpha=.75)
 ax.text(x=11.5, y=1., s='Average', fontsize=10, fontweight='semibold', color='#000000', ha='right', va='bottom')
 plt.title ('Seasonality Index ({}–{})'.format(selected_years[0], selected_years[1]), fontsize=15, fontweight='bold')
