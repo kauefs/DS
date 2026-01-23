@@ -388,17 +388,17 @@ colors   =sns.color_palette('tab10', len(countries))
 fig      =plt.figure(figsize=(10, 5), tight_layout=True)
 for i  ,country in enumerate(countries):
     plt.plot(piv.index, piv[country], label=country, color=colors[i], linewidth=2.25)
-    x_end   =piv.index[-1]+     .1
+    x_end   =piv.index[-1]
     y_end   =piv[ country].iloc[-1]
-    txt     =plt.annotate(f'{country} { y_end: ,.0f}',
-                          xy=    (x_end,y_end) ,
-                          fontsize  =    8     ,
+    txt     =plt.annotate(f'{country} { y_end:,.0f}',
+                          xy=    (x_end,y_end),
+                          fontsize  =    8    ,
                           fontweight='semibold',
-                          color     = colors[i],
-                          arrowprops=dict(arrowstyle='-', connectionstyle='arc3', color=colors[i]))
+                         #arrowprops=dict(arrowstyle='-', connectionstyle='arc3', color=colors[i]),
+                          color     = colors[i])
     texts.append(txt)
-adjust_text(texts, autoalign='y', avoid_self=True, avoid_text=True, ensure_inside_axes=False, only_move={'text':'y','static':'x'})
-plt.title ('Top 10 Arrivals ({}–{})'.format(filter['year'].min( ), filter['year'].max( )), fontsize= 15, fontweight='bold', loc='left')
+adjust_text(texts, autoalign='y', avoid_overlapping=True, avoid_self=True, avoid_text=True, ensure_inside_axes=False, only_move={'text':'y','static':'x'})
+plt.title ('Top 10 Arrivals ({}–{})'.format(filter['year'].min( ), filter['year'].max( )), fontsize=15, fontweight='bold', loc='left')
 plt.ylabel(''         )
 plt.xlabel(''         )
 plt.tick_params(axis='both', which='both', length=0, labelleft=False)
@@ -419,17 +419,17 @@ colors   =  ['#00BFFF','#FF4500','#0065FF','#4CAF50']
 fig      =plt.figure(figsize=(10, 5), tight_layout=True)
 for i  ,country in enumerate(countries):
     plt.plot(piv.index, piv[country], label=country, color=colors[i], linewidth=2.25)
-    x_end   =piv.index[-1]+     .1
+    x_end   =piv.index[-1]
     y_end   =piv[ country].iloc[-1]
-    text=plt.annotate(f'{country} { y_end: ,.0f}',
-                      xy=(    x_end,y_end) ,
-                      fontsize  =    8     ,
+    text=plt.annotate(f'{country} { y_end:,.0f}',
+                      xy=(    x_end,y_end),
+                      fontsize  =    8    ,
                       fontweight='semibold',
-                      color     = colors[i],
-                      arrowprops=dict(arrowstyle='-', connectionstyle='arc3', color=colors[i]))
+                     #arrowprops=dict(arrowstyle='-', connectionstyle='arc3', color=colors[i]),
+                      color     = colors[i])
     texts.append(text)
-adjust_text(texts, autoalign='y', avoid_self=True, avoid_text=True, ensure_inside_axes=False, only_move={'text':'y','static':'x'})
-plt.title  ('Selected Countries ({}–{})'.format(filter['year'].min( ), filter['year'].max( )), fontsize= 15, fontweight='bold', loc='left')
+adjust_text(texts, autoalign='y', avoid_overlapping=True, avoid_self=True, avoid_text=True, ensure_inside_axes=False, only_move={'text':'y','static':'x'})
+plt.title  ('Selected Countries ({}–{})'.format(filter['year'].min( ), filter['year'].max( )), fontsize=15, fontweight='bold', loc='left')
 plt.xlabel (''        )
 plt.ylabel (''        )
 plt.tick_params(axis='both', which='both', length=0, labelleft=False)
