@@ -19,10 +19,10 @@ def LoadData( ):
 DF       = LoadData   (    )
 # SIDE:
 st.sidebar.title    ('ƊⱭȾɅViƧi🧿Ƞ&trade;'      )
-st.sidebar.divider  (                           )
-st.sidebar.header   ('Brazil 🇧🇷 International Tourist Arrivals')
-st.sidebar.subheader('Time Series Data Analysis')
-st.sidebar.divider  (                           )
+st.sidebar.divider  (                          )
+st.sidebar.header   ('Brazil 🇧🇷 InterNational Tourist Arrivals')
+st.sidebar.subheader('Time Series Data Analysis'               )
+st.sidebar.divider  (                          )
 # Year Range Slider:
 min=int(DF['year'].min( ))
 max=int(DF['year'].max( ))
@@ -30,13 +30,14 @@ selected_years=st.sidebar.slider('Year Range', min, max, (min, max))
 #theme=st.sidebar.selectbox('HeatMap Palette', ['Spectral_r'], index=0)
 st.sidebar.divider  (                          )
 st.sidebar.markdown ('''Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)''')
-st.sidebar.write    (          'Annual Reports from {} to {}'          .format(DF['year'] .min( ),  DF['year'].max( )                                                                  ))
-st.sidebar.info     (            'Total Arrivals ({}–{}): {}'          .format(DF['year'] .min( ),  DF['year'].max( ),           f"{DF                ['arrivals'].sum( )       :,.0f}"))
-st.sidebar.success  ('Year with highest visitors: {} with {} arrivals.'.format(DF.groupby('year') ['arrivals'].sum( ).idxmax( ), f"{DF.groupby('year')['arrivals'].sum( ).max( ):,.0f}"))
-st.sidebar.warning  ('Year with  lowest visitors: {} with {} arrivals.'.format(DF.groupby('year') ['arrivals'].sum( ).idxmin( ), f"{DF.groupby('year')['arrivals'].sum( ).min( ):,.0f}"))
+st.sidebar.write    (          'Annual Reports from {} to {}'          .format(DF['year'] .min( ) ,   DF['year'].max( )                                                                     ))
+st.sidebar.info     (            'Total Arrivals ({}–{}): {}'          .format(DF['year'] .min( ) ,   DF['year'].max( ),           f"{DF                   ['arrivals'].sum( )       :,.0f}"))
+st.sidebar.success  ('Year with highest visitors: {} with {} arrivals.'.format(DF.groupby('year')   ['arrivals'].sum( ).idxmax( ), f"{DF.groupby('year')   ['arrivals'].sum( ).max( ):,.0f}"))
+st.sidebar.warning  (      'Top visiting country: {} with {} arrivals.'.format(DF.groupby('country')['arrivals'].sum( ).idxmax( ), f"{DF.groupby('country')['arrivals'].sum( ).max( ):,.0f}"))
 st.sidebar.divider  (                          )
 st.sidebar.markdown ('''
 ![2024.10.17   ](https://img.shields.io/badge/2024.10.17-000000)
+![2026.01.21   ](https://img.shields.io/badge/2026.01.21-000000)
 
 [![License     ](https://img.shields.io/badge/Apache--2.0-D22128?&logo=apache&logoColor=CB2138&label=License&labelColor=6D6E71)](https://www.apache.org/licenses/LICENSE-2.0)
 
@@ -48,7 +49,7 @@ st.sidebar.markdown ('''
 [![ƊⱭȾɅViƧi🧿Ƞ](https://img.shields.io/badge/ƊⱭȾɅViƧi🧿Ƞ&trade;-0065FF?style=plastic&logoColor=0065FF&label=&copy;2026&labelColor=0065FF)](https://datavision.one/)
                     ''')
 # MAIN:
-st.title   ('Brazil 🇧🇷 International Tourist Arrivals')
+st.title   ('Brazil 🇧🇷 InterNational Tourist Arrivals')
 st.divider (                                          )
 st.markdown('''
 Brazil's rich tapestry of cultures, breathtaking landscapes, and iconic landmarks, has long captivated a dynamic fluctuation of millions of visitors each year.
@@ -58,8 +59,7 @@ As the country continues to enhance its tourism infrastructure and to promote su
 it stands as an interesting destination for international visitors, showcasing the warmth and diversity of its people and landscapes.
 
 2024 has shown a full recovery from COVID-19 pandemic, breaking the previous record of visitors from 2018.
-
-Now, 2025 holds the record of the highest number of arrivals.
+And 2025 has set a new record for the highest number of arrivals.
             ''')
 st.divider( )
 # KPI:
@@ -74,10 +74,12 @@ total_latest=DF[DF['year'] == latest_year]['arrivals'].sum( )
 total_prev  =DF[DF['year'] ==   prev_year]['arrivals'].sum( )
 if total_prev > 0:yoy_growth=((total_latest-total_prev)/total_prev)*100
 else             :yoy_growth=0
+yoy_pct=(total_latest/total_prev)*100 if total_prev > 0 else 0
 # Pandemic Recovery (comparing latest vs 2019):
 total_2019  = DF[DF['year']==2019]['arrivals'].sum( )
-recovery_pct=(total_latest/total_2019)*100 if total_2019 > 0 else 0
-recovery_delta=recovery_pct           -100
+recovery    =((total_latest-total_2019)/       total_2019)*100
+recovery_pct=( total_latest/total_2019)*100 if total_2019 > 0 else 0
+recovery_delta  =recovery_pct          -100
 col1, col2, col3=st.columns(3)
 with col1:
     st.metric(label= 'Total Arrivals from Selected Range',
@@ -85,13 +87,13 @@ with col1:
               help = 'Sum of all international arrivals within the slider range.')
 with col2:
     st.metric(label=f'YoY Growth ({latest_year} $vs.$ {prev_year})', 
-              value=f'{yoy_growth:+.1f}%',
-              delta=f'{yoy_growth:+.1f}%',
+              value=f'{yoy_growth    :+.1f}%',
+              delta=f'{yoy_growth    :+.1f}%',
               help = 'Percentage change compared to the previous calendar year.')
 with col3:
-    st.metric(label=f'Recovery $vs.$ 2019', 
-              value=f'{recovery_pct  : .1f}%',
-              delta=f'{recovery_delta:+.1f}%', # Color the delta green if > 100% (recovered)
+    st.metric(label=f'Recovery $vs.$ 2019'   , 
+              value=f'{recovery      :+.1f}%',
+              delta=f'{recovery_delta:+.1f}%',
               help = 'Compares current year arrivals to the 2019 pre-pandemic benchmark.')
 plt.close('all')
 st.divider(   )
