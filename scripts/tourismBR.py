@@ -324,7 +324,7 @@ for c in ax.containers:
 st.pyplot ( fig )
 plt.close ( fig )
 st.divider(     )
-# Monthly (2011–2024):
+# Monthly (2010–2025):
 st.subheader('Monthly (2011–2024)')
 start=2011
 end  =DF['year'].max( )+1
@@ -355,7 +355,7 @@ for i, year in enumerate(years):
 st.pyplot (fig)
 plt.close (fig)
 st.divider(   )
-# Top Countries (2011–2024):
+# Top Countries (2010–2025):
 filter=DF[(DF['year']>=2011)&(DF['year']<=2024)]
 st.subheader('Top Countries ({}–{})'.format(filter['year'].min( ), filter['year'].max( )))
 group =filter.groupby(   ['year','country'])['arrivals']  .sum( )        .reset_index( )
@@ -377,7 +377,7 @@ for i ,year in enumerate(range(start, end)):
 st.pyplot       (   fig  )
 plt.close       (   fig  )
 st.divider      (        )
-# Top 10 Arrivals (2011–2024):
+# Top 10 Arrivals (2010–2025):
 st.subheader('Top 10 Arrivals ({}–{})'.format(filter['year'].min( ), filter['year'].max( )))
 group    =filter.groupby(['country','year'])['arrivals'].sum( ).reset_index( )
 countries= group.groupby( 'country')[        'arrivals'].sum( ).nlargest(10).index
@@ -388,20 +388,19 @@ colors   =sns.color_palette('tab10', len(countries))
 fig      =plt.figure(figsize=(10, 5), tight_layout=True)
 for i  ,country in enumerate(countries):
     plt.plot(piv.index, piv[country], label=country, color=colors[i], linewidth=2.25)
-    x_end   =piv.index[-1]+    .05
+    x_end   =piv.index[-1]+     .1
     y_end   =piv[ country].iloc[-1]
-    txt     =plt.annotate(f'{country} { y_end:,.0f}',
-                          xy=(    x_end,y_end),
-                          xytext=(x_end,y_end),
-                          textcoords='data',
-                          fontsize  =    8 ,
+    txt     =plt.annotate(f'{country} { y_end: ,.0f}',
+                          xy=    (x_end,y_end) ,
+                          fontsize  =    8     ,
                           fontweight='semibold',
-                          arrowprops=dict(arrowstyle='-', connectionstyle='arc3, rad=.15', color=colors[i]))
+                          color     = colors[i],
+                          arrowprops=dict(arrowstyle='-', connectionstyle='arc3', color=colors[i]))
     texts.append(txt)
-adjust_text(texts, avoid_self=False, pull_threshold=2.5, ensure_inside_axes=False, only_move={'explode':'x+,y+'})
+adjust_text(texts, autoalign='y', avoid_self=True, avoid_text=True, ensure_inside_axes=False, only_move={'text':'y','static':'x'})
 plt.title ('Top 10 Arrivals ({}–{})'.format(filter['year'].min( ), filter['year'].max( )), fontsize= 15, fontweight='bold', loc='left')
-plt.xlabel(''         )
 plt.ylabel(''         )
+plt.xlabel(''         )
 plt.tick_params(axis='both', which='both', length=0, labelleft=False)
 plt.yscale(     'log' )
 plt.grid  (False      )
@@ -409,8 +408,8 @@ plt.box   (False      )
 st.pyplot (      fig  )
 plt.close (      fig  )
 st.divider(           )
-# Selected Countries (2011–2024):
-st.subheader('Selected Countries ({}–{})'.format(filter['year'].min(), filter['year'].max( )))
+# Selected Countries (2010–2025):
+st.subheader('Selected Countries ({}–{})'.format(filter['year'].min( ), filter['year'].max( )))
 group    =filter.groupby(['country','year'])['arrivals'].sum( ).reset_index( )
 countries=  ['Austrália', 'Canadá' ,'Estados Unidos', 'Japão' ]
 top      = group[group[   'country'].isin(countries)]
@@ -420,17 +419,16 @@ colors   =  ['#00BFFF','#FF4500','#0065FF','#4CAF50']
 fig      =plt.figure(figsize=(10, 5), tight_layout=True)
 for i  ,country in enumerate(countries):
     plt.plot(piv.index, piv[country], label=country, color=colors[i], linewidth=2.25)
-    x_end   =piv.index[-1]+    .05
+    x_end   =piv.index[-1]+     .1
     y_end   =piv[ country].iloc[-1]
-    text=plt.annotate(f'{country} { y_end:,.0f}',
-                      xy=(    x_end,y_end),
-                      xytext=(x_end,y_end),
-                      textcoords='data',
-                      fontsize  =    8 ,
+    text=plt.annotate(f'{country} { y_end: ,.0f}',
+                      xy=(    x_end,y_end) ,
+                      fontsize  =    8     ,
                       fontweight='semibold',
-                      arrowprops=dict(arrowstyle='-', connectionstyle='arc3, rad=.15', color=colors[i]))
+                      color     = colors[i],
+                      arrowprops=dict(arrowstyle='-', connectionstyle='arc3', color=colors[i]))
     texts.append(text)
-adjust_text(texts, avoid_self=False, pull_threshold=2.5, ensure_inside_axes=False, only_move={'explode':'x+,y+'})
+adjust_text(texts, autoalign='y', avoid_self=True, avoid_text=True, ensure_inside_axes=False, only_move={'text':'y','static':'x'})
 plt.title  ('Selected Countries ({}–{})'.format(filter['year'].min( ), filter['year'].max( )), fontsize= 15, fontweight='bold', loc='left')
 plt.xlabel (''        )
 plt.ylabel (''        )
