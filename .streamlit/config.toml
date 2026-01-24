@@ -26,7 +26,6 @@ enumCoercion                         = 'nameOnly'
 [server]
 
 fileWatcherType                      = 'auto'
-cookieSecret                         = ''
 runOnSave                            =  true
 enableCORS                           =  true
 enableXsrfProtection                 =  true
