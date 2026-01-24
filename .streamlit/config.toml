@@ -2,7 +2,7 @@
 
 [global]
 
-disableWidgetStateDuplicationWarning =  false
+disableWidgetStateDuplicationWarning = false
 showWarningOnDirectExecution         =  true
 
 [logger]
@@ -18,15 +18,15 @@ showSidebarNavigation                =  true
 
 [runner]
 
-magicEnabled                         =  true
-fastReruns                           =  true
+magicEnabled                         =   true
+fastReruns                           =   true
 enforceSerializableSessionState      =  false
 enumCoercion                         = 'nameOnly'
 
 [server]
 
 fileWatcherType                      = 'auto'
-cookieSecret                         =  false
+# cookieSecret                         = '…'
 runOnSave                            =  true
 enableCORS                           =  true
 enableXsrfProtection                 =  true
