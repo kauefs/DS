@@ -6,7 +6,7 @@ matplotlib
 seaborn
 pydeck
 plotly
-altair
+altair<5
 yfinance
 mplfinance
 ta
@@ -14,10 +14,9 @@ datetime
 wordcloud
 adjusttext
 folium
-streamlit
+streamlit>1.41.0
 streamlit_folium
 prophet
 wikipedia
 google-generativeai
 google-ai-generativelanguage
-streamlit==1.41.0
