@@ -37,23 +37,35 @@ if os.path.exists(README):
     with open(README, 'r', encoding='utf-8') as f:
         full_text = f.read()
 
-    # These markers should match the HTML tags in your README
-    S_MARKER = '### Live Stats\n\n<div align=center>'
-    E_MARKER = '</div>\n\n---'
+    # We define the core tags. We'll look for these specifically.
+    START_TAG = '### Live Stats'
+    DIV_OPEN  = '<div align=center>'
+    DIV_CLOSE = '</div>'
+    HR_TAG    = '---'
 
-    if S_MARKER in full_text and E_MARKER in full_text:
-        header = full_text.split(S_MARKER)[0]
-        footer = full_text.split(E_MARKER)[-1]
+    if START_TAG in full_text and HR_TAG in full_text:
+        # Split at the header to keep everything above it
+        parts_above = full_text.split(START_TAG)
+        header = parts_above[0] + START_TAG
         
-        # Assemble with the new badges
-        new_readme = f'{header}{S_MARKER}\n\n{badges}\n\n{E_MARKER}{footer}'
+        # Split at the horizontal rule to keep everything below it
+        parts_below = full_text.split(HR_TAG)
+        footer = HR_TAG + parts_below[-1]
         
-        with open(README, 'w', encoding='utf-8') as f:
+        # Reconstruct with clean spacing
+        new_content = [
+            header,
+            '\n\n' + DIV_OPEN + '\n',
+            badges,
+            '\n' + DIV_CLOSE + '\n\n',
+            footer
+        ]
+        
+        new_readme = ''.join(new_content)
+        
+        with open(README,'w', encoding='utf-8') as f:
             f.write(new_readme)
-        print('Success: README updated with latest stats.')
+        print('Success: README updated with flexible markers.')
     else:
-        print('Error: Could not find the specific Live Stats markers in README.md')
+        print(f'Error: Could not find "{START_TAG}" or "{HR_TAG}" in README.md')
         exit(1)
-else:
-    print('Error: README.md not found.')
-    exit(1)
