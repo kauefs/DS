@@ -1,41 +1,38 @@
 # https://docs.streamlit.io/develop/concepts/app-testing/automate-tests
 name: StreamLit App Test
-version: 1.0.0
-author: ƊⱭȾɅViƧi🧿Ƞ
-license: Apache License 2.0
 on:
-	push:
-		branches: ['@','main','master']
-	pull_request:
-		branches: ['@','main','master']
+  push:
+    branches: ['@','main','master']
+  pull_request:
+    branches: ['@','main','master']
 permissions:
-	contents: read
+  contents: read
 jobs:
-	streamlit:
-		runs-on: ubuntu-latest
-		steps:
-			- name: Checkout Code
-				uses: actions/checkout@v4
-			- name: Setup Python
-				uses: actions/setup-python@v5
-				with:
-					python-version: '3.13'
-			- name: Install Dependencies
-				run: |
-					python -m pip install --upgrade pip
-					pip install -r requirements.txt
-			- name: Run App Test
-				run: |
-					python -m pytest TourismBR_test.py
-			- name: Run Streamlit Test
-				uses: streamlit/streamlit-app-action@v0.0.3
-				with:
-					app-path: 'TourismBR.py'
-					ruff: False
-					pytest-args: -v --junit-xml=test-results.xml
-			- if: always( )
-				uses: pmeier/pytest-results-action@v0.6.0
-				with:
-					path: test-results.xml
-					summary: true
-					display-options: fEX
+  streamlit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run App Test
+        run: |
+          python -m pytest TourismBR_test.py
+      - name: Run Streamlit Test
+        uses: streamlit/streamlit-app-action@v0.0.3
+        with:
+          app-path: 'TourismBR.py'
+          ruff: False
+          pytest-args: -v --junit-xml=test-results.xml
+      - if: always( )
+        uses: pmeier/pytest-results-action@v0.6.0
+        with:
+          path: test-results.xml
+          summary: true
+          display-options: fEX
