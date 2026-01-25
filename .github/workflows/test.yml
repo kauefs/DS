@@ -3,6 +3,8 @@ name: StreamLit App Test
 on:
   push:
     branches: ['@','main','master']
+    paths-ignore:
+      - 'README.md' # Prevents the bot's commit from re-triggering the test
   pull_request:
     branches: ['@','main','master']
 permissions:
