@@ -19,9 +19,6 @@
 
 ### Live Stats
 
-<div align=center>
-</div>
-
 ---
 
 ![Arrivals](https://img.shields.io/badge/Arrivals%202024-6%2C657%2C377-808080?style=flat)
