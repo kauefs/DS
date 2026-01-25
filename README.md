@@ -26,6 +26,8 @@
 ![YoY     ](https://img.shields.io/badge/YoY%20Growth-%2B12.68%25-00F00?style=flat)
 ![Recovery](https://img.shields.io/badge/vs%202019-%2B4.79%25-0077B5?style=flat)
 
+[![StreamLitApp](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://tourismbr.streamlit.app/)
+
 <!--
 |        Metric        |  Value   |
 | :------------------- | :------- |
