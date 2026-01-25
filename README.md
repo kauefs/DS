@@ -18,11 +18,15 @@
 ## [Brazil 🇧🇷 International Tourist Arrivals](https://tourismbr.streamlit.app/)
 
 ### Live Stats
+
 <div align=center>
+
 ![Arrivals](https://img.shields.io/badge/Arrivals%202024-6%2C657%2C377-808080?style=flat-square)
 ![YoY     ](https://img.shields.io/badge/YoY%20Growth-%2B12.68%25-00FF00?style=flat-square)
 ![Recovery](https://img.shields.io/badge/vs%202019-%2B4.79%25-0077B5?style=flat-square)
+
 </div>
+
 ---
 
 
