@@ -55,7 +55,7 @@ jobs:
           python-version: '3.13'
           cache:           'pip'
       - name: Dependencies
-        run: pip install pandas
+        run: pip install pandas matplotlib seaborn adjustText
       - name: Pull latest changes
         run: |
           git config --global user.name  'github-actions[bot]'
@@ -63,6 +63,8 @@ jobs:
           git pull   --rebase origin refs/heads/@
       - name: README
         run: python README.py
+      - name: Charts
+        run: python charts.py
       - name: Git
         run: |
           git add README.md img/last_year.txt img/*.png
