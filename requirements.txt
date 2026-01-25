@@ -1,15 +1,16 @@
 pip
+ta
 certifi
 numpy
 pandas
 matplotlib
 seaborn
 pydeck
+pytest
 plotly
 altair<5
 yfinance
 mplfinance
-ta
 datetime
 wordcloud
 adjusttext
