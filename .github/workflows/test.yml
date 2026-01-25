@@ -36,3 +36,26 @@ jobs:
           path: test-results.xml
           summary: true
           display-options: fEX
+# UpDate ReadMe:
+  update-readme:
+    runs-on: ubuntu-latest
+    needs:    streamlit # Only runs if tests pass
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: pip install pandas
+      - name: Update Metrics in README
+        run: python scripts/UpDateReadMe.py
+      - name: Commit and Push
+        run: |
+          git config --global user.name  'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add README.md
+          git commit -m 'docs: update live metrics in README' || exit 0
+          git push
