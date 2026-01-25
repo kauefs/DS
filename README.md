@@ -20,14 +20,15 @@
 ### Live Stats
 
 <div align=center>
-![Arrivals](https://img.shields.io/badge/Arrivals%202024-6%2C657%2C377-6D6E71?style=flat-square) ![YoY](https://img.shields.io/badge/YoY%20Growth-%2B12.68%25-brightgreen?style=flat-square) ![Recovery](https://img.shields.io/badge/vs%202019-%2B4.79%25-blue?style=flat-square)
+ 
+![Arrivals](https://img.shields.io/badge/Arrivals%202024-6%2C657%2C377-6D6E71?style=flat-square)
+![YoY](https://img.shields.io/badge/YoY%20Growth-%2B12.68%25-brightgreen?style=flat-square)
+![Recovery](https://img.shields.io/badge/vs%202019-%2B4.79%25-blue?style=flat-square)
+
 </div>
 
----- |
-| **Total Arrivals**   | Loading… |
-| **YoY Growth**       | Loading… |
-| **Recovery vs 2019** | Loading… |
- -->
+---
+
 
 
 <p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://raw.githubusercontent.com/kauefs/StreamLit/%40/img/AnnualTimeSeries.png></a></p>
