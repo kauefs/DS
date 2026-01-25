@@ -12,7 +12,7 @@ def test_app_smoke( ):
     assert at.title[0].value=='Brazil 🇧🇷 InterNational Tourist Arrivals'
 def test_sidebar_info( ):
     'Check if sidebar contains the expected branding and info'
-    at=AppTest.from_file('TourismBR.py')
+    at=AppTest.from_file('tourismBR.py')
     at.run( )
     # Check SideBar title:
     assert at.sidebar.title[0].value=='ƊⱭȾɅViƧi🧿Ƞ&trade;'
@@ -21,7 +21,7 @@ def test_sidebar_info( ):
     assert at.sidebar.slider[0].label=='Year Range'
 def test_kpi_metrics( ):
     'Verify that KPI metrics are rendered'
-    at=AppTest.from_file('TourismBR.py')
+    at=AppTest.from_file('tourismBR.py')
     at.run( )
     # Ensure all three metrics are present:
     assert len(at.metric)>=3
