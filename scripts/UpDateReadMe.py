@@ -1,80 +1,50 @@
-import urllib.parse, re
+import urllib.parse, os
 import pandas  as    pd
-from datetime import datetime
-# 1. Data
-DATA='https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
-df  = pd.read_csv(DATA)
-# 2. Metrics
-# current_year=datetime.now( ).year
-latest_year =   df['year'].max( )
-prev_year   =latest_year  -    1
-total_latest=df[df['year']==latest_year]['arrivals'].sum( )
-total_prev  =df[df['year']==  prev_year]['arrivals'].sum( )
-total_2019  =df[df['year']==       2019]['arrivals'].sum( )
-yoy_growth  =((total_latest -total_prev)/total_prev)*100
-recovery    =((total_latest -total_2019)/total_2019)*100
-# 3. Badges
-def get_url(label, msg, color):
-    return f'https://img.shields.io/badge/{urllib.parse.quote(label)}-{urllib.parse.quote(msg)}-{color}?style=flat-square'
-yoy_color = 'brightgreen' if yoy_growth > 0 else 'red'
-rec_color = 'blue'        if  recovery  > 0 else 'orange'
-badges    =(f"![Arrivals]({get_url(f'Arrivals {latest_year}',f'{total_latest:,.0f}','6D6E71')}) "
-            f"![YoY]({get_url('YoY Growth',f'{yoy_growth:+.2f}%', yoy_color)}) "
-            f"![Recovery]({get_url('vs 2019',f'{recovery:+.2f}%',    'blue')})")
-# def MakeBadgeURL(label, msg, color):
-#     label_enc =urllib.parse.quote(label)
-#     msg_enc   =urllib.parse.quote (msg)
-#     return f'https://img.shields.io/badge/{label_enc}-{msg_enc}-{color}?style=flat-square'
-# Determine colors based on performance
-# yoy_color='brightgreen' if yoy_growth > 0 else 'red'
-# rec_color='blue'        if  recovery  > 0 else 'orange'
-# badges=(f"![Arrivals]({MakeBadgeURL(f'Arrivals {latest_year}',f'{total_latest:,.0f}','6D6E71')}) "
-#         f"![YoY]({MakeBadgeURL('YoY Growth',f'{yoy_growth:+.2f}%', yoy_color)}) "
-#         f"![Recovery]({MakeBadgeURL('vs 2019',f'{recovery:+.2f}%', rec_color)})")
-# total_str   = f'{total_latest:,.0f}'
-# yoy_str     = f'{yoy_growth:+.2f}%'
-# yoy_color   = 'green' if yoy_growth > 0 else 'red'
-# metrics_html = f'''
-# | Metric | Value |
-# | :----- | :---- |
-# | **Total Arrivals ({latest_year})**                | {total_latest:,.0f}  |
-# |     **YoY Growth ({latest_year} vs {prev_year})** |   {yoy_growth:+.2f}% |
-# |                      **Recovery vs 2019**         |     {recovery:+.2f}% |
-# '''
-# 4. Create Shields.io Markdown
-# Format: https://img.shields.io/badge/<LABEL>-<MESSAGE>-<COLOR>
-# def make_badge(label, message, color):
-#     label_enc=urllib.parse.quote(label)
-#     msg_enc  =urllib.parse.quote(message)
-#     return f'![{label}](https://img.shields.io/badge/{label_enc}-{msg_enc}-{color}?style=flat-square)'
-# badges       =(make_badge(f'Total Arrivals ({latest_year})', total_str,'blue')+ ' ' +make_badge('YoY Growth', yoy_str, yoy_color))
-# 4. README
-# with open('README.md','r', encoding='utf-8') as f:content=f.read( )
-# Replace content between markers
-# new_content=re.sub(r'.*?', f'\n{metrics_html}\n', content, flags=re.DOTALL)
-# pattern    =r'()(.*?)()'
-# replacement=rf'\1\n{badges}\n\3'
-# content    =re.sub(pattern, replacement, content, flags=re.DOTALL)
-# content=re.sub(r'.*?', f'\n{badges}\n', content, flags=re.DOTALL)
-# Update Copyright Year in the Shields.io URL (targets "&copy;2025" or similar)
-# content=re.sub(r'&copy;\d{4}', f'&copy;{current_year}', content)
-# with open('README.md','w', encoding='utf-8') as f:f.write(content)
-# Reconstruct README.md (Prevents Looping)
-START= ''
-END  = ''
-with open    ('README.md','r', encoding='utf-8')as f:full_text=f.read( )
-if START in full_text and END in full_text:
-    # Split file by tags
-    header=full_text.split(START)[0]
-    footer=full_text.split (END)[-1]
-    # Assemble fresh: Header + StartTag + Content + EndTag + Footer
-    readme=f'{header}{START}\n<div align=center>\n\n{badges}\n\n</div>\n{END}{footer}'
-    with open('README.md','w', encoding='utf-8')as f:f.write(readme)
-    print    ('README reconstructed successfully.')
+# 1. Configuration
+DATA      = 'https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
+README    = 'README.md'
+START     = ''
+END       = ''
+def get_badge_url(label, msg, color):
+    l_enc = urllib.parse.quote(label)
+    m_enc = urllib.parse.quote(msg)
+    return f"https://img.shields.io/badge/{l_enc}-{m_enc}-{color}?style=flat-square"
+# 2. Load Data & Calculate Metrics
+try:
+    df = pd.read_csv(DATA)
+    df['arrivals']=pd.to_numeric(df['arrivals'], errors='coerce').fillna(0)
+    latest_year   =int(df['year'].max( ))
+    prev_year     = latest_year  -    1
+    total_latest  =df[df['year']==latest_year]['arrivals'].sum( )
+    total_prev    =df[df['year']==  prev_year]['arrivals'].sum( )
+    total_2019    =df[df['year']==       2019]['arrivals'].sum( )
+    yoy_growth    =((total_latest - total_prev)/total_prev)*100
+    recovery      =((total_latest - total_2019)/total_2019)*100
+    # Format the badge strings
+    yoy_color     ="brightgreen" if yoy_growth > 0 else "red"
+    badges        =(f"![Arrivals]({get_badge_url(f'Arrivals {latest_year}', f'{total_latest:,.0f}', '6D6E71')}) "
+                    f"![YoY]({get_badge_url('YoY Growth', f'{yoy_growth:+.2f}%', yoy_color)}) "
+                    f"![Recovery]({get_badge_url('vs 2019', f'{recovery:+.2f}%', 'blue')})")
+except Exception as e:
+    print(f"Calculation Error: {e}")
+    exit(1)
+# 3. Reconstruct README.md (The "Safe Sweep" Method)
+if os.path.exists(README):
+    with open    (README,'r', encoding='utf-8')as f:full_text=f.read( )
+    if START in full_text and END in full_text:
+        # We split the file into three pieces: 
+        # 1. Everything before the START_TAG
+        # 2. Everything after the END_TAG
+        # We discard whatever was in the middle (the old badges)
+        header=full_text.split(START)[0]
+        footer=full_text.split (END)[-1]
+        # Assemble fresh: No nesting, no repetition
+        readme=f"{header}{START}\n<div align=center>\n\n{badges}\n\n</div>\n{END}{footer}"
+        with open(README,'w', encoding="utf-8")as f:f.write(readme)
+        print("Success: README reconstructed and metrics updated.")
+    else:
+        print(f"Error: Markers not found. Ensure {START} and {END} are in README.md")
+        exit(1)
 else:
-    # This helps debug if the script can't find the markers
-    print(f'Error: Markers not found.')
-    print(f'Looking for: {START}')
-    if START not in full_text:print('START is missing from README.md')
-    if  END  not in full_text:print(' END  is missing from README.md')
-    exit(1) # Fail the action so you know it didn't work
+    print("Error: README.md not found in root directory.")
+    exit(1)
