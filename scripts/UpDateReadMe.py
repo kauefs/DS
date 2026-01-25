@@ -14,8 +14,8 @@ try:
     total_prev    =df[df['year']==  prev_year]['arrivals'].sum( )
     yoy_growth    =((total_latest - total_prev)/total_prev)*100 # if total_prev > 0 else 0
     recovery      =((total_latest - total_2019)/total_2019)*100
-    def get_url(label, msg, color):return f'https://img.shields.io/badge/{urllib.parse.quote(label)}-{urllib.parse.quote(msg)}-{color}?style=flat-square'
-    yoy_color     ='00FF00' if yoy_growth > 0 else 'D22128'
+    def get_url(label, msg, color):return f'https://img.shields.io/badge/{urllib.parse.quote(label)}-{urllib.parse.quote(msg)}-{color}?style=flat'
+    yoy_color     ='brightgreen' if yoy_growth > 0 else 'D22128'
     badges        =(f'![Arrivals]({get_url(f"Arrivals {latest_year}", f"{total_latest:,.0f}","808080")})\n'
                     f'![YoY     ]({get_url("YoY Growth",f"{yoy_growth:+.2f}%", yoy_color)})\n'
                     f'![Recovery]({get_url("vs 2019"   ,f"{recovery:+.2f}%","0077B5")})')
