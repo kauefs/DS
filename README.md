@@ -17,6 +17,15 @@
 
 ## [Brazil 🇧🇷 International Tourist Arrivals](https://tourismbr.streamlit.app/)
 
+### Live Stats
+|        Metric        |  Value   |
+| :------------------- | :------- |
+| **Total Arrivals**   | Loading… |
+| **YoY Growth**       | Loading… |
+| **Recovery vs 2019** | Loading… |
+
+---
+
 <p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://raw.githubusercontent.com/kauefs/StreamLit/%40/img/AnnualTimeSeries.png></a></p>
 
 <p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://raw.githubusercontent.com/kauefs/StreamLit/%40/img/TopArrivals.png></a></p>
