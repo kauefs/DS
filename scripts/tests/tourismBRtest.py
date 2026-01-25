@@ -2,9 +2,8 @@ import                           os
 from streamlit.testing.v1 import AppTest
 def test_app_smoke( ):
     'Basic smoke test to ensure the app starts and loads data'
-    current_dir=os.path.dirname(__file__)
-    app_path   =os.path.join(current_dir,'..','tourismBR.py')
-    at=AppTest.from_file(app_path, default_timeout=45)
+    PATH   =os.path.join(os.path.dirname(__file__),'..','tourismBR.py')
+    at=AppTest.from_file(PATH, default_timeout=45)
     at.run( )
     # Assert no exceptions occurred during run:
     assert not at.exception
@@ -12,7 +11,7 @@ def test_app_smoke( ):
     assert at.title[0].value=='Brazil 🇧🇷 InterNational Tourist Arrivals'
 def test_sidebar_info( ):
     'Check if sidebar contains the expected branding and info'
-    at=AppTest.from_file('tourismBR.py')
+    at=AppTest.from_file(PATH)
     at.run( )
     # Check SideBar title:
     assert at.sidebar.title[0].value=='ƊⱭȾɅViƧi🧿Ƞ&trade;'
@@ -21,7 +20,7 @@ def test_sidebar_info( ):
     assert at.sidebar.slider[0].label=='Year Range'
 def test_kpi_metrics( ):
     'Verify that KPI metrics are rendered'
-    at=AppTest.from_file('tourismBR.py')
+    at=AppTest.from_file(PATH)
     at.run( )
     # Ensure all three metrics are present:
     assert len(at.metric)>=3
