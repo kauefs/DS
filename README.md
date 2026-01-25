@@ -21,11 +21,10 @@
 
 ---
 
+
 ![Arrivals](https://img.shields.io/badge/Arrivals%202024-6%2C657%2C377-808080?style=flat)
 ![YoY     ](https://img.shields.io/badge/YoY%20Growth-%2B12.68%25-00F00?style=flat)
 ![Recovery](https://img.shields.io/badge/vs%202019-%2B4.79%25-0077B5?style=flat)
-
-[![StreamLitApp](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://tourismbr.streamlit.app/)
 
 <!--
 |        Metric        |  Value   |
@@ -35,7 +34,6 @@
 | **Recovery vs 2019** | Loading… |
  -->
 
----
 
 <p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://raw.githubusercontent.com/kauefs/StreamLit/%40/img/AnnualTimeSeries.png></a></p>
 
@@ -48,6 +46,8 @@
 ##
 
 <div align=center>
+
+[![StreamLitApp](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://tourismbr.streamlit.app/)
 
 [![ƊⱭȾɅViƧi🧿Ƞ](https://img.shields.io/badge/ƊⱭȾɅViƧi&#x1F9FF;Ƞ&trade;-0065FF?style=plastic&label=&copy;2026&labelColor=0065FF)](https://datavision.one/)
 
