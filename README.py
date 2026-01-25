@@ -1,13 +1,20 @@
 import urllib.parse, os
 import pandas  as    pd
 # 1. Configuration
-DATA  ='https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
-README='README.md'
+DATA      ='https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
+README    ='README.md'
+STATE_FILE='img/last_year.txt'
 # 2. Load Data & Calculate Metrics
 try:
     df=pd.read_csv(DATA)
     df['arrivals']=pd.to_numeric(df['arrivals'], errors='coerce').fillna(0)
     latest_year   =int(df['year'].max( ))
+    # Check if it actually needs to update
+    if os.path.exists(STATE_FILE):
+        with open    (STATE_FILE,'r')as f:last_recorded_year=int(f.read( ).strip( ))
+        if latest_year <= last_recorded_year:
+            print(f'Stats already up to date for {latest_year}; skipping update…')
+            exit(0) # Exit successfully without error
     prev_year     =latest_year   -    1
     total_latest  =df[df['year']==latest_year]['arrivals'].sum( )
     total_2019    =df[df['year']==       2019]['arrivals'].sum( )
