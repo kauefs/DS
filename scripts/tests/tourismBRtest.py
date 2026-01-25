@@ -1,8 +1,10 @@
-import  pandas              as   pd
+import                           os
 from streamlit.testing.v1 import AppTest
 def test_app_smoke( ):
     'Basic smoke test to ensure the app starts and loads data'
-    at=AppTest.from_file('TourismBR.py', default_timeout=45)
+    current_dir=os.path.dirname(__file__)
+    app_path   =os.path.join(current_dir,'..','tourismBR.py')
+    at=AppTest.from_file(app_path, default_timeout=45)
     at.run( )
     # Assert no exceptions occurred during run:
     assert not at.exception
