@@ -23,6 +23,7 @@ jobs:
           pip install -r requirements.txt
       - name: Run App Test
         run: |
+          pytest TourismBR_test.py --junitxml=test-results.xml
           python -m pytest TourismBR_test.py
       - name: Run Streamlit Test
         uses: streamlit/streamlit-app-action@v0.0.3
