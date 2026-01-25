@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 # Configuration
 DATA      ='https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
 DIR       ='img'
-STATE_FILE='last_year.txt'
+STATE_FILE='img/last_year.txt'
 def get_latest_year(df):return int(df['year'].max( ))
 def should_update(current_max_year):
     if not os.path.exists(STATE_FILE):return True
