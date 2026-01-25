@@ -49,13 +49,24 @@ badges    =(f"![Arrivals]({get_url(f'Arrivals {latest_year}',f'{total_latest:,.0
 #     return f'![{label}](https://img.shields.io/badge/{label_enc}-{msg_enc}-{color}?style=flat-square)'
 # badges       =(make_badge(f'Total Arrivals ({latest_year})', total_str,'blue')+ ' ' +make_badge('YoY Growth', yoy_str, yoy_color))
 # 4. README
-with open('README.md','r', encoding='utf-8') as f:content=f.read( )
+# with open('README.md','r', encoding='utf-8') as f:content=f.read( )
 # Replace content between markers
 # new_content=re.sub(r'.*?', f'\n{metrics_html}\n', content, flags=re.DOTALL)
-pattern    =r'()(.*?)()'
-replacement=rf'\1\n{badges}\n\3'
-content    =re.sub(pattern, replacement, content, flags=re.DOTALL)
+# pattern    =r'()(.*?)()'
+# replacement=rf'\1\n{badges}\n\3'
+# content    =re.sub(pattern, replacement, content, flags=re.DOTALL)
 # content=re.sub(r'.*?', f'\n{badges}\n', content, flags=re.DOTALL)
 # Update Copyright Year in the Shields.io URL (targets "&copy;2025" or similar)
 # content=re.sub(r'&copy;\d{4}', f'&copy;{current_year}', content)
-with open('README.md','w', encoding='utf-8') as f:f.write(content)
+# with open('README.md','w', encoding='utf-8') as f:f.write(content)
+# Reconstruct README.md (Prevents Looping)
+START_TAG= ''
+END_TAG  = ''
+with open    ('README.md','r', encoding='utf-8')as f:full_text=f.read( )
+if START_TAG in full_text and END_TAG in full_text:
+    # Split file by tags
+    header=full_text.split(START_TAG)[0]
+    footer=full_text.split (END_TAG)[-1]
+    # Assemble fresh: Header + StartTag + Content + EndTag + Footer
+    readme =f'{header}{START_TAG}\n<div align=center>\n\n{badges}\n\n</div>\n{END_TAG}{footer}'
+    with open("README.md", "w", encoding="utf-8")as f:f.write(readme)
