@@ -21,12 +21,13 @@ def should_update(current_max_year):
         except ValueError:return True
     return current_max_year > last_year
 def save_heatmap(df):
-    heatmap_data=df.groupby(['year','month'])['arrivals'].sum( ).reset_index( )
-    heatmap_data['month']=pd.Categorical(heatmap_data['month'], categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
-    pivot=heatmap_data.pivot_table(index='year', columns='month', values='arrivals', observed=False)
-    fig,ax=plt.subplots(figsize=(12, 8), frameon=True, tight_layout=True)
+    data=df.groupby(['year','month'])['arrivals'].sum( ).reset_index( )
+    data['month']=pd.Categorical(data['month'], categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
+    pivot=data.pivot_table(index='year', columns='month', values='arrivals', observed=False)
     def fmt(x, pos):return f'{x/1e6:.1f}M' if x >= 1e6 else f'{x/1e3:.0f}K'
+    fig,ax=plt.subplots(figsize=(12, 8), frameon=True, tight_layout=True)
     sns.heatmap(pivot, cmap='RdYlGn_r', linewidths=.5, cbar_kws={'format':ticker.FuncFormatter(fmt)})
+    ax.collections[0].colorbar.ax.tick_params(length=0)
     plt.title('Monthly Arrivals Intensity per Year', fontsize=15, fontweight='bold')
     plt.ylabel('')
     plt.xlabel('')
@@ -36,12 +37,12 @@ def save_heatmap(df):
     plt.savefig(f'{DIR}/HeatMap.png')
     plt.close(fig)
 def save_annual(df):
-    annual =df.groupby('year')    ['arrivals']      .sum( ).reset_index( )
-    values =annual['arrivals'].groupby(annual.index).sum( ).values
-    norm   =Normalize (     annual['arrivals'].min( ), annual['arrivals'].max( ))
-    palette=cm.viridis(norm(annual['arrivals'])).tolist( )
-    fig, ax=plt.subplots(figsize=(15, 8), frameon=True, tight_layout=True)
-    sns.barplot(x=annual.index, y='arrivals', data=annual, palette=palette, hue=values, saturation=.75, legend=False)
+    annual =df.groupby('year')['arrivals'].sum( ).reset_index( )
+    values =annual['arrivals'].values
+    norm   =Normalize (values.min( ), values.max( ))
+    palette=cm.viridis(norm(values)).tolist( )
+    fig, ax=plt.subplots(figsize=(15, 15), frameon=True, tight_layout=True)
+    sns.barplot(x='year', y='arrivals', data=annual, palette=palette, hue='year', saturation=.75, legend=False)
     plt.title('Annual InterNational Tourist Arrivals in Brazil ({}–{})'.format(annual['year'].min( ), annual['year'].max( )), fontsize=20, fontweight='bold')
     plt.xticks(fontsize=13 ,fontweight='semibold' ,          rotation='vertical'  )
     for spine in ax.spines.values( ):spine.set_visible(False)
@@ -49,8 +50,20 @@ def save_annual(df):
     plt.ylabel(None)
     plt.xlabel(None)
     plt.legend( [], frameon= False)
-    plt.grid(       visible= False)
-    for c in ax.containers:ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=-80, fontweight='bold', rotation='vertical', color='#FFFFFF')
+    plt.grid  (     visible= False)
+    labels=[f'{v:,.0f}' for v in annual['arrivals']]
+    for i, patch in enumerate(ax.patches):
+        height=patch.get_height( )
+        if height > 0:
+            ax.text(patch.get_x( )+patch.get_width( )/2, # X-coordinate: center of bar
+                height   -50000,                         # Y-coordinate: inside the top (adjust -50000 as needed)
+                labels[i],
+                ha        ='center'  ,
+                va        =   'top'  ,
+                fontsize  =  11      ,
+                fontweight='bold'    ,
+                rotation  ='vertical',
+                color     ='#FFFFFF')
     plt.savefig(f'{DIR}/AnnualTimeSeries.png')
     plt.close(fig)
 def save_by_country(df):
@@ -71,21 +84,53 @@ def save_by_country(df):
     plt.savefig(f'{DIR}/TopArrivals.png')
     plt.close(fig)
 def save_timeseries(df, countries, filename, title):
-    group =df.groupby(['country','year'])['arrivals'].sum( ).reset_index( )
-    subset=group[group['country'].isin(countries)]
-    piv   =subset.pivot_table(index='year', columns='country', values='arrivals')
-    fig   =plt.figure(figsize=(10, 5), tight_layout=True)
-    texts =[]
-    colors=sns.color_palette('tab10', len(countries)) if len(countries) > 4 else ['#00BFFF','#FF4500','#0065FF','#4CAF50']
-    for i, country in enumerate(countries):
+    # Filter:
+    latest_year=df['year'].max( )
+    start_year =latest_year - 15
+    df_filtered=df[df['year']>=start_year]
+    # Data Processing
+    group =df_filtered.groupby(['country','year'])['arrivals'].sum( ).reset_index( )
+    subset=group[group         ['country'].isin(countries)]
+    piv   =subset.pivot_table(index=      'year', columns='country', values='arrivals')
+    # Figure:
+    fig,ax=plt.subplots(figsize=(10, 5))
+    fig.subplots_adjust(left=.08, right=.72, top=.88, bottom=.12)
+    colors = sns.color_palette('tab10', len(countries))if len(countries)> 4 else['#00BFFF','#FF4500','#0065FF','#4CAF50']
+    # Plotting:
+    # Sort countries by the last year value:
+    last_values = piv.iloc[-1].sort_values(ascending=False)
+    # Defining minimum "multiplier" gap for the log scale:
+    # 0.85 means the next label must be at least 15% lower than the previous one
+    min_gap_multiplier =.75
+    last_y_pos = float('inf')
+    for country, y_end in last_values.items( ):
         if country in piv.columns:
-            plt.plot(piv.index, piv[country], label=country, color=colors[i], linewidth=2.25)
-            y_end=piv[country].iloc[-1]
-            texts.append(plt.annotate(f'{country} {y_end:,.0f}', xy=(piv.index[-1], y_end), color=colors[i], fontsize=8, fontweight='semibold'))
-    adjust_text(texts, autoalign='y', only_move={'text':'y','static':'x'})
-    plt.title(title, fontsize=15, fontweight='bold', loc='left')
-    plt.yscale('log')
-    plt.box(False)
+            valid_data=piv[country] .dropna( )
+            color     =colors[countries.index(country)]
+            ax.plot(valid_data.index, valid_data.values, color=color, linewidth=2.25, alpha=.75)
+            # Calculating non-overlapping position – if current y_end is too close to the previous label, push it down:
+            suggested_y    =     y_end
+            if  suggested_y>last_y_pos*min_gap_multiplier:
+                suggested_y=last_y_pos*min_gap_multiplier
+            ax.text(valid_data.index[-1]+.15,
+                    suggested_y,
+                    f'{country} {y_end:,.0f}',
+                    color      = color,
+                    fontsize   =    9 ,
+                    fontweight ='bold',
+                    va         ='center')
+            # Drawing a tiny connector line if the label was pushed significantly if abs(suggested_y-y_end)/y_end>.05:
+            #     ax.plot([valid_data.index[-1], valid_data.index[-1]+.15],
+            #             [y_end,  suggested_y], color=color, linestyle=':', linewidth=1)
+            last_y_pos=suggested_y
+    # Styling:
+    ax.set_title(f'{title} ({start_year}–{latest_year})', fontsize=15, fontweight='bold', loc='left', pad=25)
+    ax.set_yscale('log')
+    # Strictly controling limits to prevent "Enormous Height":
+    ax.set_ylim(piv.min( ).min( )*.5, piv.max( ).max( )*2.5)
+    ax.xaxis.set_major_locator(mticker.MaxNLocator        (integer=True))
+    plt.tick_params(axis='both', which='both', length=0, labelleft=False)
+    for spine in ax.spines.values( ):            spine.set_visible(False)
     plt.savefig(f'{DIR}/{filename}.png')
     plt.close(fig)
 if __name__=='__main__':
