@@ -1,28 +1,34 @@
-import                           os
+import       pytest,         os
 from streamlit.testing.v1 import AppTest
-def test_app_smoke( ):
-    'Basic smoke test to ensure the app starts and loads data'
-    PATH   =os.path.join(os.path.dirname(__file__),'..','tourismBR.py')
+PATH  =os.path.join(os.path.dirname(__file__),'..','tourismBR.py')
+@pytest.fixture(scope="module")
+def shared( ):
+    'Initialize StreamLit AppTest once per module, speeding up testing.'
     at=AppTest.from_file(PATH, default_timeout=45)
     at.run( )
+    return at
+def test_app_smoke(shared):
+    'Basic smoke test to ensure the app starts and loads data.'
+   #at=AppTest.from_file(PATH, default_timeout=45)
+   #at.run( )
     # Assert no exceptions occurred during run:
-    assert not at.exception
+    assert not shared.exception
     # Assert Title exists:
-    assert at.title[0].value=='Brazil 🇧🇷 InterNational Tourist Arrivals'
-def test_sidebar_info( ):
-    'Check if sidebar contains the expected branding and info'
-    at=AppTest.from_file(PATH)
-    at.run( )
+    assert     shared.title[0].value=='Brazil 🇧🇷 InterNational Tourist Arrivals'
+def test_sidebar_info(shared):
+    'Check if sidebar contains the expected branding and info.'
+   #at=AppTest.from_file(PATH)
+   #at.run( )
     # Check SideBar title:
-    assert at.sidebar.title[0].value=='ƊⱭȾɅViƧi🧿Ƞ&trade;'
+    assert     shared.sidebar.title  [0].value=='ƊⱭȾɅViƧi🧿Ƞ&trade;'
     # Check if the year slider exists:
-    assert len(at.sidebar.slider)>0
-    assert at.sidebar.slider[0].label=='Year Range'
-def test_kpi_metrics( ):
-    'Verify that KPI metrics are rendered'
-    at=AppTest.from_file(PATH)
-    at.run( )
+    assert len(shared.sidebar.slider)>0
+    assert     shared.sidebar.slider [0].label=='Year Range'
+def test_kpi_metrics(shared):
+    'Verify KPI metrics are rendered.'
+   #at=AppTest.from_file(PATH)
+   #at.run( )
     # Ensure all three metrics are present:
-    assert len(at.metric)>=3
+    assert len                (shared.metric)>=3
     # Check first metric label:
-    assert 'Total Arrivals' in at.metric[0].label
+    assert 'Total Arrivals' in shared.metric  [0].label
