@@ -17,6 +17,7 @@ recovery    =((total_latest -total_2019)/total_2019)*100
 def get_url(label, msg, color):
     return f'https://img.shields.io/badge/{urllib.parse.quote(label)}-{urllib.parse.quote(msg)}-{color}?style=flat-square'
 yoy_color = 'brightgreen' if yoy_growth > 0 else 'red'
+rec_color = 'blue'        if  recovery  > 0 else 'orange'
 badges    =(f"![Arrivals]({get_url(f'Arrivals {latest_year}',f'{total_latest:,.0f}','6D6E71')}) "
             f"![YoY]({get_url('YoY Growth',f'{yoy_growth:+.2f}%', yoy_color)}) "
             f"![Recovery]({get_url('vs 2019',f'{recovery:+.2f}%',    'blue')})")
@@ -52,7 +53,7 @@ with open('README.md','r', encoding='utf-8') as f:content=f.read( )
 # Replace content between markers
 # new_content=re.sub(r'.*?', f'\n{metrics_html}\n', content, flags=re.DOTALL)
 pattern    =r'()(.*?)()'
-replacement=rf'\1\n<div align=center>\n{badges}\n</div>\n\3'
+replacement=rf'\1\n{badges}\n\3'
 content    =re.sub(pattern, replacement, content, flags=re.DOTALL)
 # content=re.sub(r'.*?', f'\n{badges}\n', content, flags=re.DOTALL)
 # Update Copyright Year in the Shields.io URL (targets "&copy;2025" or similar)
