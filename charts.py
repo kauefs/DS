@@ -14,12 +14,12 @@ def load_data( ):
     df    = pd.read_csv(DATA)
     df['arrivals']=pd.to_numeric(df['arrivals'], errors='coerce').fillna(0)
     return df
-def should_update(current_max_year):
-    if not os.path.exists(STATE_FILE):return True
-    with open(STATE_FILE,'r')as f:
-        try:last_year=int(f.read( ).strip( ))
-        except ValueError:return True
-    return current_max_year > last_year
+# def should_update(current_max_year):
+#     if not os.path.exists(STATE_FILE):return True
+#     with open(STATE_FILE,'r')as f:
+#         try:last_year=int(f.read( ).strip( ))
+#         except ValueError:return True
+#     return current_max_year > last_year
 def save_heatmap(df):
     heatmap_data=df.groupby(['year','month'])['arrivals'].sum( ).reset_index( )
     heatmap_data['month']=pd.Categorical(heatmap_data['month'], categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
