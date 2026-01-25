@@ -38,7 +38,7 @@ if os.path.exists(README):
         parts_below=full_text.split(HR_TAG)
         footer     =HR_TAG +parts_below[-1]
         # Reconstruct with clean spacing
-        new_content=[header, DIV_OPEN, badges, DIV_CLOSE, footer]
+        new_content=[header,'\n'+DIV_OPEN+'\n', badges,'\n'+DIV_CLOSE+'\n', footer]
         new_readme =''.join(new_content)
         with open(README,'w', encoding='utf-8')as f:f.write(new_readme)
         print('Success: README updated with flexible markers.')
