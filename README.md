@@ -26,7 +26,6 @@
 ---
 
 
-
 <p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://raw.githubusercontent.com/kauefs/StreamLit/%40/img/AnnualTimeSeries.png></a></p>
 
 <p align=center><a href=https://tourismbr.streamlit.app/ target=_blank rel=noreferrer><img src=https://raw.githubusercontent.com/kauefs/StreamLit/%40/img/TopArrivals.png></a></p>
