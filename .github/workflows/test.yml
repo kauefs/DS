@@ -14,24 +14,24 @@ jobs:
   streamlit:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Code
         uses: actions/checkout@v4
-      - name: Setup Python
+      - name: Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
           cache:           'pip'
-      - name: Install Dependencies
+      - name: Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Run Streamlit App Action
+      - name: StreamLit App Action
         uses: streamlit/streamlit-app-action@v0.0.3
         with:
           app-path: 'scripts/tourismBR.py'
           ruff: False
           pytest-args: scripts/tests/tourismBRtest.py -v --junitxml=test-results.xml
-      - name: Publish Test Results
+      - name: Test Results
         if: always( )
         uses: pmeier/pytest-results-action@v0.6.0
         with:
@@ -45,24 +45,25 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Code
+        uses: actions/checkout@v4
         with:
           ref: '@'
-      - name: Setup Python
+      - name: Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
           cache:           'pip'
-      - name: Install dependencies
+      - name: Dependencies
         run: pip install pandas
       - name: Pull latest changes
         run: |
           git config --global user.name  'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git pull   --rebase origin refs/heads/@
-      - name: Update Metrics in README
+      - name: README
         run: python scripts/UpDateReadMe.py
-      - name: Commit and Push
+      - name: Git
         run: |
           git add README.md
           git diff --quiet && git diff --staged --quiet || (git commit -m 'docs: update live metrics in README')
