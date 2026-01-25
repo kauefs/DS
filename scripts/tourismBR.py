@@ -139,7 +139,6 @@ plt.close(fig)
 st.divider(  )
 # Seasonality Index:
 st.subheader('Seasonality Index ({}–{})'.format(selected_years[0], selected_years[1]))
-st.markdown ('It represents the relative volume of arrivals compared to the annual average.')
 monthly_avg = filtered_data.groupby('month')['arrivals'].mean( )
 overall_avg = monthly_avg.mean( )
 seasonality_index=(monthly_avg/overall_avg).reset_index( )
@@ -151,8 +150,9 @@ fig,ax=plt.subplots(figsize=(12,8), frameon=True)
 sns.barplot(x='month', y='arrivals', data=seasonality_index, palette='RdYlGn_r', hue='month', legend=False, ax=ax) # (RdYlGn_r) Red for Low & Green for High
 # BaseLine @ 1.0:
 ax.axhline(y=1., color='#000000', linestyle='--', linewidth=1.25, alpha=.75)
-ax.text(x=11.5, y=1., s='Average', fontsize=10, fontweight='semibold', color='#000000', ha='right', va='bottom')
-plt.title ('Seasonality Index ({}–{})'.format(selected_years[0], selected_years[1]), fontsize=15, fontweight='bold')
+ax.text   (x=11.5, y=1., s='Average'                                               , fontsize=10, fontweight='semibold', ha= 'right', va='bottom')
+plt.title ('Seasonality Index ({}–{})'.format(selected_years[0], selected_years[1]), fontsize=15, fontweight=    'bold')
+plt.text  (x=.51, y=.85, s='relative volume of arrivals compared to annual average', fontsize=10, fontweight= 'regular', ha='center', transform=plt.gcf( ).transFigure)
 plt.ylabel('')
 plt.xlabel('')
 plt.ylim(0, seasonality_index['arrivals'].max( )+.2 )
@@ -166,9 +166,9 @@ plt.close(fig)
 st.divider(  )
 # Annual:
 st.subheader('Annual Time Series')
-DD=DF['arrivals'].groupby(DF['year']).sum( )
+DD=    DF['arrivals'].groupby(DF['year']).sum( )
 df=pd.DataFrame(DD)
-values=df['arrivals'].groupby(df.index).sum( ).values
+values=df['arrivals'].groupby(df  .index).sum( ).values
 norm=Normalize(df['arrivals'].min( ), df['arrivals'].max( ))
 annual_palette=cm.viridis(norm(df['arrivals'])).tolist( )
 fig=plt.figure(figsize=(15,15), frameon=True)
@@ -393,7 +393,7 @@ for i  ,country in enumerate(countries):
                          #arrowprops=dict(arrowstyle='-', connectionstyle='arc3', color=colors[i]),
                           color     = colors[i])
     texts.append(txt)
-adjust_text(texts, autoalign='y', avoid_overlapping=True, avoid_self=True, avoid_text=True, ensure_inside_axes=False, only_move={'text':'y','static':'x'})
+adjust_text(texts, autoalign='y', ensure_inside_axes=False, only_move={'text':'y','static':'x'})
 plt.title ('Top 10 Arrivals ({}–{})'.format(filter['year'].min( ), filter['year'].max( )), fontsize=15, fontweight='bold', loc='left')
 plt.ylabel(         '')
 plt.xlabel(         '')
@@ -424,7 +424,7 @@ for i  ,country in enumerate(countries):
                      #arrowprops=dict(arrowstyle='-', connectionstyle='arc3', color=colors[i]),
                       color     = colors[i])
     texts.append(text)
-adjust_text(texts, autoalign='y', avoid_overlapping=True, avoid_self=True, avoid_text=True, ensure_inside_axes=False, only_move={'text':'y','static':'x'})
+adjust_text(texts, autoalign='y', ensure_inside_axes=False, only_move={'text':'y','static':'x'})
 plt.title  ('Selected Countries ({}–{})'.format(filter['year'].min( ), filter['year'].max( )), fontsize=15, fontweight='bold', loc='left')
 plt.xlabel (        '')
 plt.ylabel (        '')
