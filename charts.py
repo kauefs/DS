@@ -1,10 +1,11 @@
-import                      os
-import    seaborn        as sns
-import matplotlib.pyplot as plt
-import matplotlib.cm     as cm
-import matplotlib.ticker as ticker
-from matplotlib.colors import Normalize
-from adjustText        import adjust_text
+import                          os
+import     pandas          as   pd
+import    seaborn          as   sns
+import matplotlib.pyplot   as   plt
+import matplotlib.cm       as   cm
+import matplotlib.ticker   as   ticker
+from   matplotlib.colors import Normalize
+from   adjustText        import adjust_text
 # Configuration
 DATA      ='https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
 DIR       ='img'
