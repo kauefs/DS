@@ -60,13 +60,21 @@ badges    =(f"![Arrivals]({get_url(f'Arrivals {latest_year}',f'{total_latest:,.0
 # content=re.sub(r'&copy;\d{4}', f'&copy;{current_year}', content)
 # with open('README.md','w', encoding='utf-8') as f:f.write(content)
 # Reconstruct README.md (Prevents Looping)
-START_TAG= ''
-END_TAG  = ''
+START= ''
+END  = ''
 with open    ('README.md','r', encoding='utf-8')as f:full_text=f.read( )
-if START_TAG in full_text and END_TAG in full_text:
+if START in full_text and END in full_text:
     # Split file by tags
-    header=full_text.split(START_TAG)[0]
-    footer=full_text.split (END_TAG)[-1]
+    header=full_text.split(START)[0]
+    footer=full_text.split (END)[-1]
     # Assemble fresh: Header + StartTag + Content + EndTag + Footer
-    readme =f'{header}{START_TAG}\n<div align=center>\n\n{badges}\n\n</div>\n{END_TAG}{footer}'
-    with open("README.md", "w", encoding="utf-8")as f:f.write(readme)
+    readme=f'{header}{START}\n<div align=center>\n\n{badges}\n\n</div>\n{END}{footer}'
+    with open('README.md','w', encoding='utf-8')as f:f.write(readme)
+    print    ('README reconstructed successfully.')
+else:
+    # This helps debug if the script can't find the markers
+    print(f'Error: Markers not found.')
+    print(f'Looking for: {START}')
+    if START not in full_text:print('START is missing from README.md')
+    if  END  not in full_text:print(' END  is missing from README.md')
+    exit(1) # Fail the action so you know it didn't work
