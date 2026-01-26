@@ -23,32 +23,20 @@ st.sidebar.divider  (                          )
 st.sidebar.header   ('Brazil 🇧🇷 InterNational Tourist Arrivals')
 st.sidebar.subheader('Time Series Data Analysis'               )
 st.sidebar.divider  (                          )
-st.sidebar.markdown ('Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)')
-st.sidebar.write    (          'Annual Reports from {} to {}'          .format(DF['year'] .min( ) ,   DF['year'].max( )                                                                     ))
-st.sidebar.info     (            'Total Arrivals ({}–{}): {}'          .format(DF['year'] .min( ) ,   DF['year'].max( ),           f"{DF                   ['arrivals'].sum( )       :,.0f}"))
-st.sidebar.success  ('Year with highest visitors: {} with {} arrivals.'.format(DF.groupby('year')   ['arrivals'].sum( ).idxmax( ), f"{DF.groupby('year')   ['arrivals'].sum( ).max( ):,.0f}"))
-st.sidebar.warning  (      'Top visiting country: {} with {} arrivals.'.format(DF.groupby('country')['arrivals'].sum( ).idxmax( ), f"{DF.groupby('country')['arrivals'].sum( ).max( ):,.0f}"))
-st.sidebar.divider  (                          )
 # Year Range Slider:
 min=int(DF['year'].min( ))
 max=int(DF['year'].max( ))
 selected_years=st.sidebar.slider('Year Range', min, max, (min, max))
-# Seasonality Index:
-idx=st.sidebar.selectbox('Seasonality Index',['Monthly Average','Total Arrivals'], index=0)
+country_totals=DF.groupby('country')['arrivals'].sum( )
+country='Estados Unidos'
+arrivals=country_totals[country]
 st.sidebar.divider  (                          )
-st.sidebar.subheader('Data Health Check')
-# Count how many years of data exist for each month:
-mask=(DF['year']>=selected_years[0])&(DF['year']<=selected_years[1])
-filtered_data =DF[mask]
-months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-health_check=filtered_data.groupby('month')['arrivals'].count( ).reindex(months)
-# Identify inconsistencies:
-consistentcy=health_check.nunique( )==1
-min_entries =health_check.min    ( )
-max_entries =health_check.max    ( )
-if consistentcy:st.sidebar.success(f'✅   Consistent Data: all months have {min_entries} entries.')
-else           :st.sidebar.error  (f'⚠️ Inconsistent Data: months have between {min_entries} & {max_entries} entries.')
-with st.sidebar.expander('View Details'):st.write(health_check)
+st.sidebar.markdown ('Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)')
+st.sidebar.write    (          'Annual Reports from {} to {}'          .format(DF['year'] .min( ) ,   DF['year'].max( )                                                                     ))
+st.sidebar.info     (            'Total Arrivals ({}–{}): {}'          .format(DF['year'] .min( ) ,   DF['year'].max( ),                   f"{DF                   ['arrivals'].sum( )       :,.0f}"))
+st.sidebar.success  ('Year with highest visitors: {} with {} arrivals.'.format(DF.groupby('year')   ['arrivals'].sum( ).idxmax( )        , f"{DF.groupby('year')   ['arrivals'].sum( ).max( ):,.0f}"))
+st.sidebar.warning  (      'Top visiting country: {} with {} arrivals.'.format(DF.groupby('country')['arrivals'].sum( ).idxmax( )        , f"{DF.groupby('country')['arrivals'].sum( ).max( ):,.0f}"))
+st.sidebar.error    (  f'Second visiting country: {country} with {arrivals:,.0f} arrivals.')
 st.sidebar.divider  (                          )
 st.sidebar.markdown ('''
 ![2024.10.17  ](https://img.shields.io/badge/2024.10.17-000000)
@@ -80,6 +68,8 @@ But 2025 has set a new record for the highest number of arrivals.
 st.divider( )
 # KPI:
 #st.subheader('KPI Metrics')
+mask=(DF['year']>=selected_years[0])&(DF['year']<=selected_years[1])
+filtered_data =DF[mask]
 current_total =filtered_data['arrivals'].sum( )
 # Year-Over-Year Logic (comparing max selected year vs previous year):
 latest_year   =selected_years[1]
@@ -140,43 +130,44 @@ ax.collections[0].colorbar.ax.tick_params(length=0)
 plt.title ('Monthly Arrivals Intensity per Year', fontsize=19, fontweight='bold')
 plt.ylabel('')
 plt.xlabel('')
-plt.yticks(fontsize = 13, fontweight='semibold')
-plt.xticks(fontsize = 13, fontweight='semibold')
-plt.tick_params(axis='both',  which ='both', length=0)
+plt.yticks(fontsize =  13, fontweight='semibold')
+plt.xticks(fontsize =  13, fontweight='semibold')
+plt.tick_params(axis='both',   which =    'both', length=0)
 st.pyplot(fig)
 plt.close(fig)
 st.divider(  )
 # Seasonality Index:
 st.subheader('Seasonality Index ({}–{})'.format(selected_years[0], selected_years[1]))
-if idx  =='Monthly Average':
-    monthly_metric=filtered_data.groupby('month')['arrivals'].mean( )
-    label='Monthly Average'
-else:
-    monthly_metric=filtered_data.groupby('month')['arrivals'].sum ( )
-    label='Total Arrivals'
-overall_baseline=monthly_metric.mean( )
-seasonality_index=(monthly_metric/overall_baseline).reset_index( )
+# Total Arrivals for Every Year–Month Combination:
+yearly_monthly_totals=filtered_data.groupby(['year','month'])['arrivals'].sum( ).reset_index( )
+# Average of Totals Arrivals for Each Month:
+months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+monthly_avg=yearly_monthly_totals.groupby('month')['arrivals'].mean( ).reindex(months)
+# The Index (Monthly Mean/Grand Mean):
+overall_mean=monthly_avg.mean( )
+seasonality_index=(monthly_avg/overall_mean).reset_index( )
 # Ensure Chronological Order:
-seasonality_index['month']=pd.Categorical(seasonality_index['month'], categories=months, ordered=True)
-seasonality_index=seasonality_index.sort_values('month')
+# seasonality_index['month']=pd.Categorical(seasonality_index['month'], categories=months, ordered=True)
+# seasonality_index=seasonality_index.sort_values('month')
 # Visualization:
 norm   =Normalize(seasonality_index['arrivals'].min( ), seasonality_index['arrivals'].max( ))
-season_palette=cm.RdYlGn_r(norm(seasonality_index['arrivals'].values)).tolist( ) # (RdYlGn_r) Red for Low & Green for High
+season_palette=cm.RdYlGn_r(norm(seasonality_index['arrivals'].values)).tolist( ) # (RdYlGn_r) Red for High & Green for Low
 fig, ax=plt.subplots(figsize=(12, 8), frameon=True, tight_layout=True)
 sns.barplot(x='month', y='arrivals', data=seasonality_index, palette=season_palette, hue='month', legend=False)
 # BaseLine@1.0:
-baseline=ax.axhline(y=1., color='#000000', linestyle=':', linewidth=1.25, alpha=.75, label='BaseLine')
-ax.legend (handles=[baseline], labels=['BaseLine'], frameon=False, loc='upper right', prop={'size':13,'weight':'regular'})
+baseline=ax.axhline(y=1., color='#000000', linestyle=':', linewidth=1.25, alpha=.75, label='Annual BaseLine Average')
+ax.text(x=5.5, y=1.025, s='Annual BaseLine Average', fontsize=13, fontweight='regular', ha='center')
+# ax.legend (handles=[baseline], frameon=False, loc='upper right', prop={'size':13,'weight':'regular'})
 plt.title ('Seasonality Index ({}–{})'.format(selected_years[0], selected_years[1])  , fontsize=19, fontweight=    'bold')
-plt.text  (x=.51, y=.91, s=f'relative volume of arrivals compared to {label.lower()}', fontsize=13, fontweight= 'regular', ha='center', transform=plt.gcf( ).transFigure)
+plt.text  (x=.51, y=.91, s=f'total monthly volume averaged across years', fontsize=13, fontweight= 'regular', ha='center', transform=plt.gcf( ).transFigure)
 plt.ylabel('')
 plt.xlabel('')
 plt.ylim(0, seasonality_index['arrivals'].max( )+.2 )
-plt.yticks(fontsize=13, fontweight='semibold')
-plt.xticks(fontsize=13, fontweight='semibold')
-plt.tick_params(axis  ='both', which ='both', length=0)
+plt.yticks(   fontsize= 13, fontweight='semibold')
+plt.xticks(   fontsize= 13, fontweight='semibold')
+plt.tick_params(  axis='both',  which =    'both', length=0)
+for spine in ax.spines.values( ):spine.set_visible(False)
 for p in ax.patches:ax.annotate(f'{p.get_height( ):.2f}',(p.get_x( )+p.get_width( )/2., p.get_height( )), ha='center', va='center', xytext=(0,9), textcoords='offset points', fontsize=11, fontweight='semibold')
-for spine in ['top','left','right','bottom']:ax.spines[spine].set_visible(False)
 st.pyplot(fig)
 plt.close(fig)
 # check=filtered_data.groupby('month')['arrivals'].agg(['count','sum','mean'])
