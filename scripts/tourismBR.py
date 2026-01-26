@@ -11,14 +11,14 @@ from   adjustText        import adjust_text
 from     datetime        import date
 st.set_page_config(page_title='TourismBR', page_icon='🇧🇷', layout='wide', initial_sidebar_state='collapsed')
 # DATA:
-DATA     =      'https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
+DATA     =           'https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
 @st.cache_data
 def LoadData( ):
     DF   = pd.read_csv(DATA)
     return DF
 DF       = LoadData   (    )
 # SIDE:
-st.sidebar.title    ('ƊⱭȾɅViƧi🧿Ƞ&trade;'      )
+st.sidebar.title    ('ƊⱭȾɅViƧi🧿Ƞ&trade;'     )
 st.sidebar.divider  (                          )
 st.sidebar.header   ('Brazil 🇧🇷 InterNational Tourist Arrivals')
 st.sidebar.subheader('Time Series Data Analysis'               )
@@ -230,16 +230,22 @@ sns.barplot(y=sort.index, x='arrivals', data=sort, hue=sort.index, palette='GnBu
 plt.title('InterNational Tourist Arrivals in Brazil ({}–{}) by Means of Travel'.format(DF['year'].min( ), DF['year'].max( )),  fontsize= 19, fontweight='bold')
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.xticks( [] )
-plt.ylabel(None)
-plt.xlabel(None)
-plt.legend( [], frameon= False)
-plt.grid(       visible= False)
+plt.ylabel                                         (None)
+plt.xlabel                                         (None)
+plt.legend( [],                            frameon=False)
+plt.grid(                                  visible=False)
 for spine in ax.spines.values( ):spine.set_visible(False)
-plt.gca( ).axes.get_yaxis( ).set_visible(True)
-plt.tick_params(axis  ='both', which ='both', length=0)
-for c in ax.containers:
-    values=df.value_counts(ascending=False).iloc[0:0].values
-    ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=13, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
+plt.tick_params(   axis='both', which ='both', length= 0)
+for i, patch in enumerate(ax.patches):
+    width=patch.get_width( )                      # get_width( ): find the end of the horizontal bar
+    if width > 0:
+        ax.text(width+500000,                     # X-pos: just past the end of the bar
+            patch.get_y( )+patch.get_height( )/2, # Y-pos: center of the bar
+            f'{width:,.0f}',                      # number format
+            va        ='center',
+            ha        ='left',
+            fontsize  =  13,
+            fontweight='bold')
 st.pyplot ( fig )
 plt.close ( fig )
 st.divider(     )
@@ -254,12 +260,12 @@ sns.barplot(y=sort.index, x='arrivals',     data= sort, hue=sort.index, palette=
 plt.title('International Tourist Arrivals in Brazil ({}–{}) by Continent'.format(DF['year'].min( ), DF['year'].max( )),   fontsize= 19, fontweight='bold', loc='right')
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.xticks( [] )
-plt.ylabel(None)
-plt.xlabel(None)
-plt.legend( [], frameon= False)
-plt.grid(       visible= False)
-plt.tick_params(   axis='both', which ='both', length= 0)
+plt.ylabel                                         (None)
+plt.xlabel                                         (None)
+plt.legend( [],                            frameon=False)
+plt.grid(                                  visible=False)
 for spine in ax.spines.values( ):spine.set_visible(False)
+plt.tick_params(   axis='both', which ='both', length= 0)
 for i, patch in enumerate(ax.patches):
     width=patch.get_width( )                      # get_width( ): find the end of the horizontal bar
     if width > 0:
