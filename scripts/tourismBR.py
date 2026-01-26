@@ -33,9 +33,9 @@ arrivals=country_totals[country]
 st.sidebar.divider  (                          )
 st.sidebar.markdown ('Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)')
 st.sidebar.write    (          'Annual Reports from {} to {}'          .format(DF['year'] .min( ) ,   DF['year'].max( )                                                                     ))
-st.sidebar.info     (            'Total Arrivals ({}–{}): {}'          .format(DF['year'] .min( ) ,   DF['year'].max( ),                   f"{DF                   ['arrivals'].sum( )       :,.0f}"))
-st.sidebar.success  ('Year with highest visitors: {} with {} arrivals.'.format(DF.groupby('year')   ['arrivals'].sum( ).idxmax( )        , f"{DF.groupby('year')   ['arrivals'].sum( ).max( ):,.0f}"))
-st.sidebar.warning  (      'Top visiting country: {} with {} arrivals.'.format(DF.groupby('country')['arrivals'].sum( ).idxmax( )        , f"{DF.groupby('country')['arrivals'].sum( ).max( ):,.0f}"))
+st.sidebar.info     (            'Total Arrivals ({}–{}): {}'          .format(DF['year'] .min( ) ,   DF['year'].max( )          , f"{DF                   ['arrivals'].sum( )       :,.0f}"))
+st.sidebar.success  ('Year with highest visitors: {} with {} arrivals.'.format(DF.groupby('year')   ['arrivals'].sum( ).idxmax( ), f"{DF.groupby('year')   ['arrivals'].sum( ).max( ):,.0f}"))
+st.sidebar.warning  (      'Top visiting country: {} with {} arrivals.'.format(DF.groupby('country')['arrivals'].sum( ).idxmax( ), f"{DF.groupby('country')['arrivals'].sum( ).max( ):,.0f}"))
 st.sidebar.error    (  f'Second visiting country: {country} with {arrivals:,.0f} arrivals.')
 st.sidebar.divider  (                          )
 st.sidebar.markdown ('''
