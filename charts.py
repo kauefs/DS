@@ -69,11 +69,9 @@ def save_annual(df):
     plt.close(fig)
 def save_by_country(df):
     top=df.groupby('country')['arrivals'].sum( ).sort_values(ascending=False).head(12).reset_index( )
-    # sort=df.groupby('country')['arrivals'].sum( ).sort_values(ascending=False)[:12]
-    # values=sort['arrivals'].groupby(sort.index, observed= True).sum( ).values
     fig,ax=plt.subplots(                       frameon= True,                                    tight_layout= True)
     sns.barplot(data=top, x='country', y='arrivals', palette='Blues_r', hue='country', saturation=.75, legend=False)
-    plt.title(f'Top InterNational Tourist Arrivals in Brazil ({df['year'].min( )}–{df['year'].max( )}) by Country', fontdict=FontT)
+    plt.title(f'Top InterNational Tourist Arrivals in Brazil ({df['year'].min( )}–{df['year'].max( )})', fontdict=FontT)
     plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
     plt.xticks( [] )
     plt.ylabel(None)
