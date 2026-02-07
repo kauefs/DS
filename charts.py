@@ -46,7 +46,7 @@ def save_annual(df):
     sns.barplot(data=annual, x='year', y='arrivals', palette=palette, hue='year', saturation=.75, legend=False)
     plt.title(f'Annual InterNational Tourist Arrivals in Brazil ({annual['year'].min( )}–{annual['year'].max( )})', fontdict=FontT)
     plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
-    plt.xticks(fontsize=13 ,fontweight='semibold' ,          rotation='vertical'  )
+    plt.xticks(fontsize=12 ,fontweight='semibold' ,          rotation='vertical'  )
     plt.ylabel                                        ( None)
     plt.xlabel                                        ( None)
     plt.legend([ ],                            frameon=False)
@@ -130,7 +130,8 @@ def save_timeseries(df, countries, filename, title):
     # Strictly controling limits to prevent "Enormous Height"
     ax.set_ylim(piv.min( ).min( )*.5, piv.max( ).max( )*2.5)
     ax.xaxis.set_major_locator( ticker.MaxNLocator        (integer=True))
-    plt.tick_params(axis='both', which='both', length=0, labelleft=False)
+    plt.xticks( fontsize=  13  ,fontweight='semibold')
+    plt.tick_params(axis='both',which='both', length=0,  labelleft=False)
     for spine in ax.spines.values( ):            spine.set_visible(False)
     plt.savefig(f'{DIR}/{filename}.png', dpi=300, bbox_inches='tight', transparent=False)
     plt.close(fig)
