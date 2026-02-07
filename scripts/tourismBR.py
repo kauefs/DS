@@ -1,4 +1,4 @@
-# Libraries:
+# Libraries
 import      numpy          as   np
 import     pandas          as   pd
 import  streamlit          as   st
@@ -10,7 +10,7 @@ from   matplotlib.colors import Normalize
 from   adjustText        import adjust_text
 from     datetime        import date
 st.set_page_config(page_title='TourismBR', page_icon='🇧🇷', layout='wide', initial_sidebar_state='collapsed')
-# DATA:
+# DATA
 DATA     =           'https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
 @st.cache_data
 def LoadData( ):
@@ -18,13 +18,13 @@ def LoadData( ):
     return DF
 DF       = LoadData   (    )
 FontT={'family':'sans-serif','color':'#000000','size':19,'fontweight':'bold'}
-# SIDE:
+# SIDE
 st.sidebar.title    ('ƊⱭȾɅViƧi🧿Ƞ&trade;'     )
 st.sidebar.divider  (                          )
 st.sidebar.header   ('Brazil 🇧🇷 InterNational Tourist Arrivals')
 st.sidebar.subheader('Time Series Data Analysis'               )
 st.sidebar.divider  (                          )
-# Year Range Slider:
+# Year Range Slider
 min=int(DF['year'].min( ))
 max=int(DF['year'].max( ))
 selected_years=st.sidebar.slider('Year Range', min, max, (min, max))
@@ -33,11 +33,11 @@ country='Estados Unidos'
 arrivals=country_totals[country]
 st.sidebar.divider  (                          )
 st.sidebar.markdown ('Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)')
-st.sidebar.write    (          'Annual Reports from {} to {}'          .format(DF['year'] .min( ) ,   DF['year'].max( )                                                                     ))
-st.sidebar.info     (            'Total Arrivals ({}–{}): {}'          .format(DF['year'] .min( ) ,   DF['year'].max( )          , f"{DF                   ['arrivals'].sum( )       :,.0f}"))
-st.sidebar.success  ('Year with highest visitors: {} with {} arrivals.'.format(DF.groupby('year')   ['arrivals'].sum( ).idxmax( ), f"{DF.groupby('year')   ['arrivals'].sum( ).max( ):,.0f}"))
-st.sidebar.warning  (      'Top visiting country: {} with {} arrivals.'.format(DF.groupby('country')['arrivals'].sum( ).idxmax( ), f"{DF.groupby('country')['arrivals'].sum( ).max( ):,.0f}"))
-st.sidebar.error    (  f'Second visiting country: {country} with {arrivals:,.0f} arrivals.')
+st.sidebar.write    (          'Annual Reports from {} to {}'                .format(DF['year'] .min( )   ,  DF['year'].max( )                                                                     ))
+st.sidebar.info     (            'Total Arrivals ({}–{}): {}'                .format(DF['year'] .min( )   ,  DF['year'].max( )          , f"{DF                   ['arrivals'].sum( )       :,.0f}"))
+st.sidebar.success  ('Year with highest visitors: {} with {} arrivals.'      .format(DF.groupby('year')    ['arrivals'].sum( ).idxmax( ), f"{DF.groupby('year')   ['arrivals'].sum( ).max( ):,.0f}"))
+st.sidebar.warning  (      'Top visiting country: {} with {} total arrivals.'.format(DF.groupby('country') ['arrivals'].sum( ).idxmax( ), f"{DF.groupby('country')['arrivals'].sum( ).max( ):,.0f}"))
+st.sidebar.error    (  f'Second visiting country: {country} with {arrivals:,.0f} total arrivals.')
 st.sidebar.divider  (                          )
 st.sidebar.markdown ('''
 ![2024.10.17  ](https://img.shields.io/badge/2024.10.17-000000)
@@ -52,7 +52,7 @@ st.sidebar.markdown ('''
 
 [![ƊⱭȾɅViƧi🧿Ƞ](https://img.shields.io/badge/ƊⱭȾɅViƧi🧿Ƞ&trade;-0065FF?style=plastic&logoColor=0065FF&label=&copy;2026&labelColor=0065FF)](https://datavision.one/)
                      ''')
-# MAIN:
+# MAIN
 st.title   ('Brazil 🇧🇷 InterNational Tourist Arrivals')
 st.divider (                                          )
 st.markdown('''
@@ -65,12 +65,12 @@ showcasing the warmth and diversity of its people and landscapes. While 2024 mar
 – surpassing the 2018 record – 2025 has truly shattered the ceiling, setting an entirely new benchmark for arrivals.
             ''')
 st.divider( )
-# KPI:
+# KPI
 #st.subheader('KPI Metrics')
 mask=(DF['year']>=selected_years[0])&(DF['year']<=selected_years[1])
 filtered_data =DF[mask]
 current_total =filtered_data['arrivals'].sum( )
-# Year-Over-Year Logic (comparing max selected year vs previous year):
+# Year-Over-Year Logic (comparing max selected year vs previous year)
 latest_year   =selected_years[1]
 prev_year     =  latest_year -1
 total_latest  =DF[DF['year'] == latest_year]['arrivals'].sum( )
@@ -78,13 +78,13 @@ total_prev    =DF[DF['year'] ==   prev_year]['arrivals'].sum( )
 if total_prev > 0:yoy_growth=((total_latest-total_prev)/total_prev)*100
 else             :yoy_growth=0
 yoy_pct=(total_latest/total_prev)*100   if  total_prev     > 0 else 0
-# Record Growth:
+# Record Growth
 total2024     =DF[DF['year']==2024]['arrivals'].sum( )
 total2018     =DF[DF['year']==2018]['arrivals'].sum( )
 record        =(( total_latest-total2018)/total2018)*100
 record_pct    =(  total_latest/total2018)*100 if total2018 > 0 else 0
 record_delta  =  record_pct              -100
-# Pandemic Recovery (comparing latest vs 2019):
+# Pandemic Recovery (comparing latest vs 2019)
 total2019     = DF[DF['year']==2019]['arrivals'].sum( )
 recovery      =(( total_latest-total2019)       /total2019)*100
 recovery_pct  =(  total_latest/total2019)*100 if total2019 > 0 else 0
@@ -111,7 +111,7 @@ with col3:
 #               help = 'Percentage change compared to the previous record year.')
 plt.close('all')
 st.divider(   )
-# InterActive Seasonality HeatMap:
+# InterActive Seasonality HeatMap
 st.subheader(f'Seasonality HeatMap ({selected_years[0]}–{selected_years[1]})')
 filter=DF[(DF['year']>=selected_years[0])&(DF['year']<=selected_years[1])]
 data=filter.groupby(['year','month'])['arrivals'].sum( ).reset_index( )
@@ -135,25 +135,25 @@ plt.tick_params(axis='both',   which =    'both', length=0)
 st.pyplot(fig)
 plt.close(fig)
 st.divider(  )
-# Seasonality Index:
+# Seasonality Index
 st.subheader(f'Seasonality Index ({selected_years[0]}–{selected_years[1]})')
-# Total Arrivals for Every Year–Month Combination:
+# Total Arrivals for Every Year–Month Combination
 yearly_monthly_totals=filtered_data.groupby(['year','month'])['arrivals'].sum( ).reset_index( )
-# Average of Totals Arrivals for Each Month:
+# Average of Totals Arrivals for Each Month
 months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 monthly_avg=yearly_monthly_totals.groupby('month')['arrivals'].mean( ).reindex(months)
-# The Index (Monthly Mean/Grand Mean):
+# The Index (Monthly Mean/Grand Mean)
 overall_mean=monthly_avg.mean( )
 seasonality_index=(monthly_avg/overall_mean).reset_index( )
-# Ensure Chronological Order:
+# Ensure Chronological Order
 # seasonality_index['month']=pd.Categorical(seasonality_index['month'], categories=months, ordered=True)
 # seasonality_index=seasonality_index.sort_values('month')
-# Visualization:
+# Visualization
 norm   =Normalize(seasonality_index['arrivals'].min( ), seasonality_index['arrivals'].max( ))
 season_palette=cm.RdYlGn_r(norm(seasonality_index['arrivals'].values)).tolist( ) # (RdYlGn_r) Red for High & Green for Low
 fig, ax=plt.subplots(figsize=(12, 8), frameon=True, tight_layout=True)
 sns.barplot(x='month', y='arrivals', data=seasonality_index, palette=season_palette, hue='month', legend=False)
-# BaseLine@1.0:
+# BaseLine@1.0
 baseline=ax.axhline(y=1., color='#000000', linestyle=':', linewidth=1.25, alpha=.75, label='Annual BaseLine Average')
 ax.text(x=5.5, y=1.025, s='Annual BaseLine Average', fontsize=13, fontweight='regular', ha='center')
 # ax.legend (handles=[baseline], frameon=False, loc='upper right', prop={'size':13,'weight':'regular'})
@@ -172,7 +172,7 @@ plt.close(fig)
 # check=filtered_data.groupby('month')['arrivals'].agg(['count','sum','mean'])
 # st.write(check.reindex(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']))
 st.divider(  )
-# Annual:
+# Annual
 st.subheader('Annual Time Series')
 annual=DF.groupby('year')['arrivals'].sum(   ).reset_index( )
 values=    annual        ['arrivals'].values
@@ -195,7 +195,7 @@ for i, patch in enumerate(ax.patches):ax.text(x=patch.get_x( )+patch.get_width( 
 st.pyplot ( fig )
 plt.close ( fig )
 st.divider(     )
-# Monthly:
+# Monthly
 st.subheader('Monthly Arrivals')
 monthly=DF.groupby('month')['arrivals'].sum( ).reindex(months).reset_index( )
 values=monthly['arrivals'].values
@@ -218,7 +218,7 @@ for i, patch in enumerate(ax.patches):ax.text(x=patch.get_x( )+patch.get_width( 
 st.pyplot ( fig )
 plt.close ( fig )
 st.divider(     )
-# By Means of Travel:
+# By Means of Travel
 st.subheader('By Means of Travel')
 DD=DF['arrivals'].groupby(DF['via']).sum( )
 df=pd.DataFrame(DD)
@@ -248,7 +248,7 @@ for i, patch in enumerate(ax.patches):
 st.pyplot ( fig )
 plt.close ( fig )
 st.divider(     )
-# By Continent:
+# By Continent
 st.subheader('By Continent')
 DD=DF['arrivals'].groupby(DF['continent']).sum( )
 df=pd.DataFrame(DD)
@@ -278,7 +278,7 @@ for i, patch in enumerate(ax.patches):
 st.pyplot ( fig )
 plt.close ( fig )
 st.divider(     )
-# By Country:
+# By Country
 st.subheader('By Country')
 sort=DF.groupby('country')['arrivals'].sum( ).sort_values(ascending=False)[:12].reset_index( )
 values =sort  ['arrivals'].groupby(sort.index, observed= True).sum( ).values
@@ -306,7 +306,7 @@ for i, patch in enumerate(ax.patches):
 st.pyplot ( fig )
 plt.close ( fig )
 st.divider(     )
-# By Arrival Estate:
+# By Arrival Estate
 st.subheader('By Arrival Estate')
 DD=DF['arrivals'].groupby(DF['UF']).sum( )
 df=pd.DataFrame(DD)
@@ -336,7 +336,7 @@ for i, patch in enumerate(ax.patches):
 st.pyplot ( fig )
 plt.close ( fig )
 st.divider(     )
-# Monthly Arrivals:
+# Monthly Arrivals
 latest=DF['year'].max( )
 filter=DF[(DF['year']>=latest-15)]
 st.subheader(f'Monthly Arrivals ({filter['year'].min( )}–{filter['year'].max( )})')
@@ -369,7 +369,7 @@ for i, year in enumerate(years):
 st.pyplot (fig)
 plt.close (fig)
 st.divider(   )
-# Top Countries:
+# Top Countries
 st.subheader(f'Top Countries ({filter['year'].min( )}–{filter['year'].max( )})')
 group =filter.groupby(   ['year','country'])['arrivals']  .sum( )        .reset_index( )
 group =group.sort_values(['year',            'arrivals'], ascending=[True, False])
@@ -399,7 +399,7 @@ for i ,year in enumerate(range(start, end)):
 st.pyplot       (   fig  )
 plt.close       (   fig  )
 st.divider      (        )
-# Top 10 Arrivals:
+# Top 10 Arrivals
 st.subheader(f'Top 10 Arrivals ({filter['year'].min( )}–{filter['year'].max( )})')
 def Arrivals(df, countries, filename, title, palette='tab10'):
     group =filter.groupby(['country','year'])['arrivals'].sum( ).reset_index( )
@@ -443,7 +443,7 @@ def Arrivals(df, countries, filename, title, palette='tab10'):
 top10   =filter.groupby('country')     ['arrivals'].sum( ).nlargest(10).index.tolist( )
 Arrivals(filter, top10,  'Top10','Top 10 InterNational Tourist Arrivals in Brazil')
 st.divider(           )
-# Selected Countries:
+# Selected Countries
 st.subheader(f'Selected Countries ({filter['year'].min( )}–{filter['year'].max( )})')
 selected=['Austrália','Canadá' ,'Estados Unidos',  'Japão']
 custom  =[  '#00BFFF','#FF4500',       '#0065FF','#4CAF50']
