@@ -21,9 +21,9 @@
 
 <div align=center>
 
-![Arrivals](https://img.shields.io/badge/Arrivals%202024-6%2C657%2C377-808080?style=flat)
-![YoY     ](https://img.shields.io/badge/YoY%20Growth-%2B12.68%25-00CD00?style=flat)
-![Recovery](https://img.shields.io/badge/vs%202019-%2B4.79%25-0077B5?style=flat)
+![Arrivals](https://img.shields.io/badge/Arrivals%202025-9%2C287%2C196-808080?style=flat)
+![YoY     ](https://img.shields.io/badge/YoY%20Growth-%2B37.11%25-00CD00?style=flat)
+![Recovery](https://img.shields.io/badge/vs%202019-%2B46.18%25-0077B5?style=flat)
 
 </div>
 
