@@ -84,7 +84,7 @@ def save_by_country(df):
                 fontweight='bold')
     plt.savefig(f'{DIR}/TopArrivals.png', dpi=300, bbox_inches='tight', transparent=False)
     plt.close(fig)
-def save_timeseries(df, countries, filename, title):
+def save_timeseries(df, countries, filename, title, linestyle):
     # Filter
     latest_year=df['year'].max(  )
     start_year =latest_year -  15
@@ -96,7 +96,8 @@ def save_timeseries(df, countries, filename, title):
     # Figure
     fig,ax=plt.subplots(figsize=(12, 6))
     fig.subplots_adjust(left=.08, right=.72, top=.88, bottom=.12)
-    colors = sns.color_palette('tab10', len(countries))if len(countries)> 4 else['#00BFFF','#FF4500','#0065FF','#4CAF50']
+    colors = sns.color_palette(['#0065FF','#4CAF50','#FF4500','#00BFFF','#F030E0','#7B70EE','#800000','#BCBD11','#FF7F0E','#808080'],
+                               len(countries))if len(countries)> 4 else['#00BFFF','#FF4500','#0065FF','#4CAF50']
     # Plotting
     # Sort countries by the last year value
     last_values = piv.iloc[-1].sort_values(ascending=False)
@@ -108,7 +109,7 @@ def save_timeseries(df, countries, filename, title):
         if country in piv.columns:
             valid_data=piv[country] .dropna( )
             color     =colors[countries.index(country)]
-            ax.plot(valid_data.index, valid_data.values, color=color, linewidth=2.25, alpha=.75)
+            ax.plot(valid_data.index, valid_data.values, color=color, linewidth=1.5, alpha=.75, linestyle=linestyle)
             # Calculating non-overlapping position – if current y_end is too close to the previous label, push it down
             suggested_y    =     y_end
             if  suggested_y>last_y_pos*min_gap_multiplier:
@@ -146,9 +147,9 @@ if __name__=='__main__':
         save_by_country(df)
         # Top 10 Arrivals
         top10=df.groupby('country')['arrivals'].sum( ).nlargest(10).index.tolist( )
-        save_timeseries(df, top10,'Top10','Top 10 Arrivals')
+        save_timeseries(df, top10,'Top10','Top 10 Arrivals','--')
         # Selected Countries
         selected=['Austrália','Canadá','Estados Unidos','Japão']
-        save_timeseries(df, selected,'Selected','Selected Countries')
+        save_timeseries(df, selected,'Selected','Selected Countries',':')
         with open(STATE_FILE,'w')as f:f.write(str(max_year))
     else:print('No year change detected; skipping…')
