@@ -68,20 +68,21 @@ def save_annual(df):
     plt.savefig(f'{DIR}/AnnualTimeSeries.png')
     plt.close(fig)
 def save_by_country(df):
-    sort=df.groupby('country')['arrivals'].sum( ).sort_values(ascending=False)[:12]
-    values=sort['arrivals'].groupby(sort.index, observed= True).sum( ).values
-    fig,ax=plt.subplots(frameon=True, tight_layout=True)
-    sns.barplot(x=sort.index, y='arrivals', data=sort, palette='Blues_r', hue=sort.index, saturation=.75, legend=False)
+    to p=df.groupby('country')['arrivals'].sum( ).sort_values(ascending=False).head(12).reset_index( )
+    # sort=df.groupby('country')['arrivals'].sum( ).sort_values(ascending=False)[:12]
+    # values=sort['arrivals'].groupby(sort.index, observed= True).sum( ).values
+    fig,ax=plt.subplots(                       frameon= True,                                    tight_layout= True)
+    sns.barplot(data=top, x='country', y='arrivals', palette='Blues_r', hue='country', saturation=.75, legend=False)
     plt.title(f'Top InterNational Tourist Arrivals in Brazil ({df['year'].min( )}–{df['year'].max( )}) by Country', fontdict=FontT)
     plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
     plt.xticks( [] )
     plt.ylabel(None)
     plt.xlabel(None)
-    plt.legend( [], frameon= False)
-    plt.grid(       visible= False)
+    plt.legend( [],                            frameon=False)
+    plt.grid(                                  visible=False)
     for spine in ax.spines.values( ):spine.set_visible(False)
-    ax.xaxis.set_visible    (False)
-    for c in ax.containers:ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
+    ax.xaxis                              .set_visible(False)
+    for c in ax.containers:ax.bar_label(container=c, fmt='{:,.0f}', fontsize=11, padding=10, fontweight='bold', rotation='horizontal', color='#000000')
     plt.savefig(f'{DIR}/TopArrivals.png')
     plt.close(fig)
 def save_timeseries(df, countries, filename, title):
