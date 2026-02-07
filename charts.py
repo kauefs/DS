@@ -10,6 +10,7 @@ from   adjustText        import adjust_text
 DATA      ='https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
 DIR       ='img'
 STATE_FILE='img/last_year.txt'
+FontT={'family':'sans-serif','color':'#000000','size':20,'fontweight':'bold'}
 def load_data( ):
     df    = pd.read_csv(DATA)
     df['arrivals']=pd.to_numeric(df['arrivals'], errors='coerce').fillna(0)
@@ -43,7 +44,7 @@ def save_annual(df):
     palette=cm.viridis(norm(values)).tolist( )
     fig, ax=plt.subplots(figsize=(15, 15), frameon=True, tight_layout=True)
     sns.barplot(x='year', y='arrivals', data=annual, palette=palette, hue='year', saturation=.75, legend=False)
-    plt.title('Annual InterNational Tourist Arrivals in Brazil ({}–{})'.format(annual['year'].min( ), annual['year'].max( )), fontsize=20, fontweight='bold')
+    plt.title(f'Annual InterNational Tourist Arrivals in Brazil ({annual['year'].min( )}–{annual['year'].max( )})', fontdict=FontT)
     plt.xticks(fontsize=13 ,fontweight='semibold' ,          rotation='vertical'  )
     for spine in ax.spines.values( ):spine.set_visible(False)
     ax.yaxis.set_visible(False)
@@ -71,7 +72,7 @@ def save_by_country(df):
     values=sort['arrivals'].groupby(sort.index, observed= True).sum( ).values
     fig,ax=plt.subplots(frameon=True, tight_layout=True)
     sns.barplot(x=sort.index, y='arrivals', data=sort, palette='Blues_r', hue=sort.index, saturation=.75, legend=False)
-    plt.title('Top InterNational Tourist Arrivals in Brazil ({}–{}) by Country'.format(sort['year'].min( ), sort['year'].max( )),   fontsize=20, fontweight='bold')
+    plt.title(f'Top InterNational Tourist Arrivals in Brazil ({df['year'].min( )}–{df['year'].max( )}) by Country', fontdict=FontT)
     plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
     plt.xticks( [] )
     plt.ylabel(None)
@@ -84,7 +85,7 @@ def save_by_country(df):
     plt.savefig(f'{DIR}/TopArrivals.png')
     plt.close(fig)
 def save_timeseries(df, countries, filename, title):
-    # Filter:
+    # Filter
     latest_year=df['year'].max( )
     start_year =latest_year - 15
     df_filtered=df[df['year']>=start_year]
@@ -92,14 +93,14 @@ def save_timeseries(df, countries, filename, title):
     group =df_filtered.groupby(['country','year'])['arrivals'].sum( ).reset_index( )
     subset=group[group         ['country'].isin(countries)]
     piv   =subset.pivot_table(index=      'year', columns='country', values='arrivals')
-    # Figure:
+    # Figure
     fig,ax=plt.subplots(figsize=(10, 5))
     fig.subplots_adjust(left=.08, right=.72, top=.88, bottom=.12)
     colors = sns.color_palette('tab10', len(countries))if len(countries)> 4 else['#00BFFF','#FF4500','#0065FF','#4CAF50']
-    # Plotting:
-    # Sort countries by the last year value:
+    # Plotting
+    # Sort countries by the last year value
     last_values = piv.iloc[-1].sort_values(ascending=False)
-    # Defining minimum "multiplier" gap for the log scale:
+    # Defining minimum "multiplier" gap for the log scale
     # 0.85 means the next label must be at least 15% lower than the previous one
     min_gap_multiplier =.75
     last_y_pos = float('inf')
@@ -108,7 +109,7 @@ def save_timeseries(df, countries, filename, title):
             valid_data=piv[country] .dropna( )
             color     =colors[countries.index(country)]
             ax.plot(valid_data.index, valid_data.values, color=color, linewidth=2.25, alpha=.75)
-            # Calculating non-overlapping position – if current y_end is too close to the previous label, push it down:
+            # Calculating non-overlapping position – if current y_end is too close to the previous label, push it down
             suggested_y    =     y_end
             if  suggested_y>last_y_pos*min_gap_multiplier:
                 suggested_y=last_y_pos*min_gap_multiplier
@@ -119,16 +120,16 @@ def save_timeseries(df, countries, filename, title):
                     fontsize   =    9 ,
                     fontweight ='bold',
                     va         ='center')
-            # Drawing a tiny connector line if the label was pushed significantly if abs(suggested_y-y_end)/y_end>.05:
+            # Drawing a tiny connector line if the label was pushed significantly if abs(suggested_y-y_end)/y_end>.05
             #     ax.plot([valid_data.index[-1], valid_data.index[-1]+.15],
             #             [y_end,  suggested_y], color=color, linestyle=':', linewidth=1)
             last_y_pos=suggested_y
-    # Styling:
+    # Styling
     ax.set_title(f'{title} ({start_year}–{latest_year})', fontsize=15, fontweight='bold', loc='left', pad=25)
     ax.set_yscale('log')
-    # Strictly controling limits to prevent "Enormous Height":
+    # Strictly controling limits to prevent "Enormous Height"
     ax.set_ylim(piv.min( ).min( )*.5, piv.max( ).max( )*2.5)
-    ax.xaxis.set_major_locator(mticker.MaxNLocator        (integer=True))
+    ax.xaxis.set_major_locator( ticker.MaxNLocator        (integer=True))
     plt.tick_params(axis='both', which='both', length=0, labelleft=False)
     for spine in ax.spines.values( ):            spine.set_visible(False)
     plt.savefig(f'{DIR}/{filename}.png')
