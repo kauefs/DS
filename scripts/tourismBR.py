@@ -359,7 +359,7 @@ for i, year in enumerate(years):
     sns.barplot(x='month' , y='arrivals', hue='month', data=group, ax=ax, palette=palette, legend=False)
     ax.set_title(f'{year}', fontsize=15, fontweight='bold',   pad=60)
     labels=ax.get_xticklabels( )
-    plt.setp(labels, rotation=90, ha='center')
+    plt.setp(labels, rotation=0, ha='center')
     ax.tick_params(axis='both', which='both', length= 0)
     ax.set_xlabel('')
     ax.set_ylabel('')
@@ -446,7 +446,7 @@ top10   =filter.groupby('country')     ['arrivals'].sum( ).nlargest(10).index.to
 Arrivals(filter, top10,  'Top10','Top 10 InterNational Tourist Arrivals in Brazil')
 st.divider(           )
 # Selected Countries:
-st.subheader('Selected Countries ({}–{})'.format(filter['year'].min( ), filter['year'].max( )))
+st.subheader(f'Selected Countries ({filter['year'].min( )}–{filter['year'].max( )})')
 selected=['Austrália','Canadá' ,'Estados Unidos',  'Japão']
 custom  =[  '#00BFFF','#FF4500',       '#0065FF','#4CAF50']
 Arrivals(filter, selected,'Selected','InterNational Tourist Arrivals in Brazil for Selected Countries', custom)
