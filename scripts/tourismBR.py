@@ -17,6 +17,7 @@ def LoadData( ):
     DF   = pd.read_csv(DATA)
     return DF
 DF       = LoadData   (    )
+FontT={'family':'sans-serif','color':'#000000','size':19,'fontweight':'bold'}
 # SIDE:
 st.sidebar.title    ('ƊⱭȾɅViƧi🧿Ƞ&trade;'     )
 st.sidebar.divider  (                          )
@@ -113,13 +114,13 @@ with col3:
 plt.close('all')
 st.divider(   )
 # InterActive Seasonality HeatMap:
-st.subheader('Seasonality HeatMap ({}–{})'.format(selected_years[0], selected_years[1]))
+st.subheader(f'Seasonality HeatMap ({selected_years[0]}–{selected_years[1]})')
 filter=DF[(DF['year']>=selected_years[0])&(DF['year']<=selected_years[1])]
 data=filter.groupby(['year','month'])['arrivals'].sum( ).reset_index( )
 data['month']=pd.Categorical(data['month'], categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
 pivot=data.pivot_table(index='year', columns='month', values='arrivals', observed=False)
 def fmt(x, pos):return f'{x/1e6:.1f}M' if x >= 1e6 else f'{x/1e3:.0f}K'
-fig,ax=plt.subplots(figsize=(12, 8), frameon=  True , tight_layout=True)
+fig,ax=plt.subplots(figsize=(12, 8), frameon=True   , tight_layout=True)
 sns.heatmap(pivot,
             annot= False ,
             cmap ='RdYlGn_r', # Spectral_r
@@ -127,7 +128,7 @@ sns.heatmap(pivot,
             linewidths=.5,
             cbar_kws={'format':ticker.FuncFormatter(fmt)})
 ax.collections[0].colorbar.ax.tick_params(length=0)
-plt.title ('Monthly Arrivals Intensity per Year', fontsize=19, fontweight='bold')
+plt.title ('Monthly Arrivals Intensity per Year', fontdict=FontT)
 plt.ylabel('')
 plt.xlabel('')
 plt.yticks(fontsize =  13, fontweight='semibold')
@@ -137,7 +138,7 @@ st.pyplot(fig)
 plt.close(fig)
 st.divider(  )
 # Seasonality Index:
-st.subheader('Seasonality Index ({}–{})'.format(selected_years[0], selected_years[1]))
+st.subheader(f'Seasonality Index ({selected_years[0]}–{selected_years[1]})')
 # Total Arrivals for Every Year–Month Combination:
 yearly_monthly_totals=filtered_data.groupby(['year','month'])['arrivals'].sum( ).reset_index( )
 # Average of Totals Arrivals for Each Month:
@@ -158,8 +159,8 @@ sns.barplot(x='month', y='arrivals', data=seasonality_index, palette=season_pale
 baseline=ax.axhline(y=1., color='#000000', linestyle=':', linewidth=1.25, alpha=.75, label='Annual BaseLine Average')
 ax.text(x=5.5, y=1.025, s='Annual BaseLine Average', fontsize=13, fontweight='regular', ha='center')
 # ax.legend (handles=[baseline], frameon=False, loc='upper right', prop={'size':13,'weight':'regular'})
-plt.title ('Seasonality Index ({}–{})'.format(selected_years[0], selected_years[1])  , fontsize=19, fontweight=    'bold')
-plt.text  (x=.51, y=.91, s=f'total monthly volume averaged across years', fontsize=13, fontweight= 'regular', ha='center', transform=plt.gcf( ).transFigure)
+plt.title (f'Seasonality Index ({selected_years[0]}–{selected_years[1]})', fontdict=FontT)
+plt.text  (x=.51, y=.91, s=f'total monthly volume averaged across years' , fontsize= 13, fontweight= 'regular', ha='center', transform=plt.gcf( ).transFigure)
 plt.ylabel('')
 plt.xlabel('')
 plt.ylim(0, seasonality_index['arrivals'].max( )+.2 )
@@ -181,7 +182,7 @@ norm=Normalize(values.min( ),         values  .max ( ) )
 annual_palette=cm.viridis(norm       (values)).tolist( )
 fig,ax=plt.subplots(figsize=(12,12), frameon= True , tight_layout=True)
 sns.barplot(y='arrivals', x='year' ,    data=annual, palette=annual_palette,  hue='year', saturation=.75, legend=False)
-plt.title('Annual InterNational Tourist Arrivals in Brazil ({}–{})'.format(annual['year'].min( ), annual['year'].max( )), fontsize= 19, fontweight='bold')
+plt.title(f'Annual InterNational Tourist Arrivals in Brazil ({annual['year'].min( )}–{annual['year'].max( )})', fontdict=FontT)
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
 plt.xticks(fontsize=13 ,fontweight='semibold' ,          rotation='vertical'  )
 plt.ylabel                                        ( None)
@@ -204,7 +205,7 @@ norm=Normalize(values.min( ),    values  .max ( ) )
 monthly_palette=cm.RdYlGn_r(norm(values)).tolist( ) # brg_r
 fig,ax=plt.subplots(figsize=(12, 12), frameon=True, tight_layout=True)
 sns.barplot(data=monthly, y='arrivals',  x='month', hue='month', palette=monthly_palette, saturation=.75, legend=False)
-plt.title('Monthly InterNational Tourist Arrivals in Brazil ({}–{})'.format(DF['year'].min( ), DF['year'].max( )), fontsize=19, fontweight='bold')
+plt.title(f'Monthly InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )})', fontdict=FontT)
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
 plt.xticks(fontsize=13, fontweight='semibold' ,          rotation='horizontal')
 plt.ylabel                                         (None)
@@ -227,7 +228,7 @@ values=df['arrivals'].groupby(df.index, observed= True).sum( ).values
 sort=df.sort_values(by='arrivals'     ,ascending=False)
 fig,ax=plt.subplots(figsize=(12, 6), frameon=True, tight_layout=True)
 sns.barplot(y=sort.index, x='arrivals', data=sort, hue=sort.index, palette='GnBu_r',saturation=.75, legend=False)
-plt.title('InterNational Tourist Arrivals in Brazil ({}–{}) by Means of Travel'.format(DF['year'].min( ), DF['year'].max( )),  fontsize= 19, fontweight='bold')
+plt.title(f'InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) by Means of Travel',  fontdict=FontT)
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.xticks( [] )
 plt.ylabel                                         (None)
@@ -257,7 +258,7 @@ values=df['arrivals'].groupby(df.index, observed= True).sum( ).values
 sort=df.sort_values(by='arrivals'     ,ascending=False)
 fig,ax=plt.subplots(figsize=(12 , 6)  ,  frameon= True, tight_layout=True)
 sns.barplot(y=sort.index, x='arrivals',     data= sort, hue=sort.index, palette='autumn', saturation=.75, legend=False)
-plt.title('International Tourist Arrivals in Brazil ({}–{}) by Continent'.format(DF['year'].min( ), DF['year'].max( )),   fontsize= 19, fontweight='bold', loc='right')
+plt.title(f'International Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) by Continent', fontdict=FontT, loc='right')
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.xticks( [] )
 plt.ylabel                                         (None)
@@ -285,7 +286,7 @@ sort=DF.groupby('country')['arrivals'].sum( ).sort_values(ascending=False)[:12].
 values =sort  ['arrivals'].groupby(sort.index, observed= True).sum( ).values
 fig,ax=plt.subplots(figsize=(12, 6),  frameon= True,     tight_layout= True)
 sns.barplot(y='country', x='arrivals',   data= sort, palette='Blues_r', hue='country', saturation=.75, legend=False)
-plt.title('Top InterNational Tourist Arrivals in Brazil ({}–{}) by Country'.format(DF['year'].min( ), DF['year'].max( )), fontsize=19, fontweight='bold')
+plt.title(f'Top InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) by Country', fontdict=FontT)
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.xticks( [] )
 plt.ylabel                                        ( None)
@@ -309,13 +310,13 @@ plt.close ( fig )
 st.divider(     )
 # By Arrival Estate:
 st.subheader('By Arrival Estate')
-DD=DF['arrivals'].groupby(DF['UF']).sum()
+DD=DF['arrivals'].groupby(DF['UF']).sum( )
 df=pd.DataFrame(DD)
-values=df['arrivals'].groupby(df.index, observed= True).sum().values
+values=df['arrivals'].groupby(df.index, observed= True).sum( ).values
 sort=df.sort_values(by='arrivals'     ,ascending=False)
 fig,ax=plt.subplots(figsize=(12, 8),  frameon= True, tight_layout=True)
 sns.barplot(y=sort.index, x='arrivals', data=sort, hue=sort.index, palette='Purples_r', saturation=.75, legend=False )
-plt.title('InterNational Tourist Arrivals in Brazil ({}–{}) by Arrival Estate'.format(DF['year'].min( ), DF['year'].max( )), fontsize=19, fontweight='bold', loc='right')
+plt.title(f'InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) by Arrival Estate', fontdict=FontT, loc='right')
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.xticks( [] )
 plt.ylabel                                         (None)
@@ -340,7 +341,7 @@ st.divider(     )
 # Monthly Arrivals:
 latest=DF['year'].max( )
 filter=DF[(DF['year']>=latest-15)]
-st.subheader('Monthly Arrivals ({}–{})'.format(filter['year'].min( ), filter['year'].max( )))
+st.subheader(f'Monthly Arrivals ({filter['year'].min( )}–{filter['year'].max( )})')
 start=filter['year'].min( )
 end  =filter['year'].max( )+1
 years         =range(start, end)
@@ -371,7 +372,7 @@ st.pyplot (fig)
 plt.close (fig)
 st.divider(   )
 # Top Countries:
-st.subheader('Top Countries ({}–{})'.format(filter['year'].min( ), filter['year'].max( )))
+st.subheader(f'Top Countries ({filter['year'].min( )}–{filter['year'].max( )})')
 group =filter.groupby(   ['year','country'])['arrivals']  .sum( )        .reset_index( )
 group =group.sort_values(['year',            'arrivals'], ascending=[True, False])
 fig   ,axes=plt.subplots(8,    2,                           figsize=(12,    25), tight_layout=True)
@@ -401,7 +402,7 @@ st.pyplot       (   fig  )
 plt.close       (   fig  )
 st.divider      (        )
 # Top 10 Arrivals:
-st.subheader('Top 10 Arrivals ({}–{})'.format(filter['year'].min( ), filter['year'].max( )))
+st.subheader(f'Top 10 Arrivals ({filter['year'].min( )}–{filter['year'].max( )})')
 def Arrivals(df, countries, filename, title, palette='tab10'):
     group =filter.groupby(['country','year'])['arrivals'].sum( ).reset_index( )
     top   =group [group   ['country'].isin(countries)]
@@ -409,7 +410,7 @@ def Arrivals(df, countries, filename, title, palette='tab10'):
     if isinstance(palette, list):colors=palette
     else                        :colors=sns.color_palette(palette, len(countries))
     fig,ax   =plt.subplots(figsize=(12, 6), frameon=True, tight_layout=True)
-    fig.subplots_adjust (left   =.08, right=.72,   top=.88,   bottom= .12)
+    fig.subplots_adjust (left     =.08, right=.72,   top=.88,   bottom= .12)
     values   =piv.iloc[-1].sort_values(ascending=False)
     min_gap_multiplier=.75
     last_y_pos=float('inf')
@@ -432,7 +433,7 @@ def Arrivals(df, countries, filename, title, palette='tab10'):
             # Drawing tiny connector line if label is pushed significantly if abs(suggested_y-y_end)/y_end>.05:
             # ax.plot([valid_data.index[-1], valid_data.index[-1]+.15],   [y_end, suggested_y], color=color, linestyle=':', linewidth=1)
             last_y_pos=suggested_y
-    ax.set_title(f'{title} ({latest-15}–{latest})', fontsize=19, fontweight='bold', loc='left')
+    ax.set_title(f'{title} ({latest-15}–{latest})', fontdict=FontT, loc='left')
     ax.set_yscale('log')
     ax.set_ylim(piv.min( ).min( )*.5, piv.max( ).max( )*2.5)
     ax.xaxis.set_major_locator(ticker.MaxNLocator        (integer= True))
