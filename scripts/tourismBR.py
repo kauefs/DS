@@ -60,7 +60,7 @@ Brazil's rich tapestry of cultures, breathtaking landscapes, and iconic landmark
 In recent times, Brazil has seen a resurgence in tourist arrivals, as travelers seek to explore its rich heritage, vibrant festivals, and culinary delights,
 from the lush Amazon rainforest to the sun-kissed beaches of Rio de Janeiro, the country offers a diverse array of experiences.
 
-As the country enhances its infrastructure and promote sustainable travel, it stands as an interesting destination for international visitors,
+As the country enhances its infrastructure and promotes sustainable travel, it stands as an interesting destination for international visitors,
 showcasing the warmth and diversity of its people and landscapes. While 2024 marked a triumphant recovery from COVID-19 pandemic
 – surpassing the 2018 record – 2025 has truly shattered the ceiling, setting an entirely new benchmark for arrivals.
             ''')
