@@ -401,7 +401,7 @@ plt.close       (   fig  )
 st.divider      (        )
 # Top 10 Arrivals
 st.subheader(f'Top 10 Arrivals ({filter['year'].min( )}–{filter['year'].max( )})')
-def Arrivals(df, countries, filename, title, palette='tab10', linestyle=None):
+def Arrivals(df, countries, filename, title, linestyle=None, palette='tab10'):
     group =filter.groupby(['country','year'])['arrivals'].sum( ).reset_index( )
     top   =group [group   ['country'].isin(countries)]
     piv   =  top.pivot_table(index  ='year', columns='country', values='arrivals')
@@ -440,15 +440,15 @@ def Arrivals(df, countries, filename, title, palette='tab10', linestyle=None):
     plt.xticks( fontsize=  13  ,fontweight='semibold')
     st.pyplot (      fig  )
     plt.close (      fig  )
-top10   =filter.groupby('country')   ['arrivals'].sum( ).nlargest(10).index.tolist( )
+top10  =filter.groupby('country')     ['arrivals'].sum( ).nlargest(10).index.tolist( )
 palette=['#0065FF','#4CAF50','#FF4500','#00BFFF','#F030E0','#7B70EE','#800000','#BCBD11','#FF7F0E','#808080']
-Arrivals(filter, top10,  'Top10','Top 10 InterNational Tourist Arrivals in Brazil', palette,'--')
+Arrivals(filter, top10,'Top10','Top 10 InterNational Tourist Arrivals in Brazil','--', palette)
 st.divider(           )
 # Selected Countries
 st.subheader(f'Selected Countries ({filter['year'].min( )}–{filter['year'].max( )})')
 selected=['Austrália','Canadá' ,'Estados Unidos',  'Japão']
 custom  =[  '#00BFFF','#FF4500',       '#0065FF','#4CAF50']
-Arrivals(filter, selected,'Selected','InterNational Tourist Arrivals in Brazil for Selected Countries', custom,':')
+Arrivals(filter, selected,'Selected','InterNational Tourist Arrivals in Brazil for Selected Countries',':', custom)
 st.divider (          )
 plt.close  (    'all' )
 st.toast   ('Travel!', icon='😎')
