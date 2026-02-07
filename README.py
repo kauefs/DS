@@ -1,15 +1,15 @@
 import urllib.parse, os
 import pandas  as    pd
-# 1. Configuration
+# Configuration
 DATA      ='https://github.com/kauefs/DS/raw/refs/heads/@/datasets/tourismBR.csv'
 README    ='README.md'
 STATE_FILE='img/last_year.txt'
-# 2. Load Data & Calculate Metrics
+# Load Data & Calculate Metrics
 try:
     df=pd.read_csv(DATA)
     df['arrivals']=pd.to_numeric(df['arrivals'], errors='coerce').fillna(0)
     latest_year   =int(df['year'].max( ))
-    # Check if it actually needs to update
+    # Check if it needs to update
     if os.path.exists(STATE_FILE):
         with open    (STATE_FILE,'r')as f:last_recorded_year=int(f.read( ).strip( ))
         if latest_year <= last_recorded_year:
@@ -29,19 +29,19 @@ try:
 except Exception as e:
     print(f'Calculation Error: {e}')
     exit(1)
-# 3. Safe Reconstruction Logic
+# Safe Reconstruction Logic
 if os.path.exists(README):
     with open    (README,'r', encoding='utf-8')as f:full_text=f.read( )
-    # We define the core tags. We'll look for these specifically.
+    # Define core tags to look for specifically
     START_TAG='### Live Stats'
     DIV_OPEN ='\n<div align=center>\n'
     DIV_CLOSE='\n</div>\n'
     HR_TAG   ='---'
     if START_TAG in full_text and HR_TAG in full_text:
-        # Split at the header to keep everything above it
+        # Split header to keep everything above it
         parts_above=full_text.split(START_TAG)
         header     =parts_above[0]+ START_TAG
-        # Split at the horizontal rule to keep everything below it
+        # Split horizontal rule to keep everything below it
         parts_below=full_text.split(HR_TAG)
         footer     =HR_TAG +parts_below[-1]
         # Reconstruct with clean spacing
