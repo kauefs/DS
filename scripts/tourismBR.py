@@ -62,9 +62,8 @@ from the lush Amazon rainforest to the sun-kissed beaches of Rio de Janeiro, the
 As the country continues to enhance its tourism infrastructure and to promote sustainable travel initiatives,
 it stands as an interesting destination for international visitors, showcasing the warmth and diversity of its people and landscapes.
 
-2024 has shown a full recovery from COVID-19 pandemic, breaking the previous record of visitors from 2018.
-
-But 2025 has set a new record for the highest number of arrivals.
+While 2024 marked a full recovery from COVID-19 pandemic, breaking the previous record of visitors from 2018,
+2025 shattered the ceiling, setting an entirely new benchmark for arrivals.
             ''')
 st.divider( )
 # KPI:
