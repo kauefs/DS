@@ -401,14 +401,14 @@ plt.close       (   fig  )
 st.divider      (        )
 # Top 10 Arrivals
 st.subheader(f'Top 10 Arrivals ({filter['year'].min( )}–{filter['year'].max( )})')
-def Arrivals(df, countries, filename, title, palette='tab10'):
+def Arrivals(df, countries, filename, title, palette='tab10', linestyle=None):
     group =filter.groupby(['country','year'])['arrivals'].sum( ).reset_index( )
     top   =group [group   ['country'].isin(countries)]
     piv   =  top.pivot_table(index  ='year', columns='country', values='arrivals')
     if isinstance(palette, list):colors=palette
     else                        :colors=sns.color_palette(palette, len(countries))
     fig,ax   =plt.subplots(figsize=(12, 6), frameon=True, tight_layout=True)
-    fig.subplots_adjust (left     =.08, right=.72,   top=.88,   bottom= .12)
+    fig. subplots_adjust  (left   =.08,   right=.72, top=.88,   bottom= .12)
     values   =piv.iloc[-1].sort_values(ascending=False)
     min_gap_multiplier=.75
     last_y_pos=float('inf')
@@ -416,7 +416,7 @@ def Arrivals(df, countries, filename, title, palette='tab10'):
         if country in piv.columns:
             valid_data=piv[country].dropna( )
             color     =colors[countries.index(country)]
-            ax.plot(valid_data.index, valid_data.values, color=color, linewidth=2.25, alpha=.75)
+            ax.plot(valid_data.index, valid_data.values, color=color, linewidth=1.5, alpha=.75)
             # If y_end is too close to previous label, push it down (calculating non-overlapping position):
             suggested_y    =     y_end
             if  suggested_y>last_y_pos*min_gap_multiplier:
@@ -440,14 +440,15 @@ def Arrivals(df, countries, filename, title, palette='tab10'):
     plt.xticks( fontsize=  13  ,fontweight='semibold')
     st.pyplot (      fig  )
     plt.close (      fig  )
-top10   =filter.groupby('country')     ['arrivals'].sum( ).nlargest(10).index.tolist( )
-Arrivals(filter, top10,  'Top10','Top 10 InterNational Tourist Arrivals in Brazil')
+top10   =filter.groupby('country')   ['arrivals'].sum( ).nlargest(10).index.tolist( )
+palette=['#0065FF','#4CAF50','#FF4500','#00BFFF','#F030E0','#7B70EE','#800000','#BCBD11','#FF7F0E','#808080']
+Arrivals(filter, top10,  'Top10','Top 10 InterNational Tourist Arrivals in Brazil', palette,'--')
 st.divider(           )
 # Selected Countries
 st.subheader(f'Selected Countries ({filter['year'].min( )}–{filter['year'].max( )})')
 selected=['Austrália','Canadá' ,'Estados Unidos',  'Japão']
 custom  =[  '#00BFFF','#FF4500',       '#0065FF','#4CAF50']
-Arrivals(filter, selected,'Selected','InterNational Tourist Arrivals in Brazil for Selected Countries', custom)
+Arrivals(filter, selected,'Selected','InterNational Tourist Arrivals in Brazil for Selected Countries', custom,':')
 st.divider (          )
 plt.close  (    'all' )
 st.toast   ('Travel!', icon='😎')
