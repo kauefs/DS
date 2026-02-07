@@ -68,7 +68,7 @@ def save_annual(df):
     plt.savefig(f'{DIR}/AnnualTimeSeries.png')
     plt.close(fig)
 def save_by_country(df):
-    to p=df.groupby('country')['arrivals'].sum( ).sort_values(ascending=False).head(12).reset_index( )
+    top=df.groupby('country')['arrivals'].sum( ).sort_values(ascending=False).head(12).reset_index( )
     # sort=df.groupby('country')['arrivals'].sum( ).sort_values(ascending=False)[:12]
     # values=sort['arrivals'].groupby(sort.index, observed= True).sum( ).values
     fig,ax=plt.subplots(                       frameon= True,                                    tight_layout= True)
