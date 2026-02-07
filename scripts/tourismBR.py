@@ -191,7 +191,7 @@ for spine in ax.spines.values( ):spine.set_visible(False)
 ax.yaxis                              .set_visible(False)
 plt.tick_params(axis='both', which='both', length=0)
 labels=[f'{v:,.0f}' for v in annual['arrivals']]
-for i, patch in enumerate(ax.patches):ax.text(x=patch.get_x( )+patch.get_width( )/2., y=patch.get_height( )-50000, s=labels[i], ha='center', va='top', fontsize=13, fontweight='bold', rotation='vertical', color='#FFFFFF')
+for i, patch in enumerate(ax.patches):ax.text(x=patch.get_x( )+patch.get_width( )/2., y=patch.get_height( )-50000, s=labels[i], ha='center', va='top', fontsize=12, fontweight='bold', rotation='vertical', color='#FFFFFF')
 st.pyplot ( fig )
 plt.close ( fig )
 st.divider(     )
