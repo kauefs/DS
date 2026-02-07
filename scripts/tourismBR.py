@@ -416,7 +416,7 @@ def Arrivals(df, countries, filename, title, linestyle=None, palette='tab10'):
         if country in piv.columns:
             valid_data=piv[country].dropna( )
             color     =colors[countries.index(country)]
-            ax.plot(valid_data.index, valid_data.values, color=color, linewidth=1.5, alpha=.75)
+            ax.plot(valid_data.index, valid_data.values, color=color, linewidth=1.5, alpha=.75, linestyle=linestyle)
             # If y_end is too close to previous label, push it down (calculating non-overlapping position):
             suggested_y    =     y_end
             if  suggested_y>last_y_pos*min_gap_multiplier:
