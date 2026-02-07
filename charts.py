@@ -46,7 +46,7 @@ def save_annual(df):
     sns.barplot(data=annual, x='year', y='arrivals', palette=palette, hue='year', saturation=.75, legend=False)
     plt.title(f'Annual InterNational Tourist Arrivals in Brazil ({annual['year'].min( )}–{annual['year'].max( )})', fontdict=FontT)
     plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
-    plt.xticks(fontsize=12 ,fontweight='semibold' ,          rotation='vertical'  )
+    plt.xticks(fontsize=13 ,fontweight='semibold' ,          rotation='vertical'  )
     plt.ylabel                                        ( None)
     plt.xlabel                                        ( None)
     plt.legend([ ],                            frameon=False)
@@ -55,7 +55,7 @@ def save_annual(df):
     ax.yaxis                              .set_visible(False)
     plt.tick_params(axis='both',  which='both', length=0)
     labels=[f'{v:,.0f}' for v in annual['arrivals']]
-    for i, patch in enumerate(ax.patches):ax.text(x=patch.get_x( )+patch.get_width( )/2., y=patch.get_height( )-50000, s=labels[i], ha='center', va='top', fontsize=13, fontweight='bold', rotation='vertical', color='#FFFFFF')
+    for i, patch in enumerate(ax.patches):ax.text(x=patch.get_x( )+patch.get_width( )/2., y=patch.get_height( )-50000, s=labels[i], ha='center', va='top', fontsize=12, fontweight='bold', rotation='vertical', color='#FFFFFF')
     plt.savefig(f'{DIR}/AnnualTimeSeries.png', dpi=300, bbox_inches='tight', transparent=False)
     plt.close(fig)
 def save_by_country(df):
