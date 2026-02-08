@@ -21,7 +21,7 @@ def should_update(current_max_year):
         try:last_year=int(f.read( ).strip( ))
         except ValueError:return True
     return current_max_year > last_year
-def save_heatmap(df):
+def saveHeatMap(df):
     data=df.groupby(['year','month'])['arrivals'].sum( ).reset_index( )
     data['month']=pd.Categorical(data['month'], categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
     pivot=data.pivot_table(index='year', columns='month', values='arrivals', observed=False)
@@ -37,7 +37,7 @@ def save_heatmap(df):
     plt.tick_params(axis='both',   which =    'both', length=0)
     plt.savefig(f'{DIR}/HeatMap.png', dpi=300, bbox_inches='tight', transparent=False)
     plt.close(fig)
-def save_annual(df):
+def saveAnnual(df):
     annual =df.groupby('year')['arrivals'].sum( ).reset_index( )
     values =annual['arrivals'].values
     norm   =Normalize (values.min( ), values.max( ))
@@ -58,7 +58,7 @@ def save_annual(df):
     for i, patch in enumerate(ax.patches):ax.text(x=patch.get_x( )+patch.get_width( )/2., y=patch.get_height( )-50000, s=labels[i], ha='center', va='top', fontsize=12, fontweight='bold', rotation='vertical', color='#FFFFFF')
     plt.savefig(f'{DIR}/AnnualTimeSeries.png', dpi=300, bbox_inches='tight', transparent=False)
     plt.close(fig)
-def save_by_country(df):
+def saveCountries(df):
     sort=df.groupby('country')['arrivals'].sum( ).sort_values(ascending=False)[:12].reset_index( )
     values =sort  ['arrivals'].groupby(sort.index, observed= True).sum( ).values
     fig,ax=plt.subplots(figsize=(12, 6),  frameon= True,     tight_layout= True)
@@ -84,7 +84,7 @@ def save_by_country(df):
                 fontweight='bold')
     plt.savefig(f'{DIR}/TopArrivals.png', dpi=300, bbox_inches='tight', transparent=False)
     plt.close(fig)
-def save_timeseries(df, countries, filename, title, linestyle):
+def saveTimeSeries(df, countries, filename, title, linestyle):
     # Filter
     latest_year=df['year'].max(  )
     start_year =latest_year -  15
@@ -142,14 +142,14 @@ if __name__=='__main__':
     max_year =int(df['year'].max( ))
     if should_update(max_year):
         print(f'Updating charts for: {max_year}')
-        save_heatmap   (df)
-        save_annual    (df)
-        save_by_country(df)
+        saveHeatMap   (df)
+        saveAnnual    (df)
+        saveCountries(df)
         # Top 10 Arrivals
         top10=df.groupby('country')['arrivals'].sum( ).nlargest(10).index.tolist( )
-        save_timeseries(df, top10,'Top10','Top 10 Arrivals','--')
+        saveTimeSeries(df, top10,'Top10','Top 10 Arrivals','--')
         # Selected Countries
         selected=['Austrália','Canadá','Estados Unidos','Japão']
-        save_timeseries(df, selected,'Selected','Selected Countries',':')
+        saveTimeSeries(df, selected,'Selected','Selected Countries',':')
         with open(STATE_FILE,'w')as f:f.write(str(max_year))
     else:print('No year change detected; skipping…')
