@@ -218,15 +218,15 @@ for i, patch in enumerate(ax.patches):ax.text(x=patch.get_x( )+patch.get_width( 
 st.pyplot ( fig )
 plt.close ( fig )
 st.divider(     )
-# By Means of Travel
-st.subheader('By Means of Travel')
+# Means of Travel
+st.subheader('Means of Travel')
 DD=DF['arrivals'].groupby(DF['via']).sum( )
 df=pd.DataFrame(DD)
 values=df['arrivals'].groupby(df.index, observed= True).sum( ).values
 sort=df.sort_values(by='arrivals'     ,ascending=False)
 fig,ax=plt.subplots(figsize=(12, 6), frameon=True, tight_layout=True)
 sns.barplot(y=sort.index, x='arrivals', data=sort, hue=sort.index, palette='GnBu_r',saturation=.75, legend=False)
-plt.title(f'InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) by Means of Travel',  fontdict=FontT)
+plt.title(f'InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) Means of Travel', fontdict=FontT)
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.xticks( [] )
 plt.ylabel                                         (None)
@@ -248,15 +248,15 @@ for i, patch in enumerate(ax.patches):
 st.pyplot ( fig )
 plt.close ( fig )
 st.divider(     )
-# By Continent
-st.subheader('By Continent')
+# Continents
+st.subheader('Continents')
 DD=DF['arrivals'].groupby(DF['continent']).sum( )
 df=pd.DataFrame(DD)
 values=df['arrivals'].groupby(df.index, observed= True).sum( ).values
 sort=df.sort_values(by='arrivals'     ,ascending=False)
 fig,ax=plt.subplots(figsize=(12 , 6)  ,  frameon= True, tight_layout=True)
 sns.barplot(y=sort.index, x='arrivals',     data= sort, hue=sort.index, palette='autumn', saturation=.75, legend=False)
-plt.title(f'International Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) by Continent', fontdict=FontT, loc='right')
+plt.title(f'International Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) Continents', fontdict=FontT, loc='right')
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.xticks( [] )
 plt.ylabel                                         (None)
@@ -278,13 +278,13 @@ for i, patch in enumerate(ax.patches):
 st.pyplot ( fig )
 plt.close ( fig )
 st.divider(     )
-# By Country
-st.subheader('By Country')
+# Countries
+st.subheader   ('Countries')
 sort=DF.groupby('country')['arrivals'].sum( ).sort_values(ascending=False)[:12].reset_index( )
 values =sort  ['arrivals'].groupby(sort.index, observed= True).sum( ).values
 fig,ax=plt.subplots(figsize=(12, 6),  frameon= True,     tight_layout= True)
 sns.barplot(y='country', x='arrivals',   data= sort, palette='Blues_r', hue='country', saturation=.75, legend=False)
-plt.title(f'Top InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) by Country', fontdict=FontT)
+plt.title(f'Top InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) Countries', fontdict=FontT)
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.xticks( [] )
 plt.ylabel                                        ( None)
@@ -306,15 +306,15 @@ for i, patch in enumerate(ax.patches):
 st.pyplot ( fig )
 plt.close ( fig )
 st.divider(     )
-# By Arrival Estate
-st.subheader('By Arrival Estate')
+# Arrival Estates
+st.subheader('Arrival Estates')
 DD=DF['arrivals'].groupby(DF['UF']).sum( )
 df=pd.DataFrame(DD)
 values=df['arrivals'].groupby(df.index, observed= True).sum( ).values
 sort=df.sort_values(by='arrivals'     ,ascending=False)
 fig,ax=plt.subplots(figsize=(12, 8),  frameon= True, tight_layout=True)
 sns.barplot(y=sort.index, x='arrivals', data=sort, hue=sort.index, palette='Purples_r', saturation=.75, legend=False )
-plt.title(f'InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) by Arrival Estate', fontdict=FontT, loc='right')
+plt.title(f'InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) Arrival Estates', fontdict=FontT, loc='right')
 plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.xticks( [] )
 plt.ylabel                                         (None)
