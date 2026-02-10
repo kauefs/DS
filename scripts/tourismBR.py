@@ -96,12 +96,12 @@ with col1:
               value=f'{current_total:,.0f}',
               help = 'Sum of all international arrivals within the slider range.')
 with col2:
-    st.metric(label=f'YoY Growth ({latest_year} $vs.$ {prev_year})', 
+    st.metric(label=f'{latest_year} $vs.$ {prev_year}', # YoY Growth
               value=f'{yoy_growth    :+.2f}%',
               delta=f'{yoy_growth    :+.2f}%',
               help = 'Percentage change compared to the previous calendar year.')
 with col3:
-    st.metric(label=f'Recovery $vs.$ 2019'   , 
+    st.metric(label=f'Recovery from COVID-19', 
               value=f'{recovery      :+.2f}%',
               delta=f'{recovery_delta:+.2f}%',
               help = 'Compares current year arrivals to 2019 pre-pandemic benchmark.')
