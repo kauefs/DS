@@ -23,9 +23,9 @@ try:
     recovery      =((total_latest - total_2019)/total_2019)*100
     def get_url(label, msg, color):return f'https://img.shields.io/badge/{urllib.parse.quote(label)}-{urllib.parse.quote(msg)}-{color}?style=flat'
     yoy_color     ='00CD00' if yoy_growth > 0 else 'D22128'
-    badges        =(f'![Arrivals]({get_url(f"Arrivals {latest_year}", f"{total_latest:,.0f}","808080")})\n'
-                    f'![YoY     ]({get_url("YoY Growth",f"{yoy_growth:+.2f}%", yoy_color)})\n'
-                    f'![Recovery]({get_url("vs 2019"   ,f"{recovery:+.2f}%","0077B5")})')
+    badges        =(f"![Arrivals ]({get_url(f'Arrivals in {latest_year}',f'{total_latest:,.0f}' ,'808080')})\n\n"
+                    f"![YoYgrowth]({get_url( 'Year-over-Year Growth'    ,f'{yoy_growth:  +.2f}%', yoy_color)})\n\n"
+                    f"![Recovery ]({get_url( 'Recovery from COVID-19'   ,f'{recovery:    +.2f}%','0077B5')})")
 except Exception as e:
     print(f'Calculation Error: {e}')
     exit(1)
