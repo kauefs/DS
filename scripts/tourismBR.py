@@ -401,7 +401,7 @@ plt.close       (   fig  )
 st.divider      (        )
 # Top 10 Arrivals
 st.subheader(f'Top 10 Arrivals ({filter['year'].min( )}–{filter['year'].max( )})')
-def Arrivals(df, countries, filename, title, linestyle=None, palette='tab10'):
+def Arrivals(df, countries, filename, title, linestyle=None, palette='tab10', labels=None):
     group =filter.groupby(['country','year'])['arrivals'].sum( ).reset_index( )
     top   =group [group   ['country'].isin(countries)]
     piv   =  top.pivot_table(index  ='year', columns='country', values='arrivals')
@@ -417,16 +417,20 @@ def Arrivals(df, countries, filename, title, linestyle=None, palette='tab10'):
             valid_data=piv[country].dropna( )
             color     =colors[countries.index(country)]
             ax.plot(valid_data.index, valid_data.values, color=color, linewidth=1.5, alpha=.75, linestyle=linestyle)
+            # Use Custom Label if Provided:
+            name=labels.get(country, country)if labels else country
+            text=f'{name} {y_end:,.0f}'
             # If y_end is too close to previous label, push it down (calculating non-overlapping position):
             suggested_y    =     y_end
             if  suggested_y>last_y_pos*min_gap_multiplier:
                 suggested_y=last_y_pos*min_gap_multiplier
             ax.text(valid_data.index[-1]+.15,
                     suggested_y,
-                    f'{country} {y_end:,.0f}',
+                    text       ,
                     color      = color,
                     fontsize   =   11 ,
                     fontweight ='bold',
+                   #fontname   ='Segoe UI Emoji',
                     va         ='center')
             # Drawing tiny connector line if label is pushed significantly if abs(suggested_y-y_end)/y_end>.05:
             # ax.plot([valid_data.index[-1], valid_data.index[-1]+.15],   [y_end, suggested_y], color=color, linestyle=':', linewidth=1)
@@ -442,13 +446,14 @@ def Arrivals(df, countries, filename, title, linestyle=None, palette='tab10'):
     plt.close (      fig  )
 top10  =filter.groupby('country')     ['arrivals'].sum( ).nlargest(10).index.tolist( )
 palette=['#0065FF','#4CAF50','#FF4500','#00BFFF','#F030E0','#7B70EE','#800000','#BCBD11','#FF7F0E','#808080']
-Arrivals(filter, top10,'Top10','Top 10 InterNational Tourist Arrivals in Brazil','--', palette)
+Arrivals(filter, top10,'Top10','Top 10 InterNational Tourist Arrivals in Brazil',':', palette)
 st.divider(           )
 # Selected Countries
 st.subheader(f'Selected Countries ({filter['year'].min( )}–{filter['year'].max( )})')
-selected=['Austrália','Canadá' ,  'China','Estados Unidos',  'Japão']
-custom  =[  '#F030E0','#FF4500','#4CAF50',    '#0065FF'   ,'#00BFFF']
-Arrivals(filter, selected,'Selected','InterNational Tourist Arrivals in Brazil for Selected Countries',':', custom)
+selected=['Austrália'     ,'Canadá'     ,'China'     ,'Estados Unidos'      ,'Japão'     ]
+flags   ={'Austrália':'🇦🇺','Canadá':'🇨🇦','China':'🇨🇳','Estados Unidos':'🇺🇸','Japão':'🇯🇵'}
+custom  =[  '#F030E0'     ,'#FF4500'    ,'#4CAF50'   ,    '#0065FF'         ,'#00BFFF'   ]
+Arrivals(filter, selected,'Selected','InterNational Tourist Arrivals in Brazil for Selected Countries','--', custom)
 st.divider (          )
 plt.close  (    'all' )
 st.toast   ('Travel!', icon='😎')
