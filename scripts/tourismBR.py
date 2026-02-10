@@ -452,8 +452,9 @@ st.divider(           )
 st.subheader(f'Selected Countries ({filter['year'].min( )}–{filter['year'].max( )})')
 selected=['Austrália'     ,'Canadá'     ,'China'     ,'Estados Unidos'      ,'Japão'     ]
 flags   ={'Austrália':'🇦🇺','Canadá':'🇨🇦','China':'🇨🇳','Estados Unidos':'🇺🇸','Japão':'🇯🇵'}
+names   ={'Austrália':'Australia','Canadá':'Canada','China':'China','Estados Unidos':'United States','Japão':'Japan'}
 custom  =[  '#F030E0'     ,'#FF4500'    ,'#4CAF50'   ,    '#0065FF'         ,'#00BFFF'   ]
-Arrivals(filter, selected,'Selected','InterNational Tourist Arrivals in Brazil for Selected Countries','--', custom)
+Arrivals(filter, selected,'Selected','InterNational Tourist Arrivals in Brazil for Selected Countries','--', custom. labes=names)
 st.divider (          )
 plt.close  (    'all' )
 st.toast   ('Travel!', icon='😎')
