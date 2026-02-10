@@ -446,8 +446,8 @@ Arrivals(filter, top10,'Top10','Top 10 InterNational Tourist Arrivals in Brazil'
 st.divider(           )
 # Selected Countries
 st.subheader(f'Selected Countries ({filter['year'].min( )}–{filter['year'].max( )})')
-selected=['Austrália','Canadá' ,'Estados Unidos',  'Japão']
-custom  =[  '#00BFFF','#FF4500',       '#0065FF','#4CAF50']
+selected=['Austrália','Canadá' ,  'China','Estados Unidos',  'Japão']
+custom  =[  '#F030E0','#FF4500','#4CAF50',    '#0065FF'   ,'#00BFFF']
 Arrivals(filter, selected,'Selected','InterNational Tourist Arrivals in Brazil for Selected Countries',':', custom)
 st.divider (          )
 plt.close  (    'all' )
