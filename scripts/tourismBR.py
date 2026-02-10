@@ -116,21 +116,16 @@ st.divider(   )
 df=DF.copy(   )
 def WorldWideHeatMap(df):
     data=df.groupby('ISO')['arrivals'].sum( ).reset_index( )
-    # 2. Create the Figure
-    # Using 'locationmode' allows Plotly to match country names directly
-    fig =px.choropleth(data, color='arrivals',
-                       color_continuous_scale='sunsetdark',
+    fig =px.choropleth(data, color='arrivals', color_continuous_scale='sunsetdark',
                        title=f"<b>InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )})</b>",
                        locations='ISO', locationmode='ISO-3', #hover_name='country', #hover_data={'arrivals':':,.0f'},
                        projection='natural earth', scope='world') # Provides a classic rounded world view
-    # 3. Clean up the layout
     fig.update_layout(margin={'r':0,'t':50,'l':0,'b':0}, title={'x':.43,'xanchor':'center','font':{'size':20}},
                       coloraxis_colorbar=dict(title={'text':'Total Arrivals','font':{'size':15}}),
                       geo=dict(showframe=False, showcoastlines=True, showcountries=True, countrycolor='#F0F0F0'))
-    # Use fig.show() for notebooks or st.plotly_chart(fig) for Streamlit
     st.plotly_chart(fig, use_container_width=True)
-WorldWideHeatMap   (df )
-st.divider         (   )
+WorldWideHeatMap(df)
+st.divider      (  )
 # InterActive Seasonality HeatMap
 st.subheader(f'Seasonality HeatMap ({selected_years[0]}–{selected_years[1]})')
 filter=DF[(DF['year']>=selected_years[0])&(DF['year']<=selected_years[1])]
