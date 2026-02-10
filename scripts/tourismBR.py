@@ -445,8 +445,10 @@ def Arrivals(df, countries, filename, title, linestyle=None, palette='tab10', la
     st.pyplot (      fig  )
     plt.close (      fig  )
 top10  =filter.groupby('country')     ['arrivals'].sum( ).nlargest(10).index.tolist( )
-palette=['#0065FF','#4CAF50','#FF4500','#00BFFF','#F030E0','#7B70EE','#800000','#BCBD11','#FF7F0E','#808080']
-Arrivals(filter, top10,'Top10','Top 10 InterNational Tourist Arrivals in Brazil',':', palette)
+names  ={'Argentina':'Argentina',   'Chile':'Chile'   ,'Estados Unidos':'United States','Paraguai':'Paraguay',    'Uruguai':'Uruguay'       ,
+            'França':'France'   ,'Portugal':'Portugal',      'Alemanha':'Germany'      ,  'Itália':'Italy'   ,'Reino Unido':'United Kingdom'}
+palette=[  '#0065FF','#4CAF50'  , '#FF4500','#00BFFF' ,       '#F030E0','#7B70EE'      , '#800000','#BCBD11' ,    '#FF7F0E','#808080'       ]
+Arrivals(filter, top10,'Top10','Top 10 InterNational Tourist Arrivals in Brazil',':', palette, labels=names)
 st.divider(           )
 # Selected Countries
 st.subheader(f'Selected Countries ({filter['year'].min( )}–{filter['year'].max( )})')
