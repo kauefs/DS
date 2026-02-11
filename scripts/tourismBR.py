@@ -92,7 +92,7 @@ recovery_pct  =(  total_latest/total2019)*100 if total2019 > 0 else 0
 recovery_delta=recovery_pct              -100
 col1,col2,col3=st.columns(3)
 with col1:
-    st.metric(label= 'Total Arrivals from Selected Range',
+    st.metric(label=f'Total Arrivals ({selected_years[0]}–{selected_years[1]})',
               value=f'{current_total:,.0f}',
               help = 'Sum of all international arrivals within the slider range.')
 with col2:
@@ -101,7 +101,7 @@ with col2:
               delta=f'{yoy_growth    :+.2f}%',
               help = 'Percentage change compared to the previous calendar year.')
 with col3:
-    st.metric(label=f'Recovery from COVID-19', 
+    st.metric(label=f'COVID-19 Recovery', 
               value=f'{recovery      :+.2f}%',
               delta=f'{recovery_delta:+.2f}%',
               help = 'Compares current year arrivals to 2019 pre-pandemic benchmark.')
