@@ -262,7 +262,7 @@ PlotBarsH(DF,'continent','Continent','autumn', loc='right')
 st.divider(     )
 # Country
 st.subheader('Country')
-PlotBarsH(DF,'country','Country','Blues_r', loc='right')
+PlotBarsH(DF,'country','Country','Blues_r', loc='left')
 st.divider(     )
 # Arrival Estates
 st.divider(     )
