@@ -82,9 +82,9 @@ yoy_pct=(total_latest/total_prev)*100   if  total_prev     > 0 else 0
 # Record Growth
 total2024     =DF[DF['year']==2024]['arrivals'].sum( )
 total2018     =DF[DF['year']==2018]['arrivals'].sum( )
-record        =(( total_latest-total2018)/total2018)*100
-record_pct    =(  total_latest/total2018)*100 if total2018 > 0 else 0
-record_delta  =  record_pct              -100
+record        =(( total2024-total2018)/total2018)*100
+record_pct    =(  total2024/total2018)*100 if total2018 > 0 else 0
+record_delta  =  record_pct           -100
 # Pandemic Recovery (comparing latest vs 2019)
 total2019     = DF[DF['year']==2019]['arrivals'].sum( )
 recovery      =(( total_latest-total2019)       /total2019)*100
