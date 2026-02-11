@@ -235,96 +235,39 @@ plt.close ( fig )
 st.divider(     )
 # Means of Travel
 st.subheader('Means of Travel')
-DD=DF['arrivals'].groupby(DF['via']).sum( )
-df=pd.DataFrame(DD)
-values=df['arrivals'].groupby(df.index, observed= True).sum( ).values
-sort=df.sort_values(by='arrivals'     ,ascending=False)
-fig,ax=plt.subplots(figsize=(12, 6), frameon=True, tight_layout=True)
-sns.barplot(y=sort.index, x='arrivals', data=sort, hue=sort.index, palette='GnBu_r',saturation=.75, legend=False)
-plt.title(f'InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) Means of Travel', fontdict=FontT)
-plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
-plt.xticks( [] )
-plt.ylabel                                         (None)
-plt.xlabel                                         (None)
-plt.legend( [],                            frameon=False)
-plt.grid(                                  visible=False)
-for spine in ax.spines.values( ):spine.set_visible(False)
-plt.tick_params(   axis='both', which ='both', length= 0)
-for i, patch in enumerate(ax.patches):
-    width=patch.get_width( )                      # get_width( ): find the end of the horizontal bar
-    if width > 0:
-        ax.text(width+500000,                     # X-pos: just past the end of the bar
-            patch.get_y( )+patch.get_height( )/2, # Y-pos: center of the bar
-            f'{width:,.0f}',                      # number format
-            va        ='center',
-            ha        ='left',
-            fontsize  =  13,
-            fontweight='bold')
-st.pyplot ( fig )
-plt.close ( fig )
+def PlotBarsH(df, column, title, palette, loc=None):
+    data=DF.groupby(column)['arrivals'].sum( ).sort_values(ascending=False).reset_index( )
+    if column=='country':data=data.head(12)
+    fig,ax=plt.subplots(figsize=(12, 6), frameon=True, tight_layout=True)
+    sns.barplot(data=data, y=column, x='arrivals', hue=column, palette=palette, saturation=.75, legend=False)
+    plt.title  (f'InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) {title}', fontdict=FontT, loc=loc)
+    plt.yticks (fontsize=13, fontweight='semibold', rotation='horizontal')
+    plt.xticks ([])
+    plt.ylabel                                         (None)
+    plt.xlabel                                         (None)
+    plt.legend( [],                            frameon=False)
+    plt.grid(                                  visible=False)
+    for spine in ax.spines.values( ):spine.set_visible(False)
+    plt.tick_params(   axis='both', which ='both', length= 0)
+    for p in ax.patches:
+        width=p.get_width( )
+        if width > 0:ax.text(width+(data['arrivals'].max( )*.02), p.get_y( )+p.get_height( )/2, f'{width:,.0f}', va='center', ha='left', fontsize=13, fontweight='bold')
+    st.pyplot(fig)
+    plt.close(fig)
+PlotBarsH(DF,'via','Means of Travel','GnBu_r')
 st.divider(     )
-# Continents
-st.subheader('Continents')
-DD=DF['arrivals'].groupby(DF['continent']).sum( )
-df=pd.DataFrame(DD)
-values=df['arrivals'].groupby(df.index, observed= True).sum( ).values
-sort=df.sort_values(by='arrivals'     ,ascending=False)
-fig,ax=plt.subplots(figsize=(12 , 6)  ,  frameon= True, tight_layout=True)
-sns.barplot(y=sort.index, x='arrivals',     data= sort, hue=sort.index, palette='autumn', saturation=.75, legend=False)
-plt.title(f'International Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) Continents', fontdict=FontT, loc='right')
-plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
-plt.xticks( [] )
-plt.ylabel                                         (None)
-plt.xlabel                                         (None)
-plt.legend( [],                            frameon=False)
-plt.grid(                                  visible=False)
-for spine in ax.spines.values( ):spine.set_visible(False)
-plt.tick_params(   axis='both', which ='both', length= 0)
-for i, patch in enumerate(ax.patches):
-    width=patch.get_width( )                      # get_width( ): find the end of the horizontal bar
-    if width > 0:
-        ax.text(width+500000,                     # X-pos: just past the end of the bar
-            patch.get_y( )+patch.get_height( )/2, # Y-pos: center of the bar
-            f'{width:,.0f}',                      # number format
-            va        ='center',
-            ha        ='left',
-            fontsize  =  13,
-            fontweight='bold')
-st.pyplot ( fig )
-plt.close ( fig )
+# Continent
+st.subheader('Continent')
+PlotBarsH(DF,'continent','Continent','autumn', loc='right')
 st.divider(     )
-# Countries
-st.subheader   ('Countries')
-sort=DF.groupby('country')['arrivals'].sum( ).sort_values(ascending=False)[:12].reset_index( )
-values =sort  ['arrivals'].groupby(sort.index, observed= True).sum( ).values
-fig,ax=plt.subplots(figsize=(12, 6),  frameon= True,     tight_layout= True)
-sns.barplot(y='country', x='arrivals',   data= sort, palette='Blues_r', hue='country', saturation=.75, legend=False)
-plt.title(f'Top InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) Countries', fontdict=FontT)
-plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
-plt.xticks( [] )
-plt.ylabel                                        ( None)
-plt.xlabel                                        ( None)
-plt.legend( [],                            frameon=False)
-plt.grid  (                                visible=False)
-plt.tick_params(   axis='both', which ='both', length= 0)
-for spine in ax.spines.values( ):spine.set_visible(False)
-for i, patch in enumerate(ax.patches):
-    width=patch.get_width( )                      # get_width( ): find the end of the horizontal bar
-    if width > 0:
-        ax.text(width+500000,                     # X-pos: just past the end of the bar
-            patch.get_y( )+patch.get_height( )/2, # Y-pos: center of the bar
-            f'{width:,.0f}',                      # number format
-            va        ='center',
-            ha        ='left',
-            fontsize  =  13,
-            fontweight='bold')
-st.pyplot ( fig )
-plt.close ( fig )
+# Country
+st.subheader('Country')
+PlotBarsH(DF,'country','Country','Blues_r')
 st.divider(     )
 # Arrival Estates
-st.subheader('Arrival Estates')
-DD=DF['arrivals'].groupby(DF['UF']).sum( )
-df=pd.DataFrame(DD)
+st.divider(     )
+AE=DF['arrivals'].groupby(DF['UF']).sum( )
+df=pd.DataFrame(AE)
 values=df['arrivals'].groupby(df.index, observed= True).sum( ).values
 sort=df.sort_values(by='arrivals'     ,ascending=False)
 fig,ax=plt.subplots(figsize=(12, 8),  frameon= True, tight_layout=True)
