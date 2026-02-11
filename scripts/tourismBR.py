@@ -442,7 +442,7 @@ def PlotlyArrivals(df, countries, title, palette, labels=None, dash=None):
     for p in last_points:
         annotations.append(dict(x=p['year'], y=p['val'], xref='x', yref='y', text=f'<b> {p['name']}</b>',
                                 showarrow=False, xanchor='left', xshift=5, font=dict( color=p['color'], size=13)))
-    fig.update_layout(title={'x':.05,'font':{'size':22}}, xaxis_title='', yaxis_title='', showlegend=False, hovermode='x unified', height=500, margin={'t':80,'b':40,'l':40,'r':80},
+    fig.update_layout(title={'x':.05,'font':{'size':22}}, xaxis_title='', yaxis_title='', showlegend=False, hovermode='x unified', height=500, margin={'t':80,'b':40,'l':40,'r':100},
                       annotations=annotations, hoverlabel=dict(bgcolor='rgba(255,255,255,.9)', bordercolor='rgba(0,0,0,0)'), uirevision='constant')
     fig.update_yaxes (type='log', showgrid=False, showticklabels=False, zeroline=False)
     fig.update_xaxes (dtick= 2  , showgrid=False, tickfont={'size':15}, tickformat='d', showspikes=True, spikecolor='#C0C0C0', spikesnap='cursor', spikemode='across', spikethickness=1, spikedash=dash)
