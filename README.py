@@ -19,13 +19,16 @@ try:
     total_latest  =df[df['year']==latest_year]['arrivals'].sum( )
     total_2019    =df[df['year']==       2019]['arrivals'].sum( )
     total_prev    =df[df['year']==  prev_year]['arrivals'].sum( )
-    yoy_growth    =((total_latest - total_prev)/total_prev)*100 # if total_prev > 0 else 0
-    recovery      =((total_latest - total_2019)/total_2019)*100
-    def get_url(label, msg, color):return f'https://img.shields.io/badge/{urllib.parse.quote(label)}-{urllib.parse.quote(msg)}-{color}?style=flat'
+    yoy_growth    =((total_latest - total_prev)/total_prev)*100 if total_prev > 0 else 0 # Avoid ZeroDivisionError
+    recovery      =((total_latest - total_2019)/total_2019)*100 if total_2019 > 0 else 0 # Avoid ZeroDivisionError
+    def get_url(label, msg, color):
+        safe_label=urllib.parse.quote(label.replace('-', '--'))
+        safe_msg  =urllib.parse.quote(label.replace('-', '--'))
+        return f'https://img.shields.io/badge/{safe_label}-{safe_msg)}-{color}?style=flat'
     yoy_color     ='00CD00' if yoy_growth > 0 else 'D22128'
-    badges        =(f"![Arrivals ]({get_url(f'Arrivals in {latest_year}',f'{total_latest:,.0f}' ,'808080')})\n\n"
-                    f"![YoYgrowth]({get_url( 'Year-over-Year Growth'    ,f'{yoy_growth:+.2f}%', yoy_color)})\n\n"
-                    f"![Recovery ]({get_url( 'Recovery from COVID-19'   ,f'{recovery:+.2f}%','0077B5')})")
+    badges        =(f"![Arrivals ]({get_url(f'{latest_year} Arrivals',f'{total_latest:,.0f}','808080')})\n\n"
+                    f"![YoYgrowth]({get_url( 'YearOverYear Growth'   ,f'{yoy_growth:+.2f}%' , yoy_color)})\n\n"
+                    f"![Recovery ]({get_url( 'COVID-19 Recovery'     ,f'{recovery:+.2f}%'   ,'0077B5')})")
 except Exception as e:
     print(f'Calculation Error: {e}')
     exit(1)
@@ -47,6 +50,7 @@ if os.path.exists(README):
         # Reconstruct with clean spacing
         new_content=[header,'\n'+DIV_OPEN+'\n', badges,'\n'+DIV_CLOSE+'\n', footer]
         new_readme =''.join(new_content)
+        new_readme =f'{header.strip( )}\n\n{DIV_OPEN.strip( )}\n{badges}\n{DIV_CLOSE.strip( )}\n\n{footer.strip( )}'
         with open(README,'w', encoding='utf-8')as f:f.write(new_readme)
         print('Success: README updated with flexible markers.')
     else:
