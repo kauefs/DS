@@ -257,45 +257,19 @@ def PlotBarsH(df, column, title, palette, loc=None):
     st.pyplot(fig)
     plt.close(fig)
 PlotBarsH(DF,'via','Means of Travel','GnBu_r')
-st.divider(     )
+st.divider   (   )
 # Continent
 st.subheader('Continent')
 PlotBarsH(DF,'continent','Continent','autumn', loc='right')
-st.divider(     )
+st.divider   (   )
 # Country
 st.subheader('Country')
 PlotBarsH(DF,'country','Country','Blues_r', loc='left')
-st.divider(     )
+st.divider   (   )
 # Arrival Estates
-st.divider(     )
-AE=DF['arrivals'].groupby(DF['UF']).sum( )
-df=pd.DataFrame(AE)
-values=df['arrivals'].groupby(df.index, observed= True).sum( ).values
-sort=df.sort_values(by='arrivals'     ,ascending=False)
-fig,ax=plt.subplots(figsize=(12, 8),  frameon= True, tight_layout=True)
-sns.barplot(y=sort.index, x='arrivals', data=sort, hue=sort.index, palette='Purples_r', saturation=.75, legend=False )
-plt.title(f'InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )}) Arrival Estates', fontdict=FontT, loc='right')
-plt.yticks(fontsize=13, fontweight='semibold', rotation='horizontal')
-plt.xticks( [] )
-plt.ylabel                                         (None)
-plt.xlabel                                         (None)
-plt.legend( [],                            frameon=False)
-plt.grid(                                  visible=False)
-plt.tick_params(   axis='both', which ='both', length= 0)
-for spine in ax.spines.values( ):spine.set_visible(False)
-for i, patch in enumerate(ax.patches):
-    width=patch.get_width( )                      # get_width( ): find the end of the horizontal bar
-    if width > 0:
-        ax.text(width+500000,                     # X-pos: just past the end of the bar
-            patch.get_y( )+patch.get_height( )/2, # Y-pos: center of the bar
-            f'{width:,.0f}',                      # number format
-            va        ='center',
-            ha        ='left',
-            fontsize  =  13,
-            fontweight='bold')
-st.pyplot ( fig )
-plt.close ( fig )
-st.divider(     )
+st.subheader('Arrival Estates')
+PlotBarsH(DF,'UF','Arrival Estates','Purples_r', loc='right')
+st.divider   (   )
 # Monthly Arrivals
 latest=DF['year'].max( )
 filter=DF[(DF['year']>=latest-15)]
