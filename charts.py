@@ -142,8 +142,8 @@ if __name__=='__main__':
     max_year =int(df['year'].max( ))
     if should_update(max_year):
         print(f'Updating charts for: {max_year}')
-        saveHeatMap   (df)
-        saveAnnual    (df)
+        saveHeatMap  (df)
+        saveAnnual   (df)
         saveCountries(df)
         # Top 10 Arrivals
         top10=df.groupby('country')['arrivals'].sum( ).nlargest(10).index.tolist( )
