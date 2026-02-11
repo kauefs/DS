@@ -22,9 +22,11 @@ try:
     yoy_growth    =((total_latest - total_prev)/total_prev)*100 if total_prev > 0 else 0 # Avoid ZeroDivisionError
     recovery      =((total_latest - total_2019)/total_2019)*100 if total_2019 > 0 else 0 # Avoid ZeroDivisionError
     def get_url(label, msg, color):
-        safe_label=urllib.parse.quote(label.replace('-', '--'))
-        safe_msg  =urllib.parse.quote(label.replace('-', '--'))
-        return f'https://img.shields.io/badge/{safe_label}-{safe_msg}-{color}?style=flat'
+        safe_label   = label  .replace('-','--'))
+        safe_msg     =srt(msg).replace('-','--'))
+        encoded_label=urllib.parse.quote(safe_label)
+        encoded_msg  =urllib.parse.quote(safe_msg  )
+        return f'https://img.shields.io/badge/{encoded_label}-{encoded_msg}-{color}?style=flat'
     yoy_color     ='00CD00' if yoy_growth > 0 else 'D22128'
     badges        =(f"![Arrivals ]({get_url(f'{latest_year} Arrivals',f'{total_latest:,.0f}','808080')})\n\n"
                     f"![YoYgrowth]({get_url( 'YearOverYear Growth'   ,f'{yoy_growth:+.2f}%' , yoy_color)})\n\n"
