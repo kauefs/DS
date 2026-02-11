@@ -123,7 +123,7 @@ def WorldWideHeatMap(df):
     fig.update_layout(margin={'r':0,'t':50,'l':0,'b':0}, title={'x':.43,'xanchor':'center','font':{'size':20}},
                       coloraxis_colorbar=dict(title={'text':'Total Arrivals','font':{'size':15}}),
                       geo=dict(showframe=False, showcoastlines=True, showcountries=True, countrycolor='#F0F0F0'))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 WorldWideHeatMap(df)
 st.divider      (  )
 # InterActive Seasonality HeatMap
@@ -446,7 +446,7 @@ def PlotlyArrivals(df, countries, title, palette, labels=None, dash=None):
                       annotations=annotations, hoverlabel=dict(bgcolor='rgba(255,255,255,.9)', bordercolor='rgba(0,0,0,0)'), uirevision='constant')
     fig.update_yaxes (type='log', showgrid=False, showticklabels=False, zeroline=False)
     fig.update_xaxes (dtick= 2  , showgrid=False, tickfont={'size':15}, tickformat='d', showspikes=True, spikecolor='#C0C0C0', spikesnap='cursor', spikemode='across', spikethickness=1, spikedash=dash)
-    st.plotly_chart  (fig, use_container_width=True)
+    st.plotly_chart  (fig, width='stretch')
 top10  =filter.groupby('country')     ['arrivals'].sum( ).nlargest(10).index.tolist( )
 names  ={'Argentina':'Argentina',   'Chile':'Chile'   ,'Estados Unidos':'United States','Paraguai':'Paraguay',    'Uruguai':'Uruguay'       ,
             'França':'France'   ,'Portugal':'Portugal',      'Alemanha':'Germany'      ,  'Itália':'Italy'   ,'Reino Unido':'United Kingdom'}
