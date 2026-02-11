@@ -22,8 +22,8 @@ try:
     yoy_growth    =((total_latest - total_prev)/total_prev)*100 if total_prev > 0 else 0 # Avoid ZeroDivisionError
     recovery      =((total_latest - total_2019)/total_2019)*100 if total_2019 > 0 else 0 # Avoid ZeroDivisionError
     def get_url(label, msg, color):
-        safe_label   = label  .replace('-','--'))
-        safe_msg     =srt(msg).replace('-','--'))
+        safe_label   = label  .replace('-','--')
+        safe_msg     =srt(msg).replace('-','--')
         encoded_label=urllib.parse.quote(safe_label)
         encoded_msg  =urllib.parse.quote(safe_msg  )
         return f'https://img.shields.io/badge/{encoded_label}-{encoded_msg}-{color}?style=flat'
