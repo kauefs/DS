@@ -20,7 +20,7 @@
 ### Live Stats
 
 <div align=center>
-![Arrivals ](https://img.shields.io/badge/2025%20Arrivals-9%2C287%2C196-808080?style=flat)
+![Arrivals ](https://img.shields.io/badge/2025%20Arrivals-9287196-808080?style=flat)
 
 ![YoYgrowth](https://img.shields.io/badge/YearOverYear%20Growth-%2B37.11%25-00CD00?style=flat)
 
