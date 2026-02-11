@@ -24,7 +24,7 @@ try:
     def get_url(label, msg, color):
         safe_label=urllib.parse.quote(label.replace('-', '--'))
         safe_msg  =urllib.parse.quote(label.replace('-', '--'))
-        return f'https://img.shields.io/badge/{safe_label}-{safe_msg)}-{color}?style=flat'
+        return f'https://img.shields.io/badge/{safe_label}-{safe_msg}-{color}?style=flat'
     yoy_color     ='00CD00' if yoy_growth > 0 else 'D22128'
     badges        =(f"![Arrivals ]({get_url(f'{latest_year} Arrivals',f'{total_latest:,.0f}','808080')})\n\n"
                     f"![YoYgrowth]({get_url( 'YearOverYear Growth'   ,f'{yoy_growth:+.2f}%' , yoy_color)})\n\n"
