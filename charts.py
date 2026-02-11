@@ -147,9 +147,9 @@ if __name__=='__main__':
         saveCountries(df)
         # Top 10 Arrivals
         top10=df.groupby('country')['arrivals'].sum( ).nlargest(10).index.tolist( )
-        saveTimeSeries(df, top10,'Top10','Top 10 Arrivals','--')
+        saveTimeSeries(df, top10,'Top10','Top 10 Arrivals',':')
         # Selected Countries
         selected=['Austrália','Canadá','China','Estados Unidos','Japão']
-        saveTimeSeries(df, selected,'Selected','Selected Countries',':')
+        saveTimeSeries(df, selected,'Selected','Selected Countries','--')
         with open(STATE_FILE,'w')as f:f.write(str(max_year))
     else:print('No year change detected; skipping…')
