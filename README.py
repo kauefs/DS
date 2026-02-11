@@ -28,9 +28,9 @@ try:
         encoded_msg  =urllib.parse.quote(safe_msg  )
         return f'https://img.shields.io/badge/{encoded_label}-{encoded_msg}-{color}?style=flat'
     yoy_color     ='00CD00' if yoy_growth > 0 else 'D22128'
-    badges        =(f"\n![Arrivals ]({get_url(f'{latest_year} Arrivals'         ,f'{total_latest:,.0f}' ,  '808080')})\n"
-                    f"\n![YoYgrowth]({get_url(f'{latest_year} $vs.$ {prev_year}',f'{  yoy_growth:+.2f}%', yoy_color)})\n"
-                    f"\n![Recovery ]({get_url( 'COVID-19 Recovery'              ,f'{    recovery:+.2f}%',  '0077B5')})\n")
+    badges        =(f"\n![Arrivals ]({get_url(f'{latest_year} Arrivals'       ,f'{total_latest:,.0f}' ,  '808080')})\n"
+                    f"\n![YoYgrowth]({get_url(f'{latest_year} vs. {prev_year}',f'{  yoy_growth:+.2f}%', yoy_color)})\n"
+                    f"\n![Recovery ]({get_url( 'COVID19 Recovery'             ,f'{    recovery:+.2f}%',  '0077B5')})\n")
 except Exception as e:
     print(f'Calculation Error: {e}')
     exit(1)
