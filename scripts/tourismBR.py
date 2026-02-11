@@ -262,7 +262,7 @@ PlotBarsH(DF,'continent','Continent','autumn', loc='right')
 st.divider(     )
 # Country
 st.subheader('Country')
-PlotBarsH(DF,'country','Country','Blues_r')
+PlotBarsH(DF,'country','Country','Blues_r', loc='right')
 st.divider(     )
 # Arrival Estates
 st.divider(     )
@@ -385,7 +385,7 @@ def PlotlyArrivals(df, countries, title, palette, labels=None, dash=None):
     for p in last_points:
         annotations.append(dict(x=p['year'], y=p['val'], xref='x', yref='y', text=f'<b> {p['name']}</b>',
                                 showarrow=False, xanchor='left', xshift=5, font=dict( color=p['color'], size=13)))
-    fig.update_layout(title={'x':.05,'font':{'size':22}}, xaxis_title='', yaxis_title='', showlegend=False, hovermode='x unified', height=500, margin={'t':80,'b':40,'l':40,'r':100},
+    fig.update_layout(title={'x':.05,'font':{'size':20}}, xaxis_title='', yaxis_title='', showlegend=False, hovermode='x unified', height=500, margin={'t':80,'b':40,'l':40,'r':80},
                       annotations=annotations, hoverlabel=dict(bgcolor='rgba(255,255,255,.9)', bordercolor='rgba(0,0,0,0)'), uirevision='constant')
     fig.update_yaxes (type='log', showgrid=False, showticklabels=False, zeroline=False)
     fig.update_xaxes (dtick= 2  , showgrid=False, tickfont={'size':15}, tickformat='d', showspikes=True, spikecolor='#C0C0C0', spikesnap='cursor', spikemode='across', spikethickness=1, spikedash=dash)
@@ -398,7 +398,7 @@ PlotlyArrivals(filter,   top10 ,'Top 10 InterNational Tourist Arrivals in Brazil
 st.divider(           )
 # Selected Countries
 st.subheader(f'Selected Countries ({filter['year'].min( )}–{filter['year'].max( )})')
-selected=['Austrália'     ,'Canadá'     ,'China'     ,'Estados Unidos'      ,'Japão'     ]
+selected=['Austrália'     ,'Canadá'     , 'China'     ,'Estados Unidos'     ,'Japão'     ]
 flags   ={'Austrália':'🇦🇺','Canadá':'🇨🇦','China':'🇨🇳','Estados Unidos':'🇺🇸','Japão':'🇯🇵'}
 names   ={'Austrália':'Australia','Canadá':'Canada','China':'China','Estados Unidos':'United States','Japão':'Japan'}
 custom  =[  '#F030E0'     ,'#FF4500'    ,'#4CAF50'   ,    '#0065FF'         ,'#00BFFF'   ]
