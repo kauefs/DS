@@ -28,9 +28,9 @@ try:
         encoded_msg  =urllib.parse.quote(safe_msg  )
         return f'https://img.shields.io/badge/{encoded_label}-{encoded_msg}-{color}?style=flat'
     yoy_color     ='00CD00' if yoy_growth > 0 else 'D22128'
-    badges        =(f"![Arrivals ]({get_url(f'{latest_year} Arrivals'         ,f'{total_latest:,.0f}' ,  '808080')})\n\n"
-                    f"![YoYgrowth]({get_url(f'{latest_year} $vs.$ {prev_year}',f'{  yoy_growth:+.2f}%', yoy_color)})\n\n"
-                    f"![Recovery ]({get_url( 'COVID-19 Recovery'              ,f'{    recovery:+.2f}%',  '0077B5')})")
+    badges        =(f"\n![Arrivals ]({get_url(f'{latest_year} Arrivals'         ,f'{total_latest:,.0f}' ,  '808080')})\n"
+                    f"\n![YoYgrowth]({get_url(f'{latest_year} $vs.$ {prev_year}',f'{  yoy_growth:+.2f}%', yoy_color)})\n"
+                    f"\n![Recovery ]({get_url( 'COVID-19 Recovery'              ,f'{    recovery:+.2f}%',  '0077B5')})\n")
 except Exception as e:
     print(f'Calculation Error: {e}')
     exit(1)
@@ -39,8 +39,8 @@ if os.path.exists(README):
     with open    (README,'r', encoding='utf-8')as f:full_text=f.read( )
     # Define core tags to look for specifically
     START_TAG='### Live Stats'
-    DIV_OPEN ='\n\n<div align=center>\n\n'
-    DIV_CLOSE='\n\n</div>\n\n'
+    DIV_OPEN ='\n<div align=center>\n'
+    DIV_CLOSE='\n</div>\n'
     HR_TAG   ='---'
     if START_TAG in full_text and HR_TAG in full_text:
         # Split header to keep everything above it
