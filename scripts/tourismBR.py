@@ -116,14 +116,16 @@ st.divider(   )
 df=DF.copy(   )
 def WorldWideHeatMap(df):
     data=df.groupby('ISO')['arrivals'].sum( ).reset_index( )
-    fig =px.choropleth(data, color='arrivals', color_continuous_scale='sunsetdark',
+    fig =px.choropleth(data, color='arrivals',
+                       color_continuous_scale='sunsetdark',
                        title=f"<b>InterNational Tourist Arrivals in Brazil ({DF['year'].min( )}–{DF['year'].max( )})</b>",
-                       locations='ISO', locationmode='ISO-3', #hover_name='country', #hover_data={'arrivals':':,.0f'},
+                       locations='ISO', locationmode='ISO-3', custom_data=['ISO'], #hover_name='country', #hover_data={'arrivals':':,.0f'},
                        projection='natural earth', scope='world') # Provides a classic rounded world view
+    fig.update_traces(hovertemplate='<b>%{customdata[0]}</b> %{z:,.0f} arrivals<extra></extra>')
     fig.update_layout(margin={'r':0,'t':50,'l':0,'b':0}, title={'x':.43,'xanchor':'center','font':{'size':20}},
                       coloraxis_colorbar=dict(title={'text':'Total Arrivals','font':{'size':15}}),
                       geo=dict(showframe=False, showcoastlines=True, showcountries=True, countrycolor='#F0F0F0'))
-    st.plotly_chart(fig, width='stretch')
+    st .plotly_chart (fig, width='stretch')
 WorldWideHeatMap(df)
 st.divider      (  )
 # InterActive Seasonality HeatMap
@@ -385,11 +387,11 @@ def PlotlyArrivals(df, countries, title, palette, labels=None, dash=None):
     for p in last_points:
         annotations.append(dict(x=p['year'], y=p['val'], xref='x', yref='y', text=f'<b> {p['name']}</b>',
                                 showarrow=False, xanchor='left', xshift=5, font=dict( color=p['color'], size=13)))
-    fig.update_layout(title={'x':.05,'font':{'size':20}}, xaxis_title='', yaxis_title='', showlegend=False, hovermode='x unified', height=500, margin={'t':80,'b':40,'l':40,'r':80},
-                      annotations=annotations, hoverlabel=dict(bgcolor='rgba(255,255,255,.9)', bordercolor='rgba(0,0,0,0)'), uirevision='constant')
-    fig.update_yaxes (type='log', showgrid=False, showticklabels=False, zeroline=False)
-    fig.update_xaxes (dtick= 2  , showgrid=False, tickfont={'size':15}, tickformat='d', showspikes=True, spikecolor='#C0C0C0', spikesnap='cursor', spikemode='across', spikethickness=1, spikedash=dash)
-    st.plotly_chart  (fig, width='stretch')
+    fig.update_layout (title={'x':.05,'font':{'size':20}}, xaxis_title='', yaxis_title='', showlegend=False, hovermode='x unified', height=500, margin={'t':80,'b':40,'l':40,'r':80},
+                       annotations=annotations, hoverlabel=dict(bgcolor='rgba(255,255,255,.9)', bordercolor='rgba(0,0,0,0)'), uirevision='constant')
+    fig.update_yaxes  (type='log', showgrid=False, showticklabels=False, zeroline=False)
+    fig.update_xaxes  (dtick= 2  , showgrid=False, tickfont={'size':15}, tickformat='d', showspikes=True, spikecolor='#C0C0C0', spikesnap='cursor', spikemode='across', spikethickness=1, spikedash=dash)
+    st .plotly_chart  (fig, width='stretch')
 top10  =filter.groupby('country')     ['arrivals'].sum( ).nlargest(10).index.tolist( )
 names  ={'Argentina':'Argentina',   'Chile':'Chile'   ,'Estados Unidos':'United States','Paraguai':'Paraguay',    'Uruguai':'Uruguay'       ,
             'França':'France'   ,'Portugal':'Portugal',      'Alemanha':'Germany'      ,  'Itália':'Italy'   ,'Reino Unido':'United Kingdom'}
