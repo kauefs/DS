@@ -34,11 +34,11 @@ country='Estados Unidos'
 arrivals=country_totals[country]
 st.sidebar.divider  (                          )
 st.sidebar.markdown ('Source: [Ministry of Tourism](https://dados.turismo.gov.br/dataset/chegada-de-turistas-internacionais)')
-st.sidebar.write    (          'Annual Reports from {} to {}'                .format(DF['year'] .min( )   ,  DF['year'].max( )                                                                     ))
-st.sidebar.info     (            'Total Arrivals ({}–{}): {}'                .format(DF['year'] .min( )   ,  DF['year'].max( )          , f"{DF                   ['arrivals'].sum( )       :,.0f}"))
-st.sidebar.success  ('Year with highest visitors: {} with {} arrivals.'      .format(DF.groupby('year')    ['arrivals'].sum( ).idxmax( ), f"{DF.groupby('year')   ['arrivals'].sum( ).max( ):,.0f}"))
-st.sidebar.warning  (      'Top visiting country: {} with {} total arrivals.'.format(DF.groupby('country') ['arrivals'].sum( ).idxmax( ), f"{DF.groupby('country')['arrivals'].sum( ).max( ):,.0f}"))
-st.sidebar.error    (  f'Second visiting country: {country} with {arrivals:,.0f} total arrivals.')
+st.sidebar.write    (             'Annual Reports from {} to {}'                .format(DF['year'] .min( )   ,  DF['year'].max( )                                                                     ))
+st.sidebar.info     (               'Total Arrivals ({}–{}): {}'                .format(DF['year'] .min( )   ,  DF['year'].max( )          , f"{DF                   ['arrivals'].sum( )       :,.0f}"))
+st.sidebar.success  (   'Year with highest visitors: {} with {} arrivals.'      .format(DF.groupby('year')    ['arrivals'].sum( ).idxmax( ), f"{DF.groupby('year')   ['arrivals'].sum( ).max( ):,.0f}"))
+st.sidebar.warning  (         'Top visiting country: {} with {} total arrivals.'.format(DF.groupby('country') ['arrivals'].sum( ).idxmax( ), f"{DF.groupby('country')['arrivals'].sum( ).max( ):,.0f}"))
+st.sidebar.error    (f'Second most visiting country: {country} with {arrivals:,.0f} total arrivals.')
 st.sidebar.divider  (                          )
 st.sidebar.markdown ('''
 ![2024.10.17  ](https://img.shields.io/badge/2024.10.17-000000)
@@ -97,18 +97,18 @@ with col1:
               help = 'Sum of all international arrivals within the slider range.')
 with col2:
     st.metric(label=f'{latest_year} $vs.$ {prev_year}', # YoY Growth
-              value=f'{yoy_growth    :+.2f}%',
-              delta=f'{yoy_growth    :+.2f}%',
+             #value=f'{yoy_growth    :+.2f}%',
+              delta=f'{yoy_growth    :.2f}%',
               help = 'Percentage change compared to the previous calendar year.')
 with col3:
     st.metric(label=f'COVID-19 Recovery', 
-              value=f'{recovery      :+.2f}%',
-              delta=f'{recovery_delta:+.2f}%',
+             #value=f'{recovery      :+.2f}%',
+              delta=f'{recovery_delta:.2f}%',
               help = 'Compares current year arrivals to 2019 pre-pandemic benchmark.')
 with col4:
     st.metric(label=f'2024 $vs.$ 2018', 
-              value=f'{record        :+.2f}%',
-              delta=f'{record_delta  :+.2f}%',
+             #value=f'{record        :+.2f}%',
+              delta=f'{record_delta  :.2f}%',
               help = 'Percentage change compared to the previous record year.')
 plt.close('all')
 st.divider(   )
