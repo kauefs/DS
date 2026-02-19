@@ -359,8 +359,7 @@ def PlotlyArrivals(df, countries, title, palette, labels=None, dash=None):
         if  last_points[i]['val']-last_points[i-1]['val']< min_gap:
             last_points[i]['val']=last_points[i-1]['val']+ min_gap
     for p in last_points:
-        annotations.append(dict(x=p['year'], y=p['val'], xref='x', yref='y', text=f'<b> {p['name']}</b>',
-                                showarrow=False, xanchor='left', xshift=5, font=dict( color=p['color'], size=13)))
+        annotations.append(dict(x=p['year'], y=p['val'], xref='x', yref='y', text=f'<b> {p['name']}</b>', showarrow=False, xanchor='left', xshift=5, font=dict( color=p['color'], size=13)))
     fig.update_layout (title={'x':.05,'font':{'size':20}}, xaxis_title='', yaxis_title='', showlegend=False, hovermode='x unified', height=500, margin={'t':80,'b':40,'l':40,'r':80},
                        annotations=annotations, hoverlabel=dict(bgcolor='rgba(255,255,255,.9)', bordercolor='rgba(0,0,0,0)'), uirevision='constant')
     fig.update_yaxes  (type='log', showgrid=False, showticklabels=False, zeroline=False)
