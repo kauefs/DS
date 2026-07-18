@@ -137,8 +137,8 @@ ax.collections[0].colorbar.ax.tick_params(length=0)
 plt.title ('Monthly Arrivals Intensity per Year', fontdict=FontT)
 plt.ylabel('')
 plt.xlabel('')
-plt.yticks(fontsize =  13, fontweight=600)
-plt.xticks(fontsize =  13, fontweight=600)
+plt.yticks(fontsize =  13, fontweight='semibold')
+plt.xticks(fontsize =  13, fontweight='semibold')
 plt.tick_params(axis='both',   which =    'both', length=0)
 st.pyplot(fig, width='stretch')
 plt.close(fig)
@@ -169,11 +169,11 @@ plt.text  (x=.51, y=.91, s=f'total monthly volume averaged across years' , fonts
 plt.ylabel('')
 plt.xlabel('')
 plt.ylim(0, seasonality_index['arrivals'].max( )+.2 )
-plt.yticks(   fontsize= 13, fontweight=600)
-plt.xticks(   fontsize= 13, fontweight=600)
+plt.yticks(   fontsize= 13, fontweight='semibold')
+plt.xticks(   fontsize= 13, fontweight='semibold')
 plt.tick_params(  axis='both',  which =    'both', length=0)
 for spine in ax.spines.values( ):spine.set_visible(False)
-for p in ax.patches:ax.annotate(f'{p.get_height( ):.2f}',(p.get_x( )+p.get_width( )/2., p.get_height( )), ha='center', va='center', xytext=(0,9), textcoords='offset points', fontsize=11, fontweight=600)
+for p in ax.patches:ax.annotate(f'{p.get_height( ):.2f}',(p.get_x( )+p.get_width( )/2., p.get_height( )), ha='center', va='center', xytext=(0,9), textcoords='offset points', fontsize=11, fontweight='semibold')
 st.pyplot(fig, width='stretch')
 plt.close(fig)
 # check=filtered_data.groupby('month')['arrivals'].agg(['count','sum','mean'])
@@ -188,7 +188,7 @@ fig,ax=plt.subplots(figsize=(12,12), frameon= True , tight_layout=False)
 sns.barplot(y='arrivals', x='year' ,    data=annual, palette=annual_palette,  hue='year', saturation=.75, legend=False, ax=ax)
 plt.title(f"Annual InterNational Tourist Arrivals in Brazil ({annual['year'].min( )}–{annual['year'].max( )})", fontdict=FontT)
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
-plt.xticks(fontsize=13 ,fontweight=600, rotation='vertical')
+plt.xticks(fontsize=13 ,fontweight='semibold', rotation='vertical')
 plt.ylabel                                        ( None)
 plt.xlabel                                        ( None)
 plt.legend([ ],                            frameon=False)
@@ -211,7 +211,7 @@ fig,ax=plt.subplots(figsize=(12, 12), frameon=True, tight_layout=False)
 sns.barplot(data=monthly, y='arrivals',  x='month', hue='month', palette=monthly_palette, saturation=.75, legend=False)
 plt.title(f'Monthly InterNational Tourist Arrivals in Brazil ({selected_years[0]}–{selected_years[1]})', fontdict=FontT)
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
-plt.xticks(fontsize=13, fontweight=600, rotation='horizontal')
+plt.xticks(fontsize=13, fontweight='semibold', rotation='horizontal')
 plt.ylabel                                         (None)
 plt.xlabel                                         (None)
 plt.legend([ ],                            frameon=False)
@@ -232,7 +232,7 @@ def PlotBarsH(df, column, title, palette, loc=None):
     fig,ax=plt.subplots(figsize=(12, 6), frameon=True , tight_layout=False)
     sns.barplot(data=data, y=column, x='arrivals', hue=column, palette=palette, saturation=.75, legend=False, ax=ax)
     plt.title  (f'InterNational Tourist Arrivals in Brazil ({selected_years[0]}–{selected_years[1]}) {title}', fontdict=FontT, loc=loc)
-    plt.yticks (fontsize=13, fontweight=600, rotation='horizontal')
+    plt.yticks (fontsize=13, fontweight='semibold', rotation='horizontal')
     plt.xticks ([ ])
     plt.ylabel                                         (None)
     plt.xlabel                                         (None)
@@ -260,41 +260,46 @@ st.subheader('Arrival States')
 PlotBarsH(filter,'UF',  'Arrival States','Purples_r', loc='right')
 st.divider   (   )
 # Monthly Arrivals
-latest=DF['year'].max( )
-filter=DF[(DF['year']>=latest-15)]
-st.subheader(f'Monthly Arrivals ({filter['year'].min( )}–{filter['year'].max( )})')
-start=filter['year'].min( )
-end  =filter['year'].max( )+1
-years         =range(start, end)
-fig, axes     =plt.subplots(8, 2, figsize=(12, 50), tight_layout=True)
-for i, year in enumerate(years):
-    df_year   =filter[filter['year']==year]
+latest  =DF['year'].max( )
+filter15=DF[(DF['year']>=latest-15)]
+st.subheader(f'Monthly Arrivals ({filter15['year']. min  ( )}–{filter15['year'].max( )})')
+period=sorted(filter15['year'].unique( ))
+years =len   (period)
+# start=filter15['year'].min( )
+# end  =filter15['year'].max( )+1
+# years         =range(start, end)
+cols=2
+rows=(years+1)//cols
+fig, axes     =plt.subplots(rows, cols, figsize=(cols*6, rows*5), frameon=True, tight_layout=False)
+axes=axes.flatten( )
+for i, year in enumerate(period):
+    df_year   =filter15[filter15['year']==year]
     group= df_year.groupby('month')['arrivals'].sum( ).reset_index( )
     group['month']=pd.Categorical(group['month'], categories=months, ordered=True)
     group= group.sort_values('month')
     norm=plt.Normalize(vmin=group['arrivals'].min( ), vmax=group['arrivals'].max( ), clip=False)
-    cmap=cm.cividis_r
-    palette=cmap(norm(group['arrivals'])).tolist( )
-    data   =     norm(group['arrivals'] ).tolist( )
-    ax=axes[i // 2, i % 2]
+    palette=cm.cividis_r(norm(group['arrivals'])).tolist( )
+    ax=axes[i]
     sns.barplot(x='month' , y='arrivals', hue='month', data=group, ax=ax, palette=palette, legend=False)
     ax.set_title(f'{year}', fontsize=15, fontweight='bold',   pad=60)
-    labels=ax.get_xticklabels( )
-    plt.setp(labels, rotation=0, ha='center')
+    plt.setp(ax.get_xticklabels( ), rotation=0, ha='center')
     ax.tick_params(axis='both', which='both', length= 0)
     ax.set_xlabel('')
     ax.set_ylabel('')
     ax.set_yticks([])
     for spine in ax.spines.values( ):spine.set_visible(False)
     for   c   in ax.containers:
-        values=df_year.value_counts(ascending=False).iloc[0:0].values
-        ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=5, fontweight='bold', rotation='vertical', color='#000000')
+       #values=df_year.value_counts(ascending=False).iloc[0:0].values
+       #ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=5, fontweight='bold', rotation='vertical', color='#000000')
+        ax.bar_label(container=c, fmt='{:,.0f}', fontsize=11, padding=5, fontweight='bold', rotation='vertical', color='#000000')
+for j in range(i+1, len(axes):fig.delaxes(axes[j])
+# fig.subplots_adjust(hspace=.4, wspace=.15)
 st.pyplot (fig, width='stretch')
 plt.close (fig)
 st.divider(   )
 # Top Countries
-st.subheader(f'Top Countries ({filter['year'].min( )}–{filter['year'].max( )})')
-group =filter.groupby(   ['year','country'])['arrivals']  .sum( )        .reset_index( )
+st.subheader(f'Top Countries ({filter15['year'].min( )}–{filter15['year'].max( )})')
+group =filter15.groupby(   ['year','country'])['arrivals']  .sum( )        .reset_index( )
 group =group.sort_values(['year',            'arrivals'], ascending=[True, False])
 fig   ,axes=plt.subplots(8,    2,                           figsize=(12,    25), tight_layout=True)
 axes  =axes.flatten( )
@@ -306,7 +311,7 @@ for i ,year in enumerate(range(start, end)):
     axes[i].set_ylabel('')
     axes[i].set_xticks([])
     axes[i].set_yticks(range(len(df_year)))
-    axes[i].set_yticklabels(df_year['country'], fontsize=11, fontweight=600)
+    axes[i].set_yticklabels(df_year['country'], fontsize=11, fontweight='semibold')
     axes[i].tick_params(axis='both', which='both', length=0)
     for spine in axes[i].spines.values( ):spine.set_visible(False)
     for patch in axes[i].patches:
@@ -318,7 +323,7 @@ for i ,year in enumerate(range(start, end)):
                 va        ='center',
                 ha        ='left',
                 fontsize  =  11,
-                fontweight= 600      )
+                fontweight='semibold')
 st.pyplot       (fig,width='stretch' )
 plt.close       (fig)
 st.divider      (   )
@@ -362,10 +367,10 @@ PlotlyArrivals(filter,    top10 ,'Top 10 InterNational Tourist Arrivals in Brazi
 st.divider(           )
 # Selected Countries
 st.subheader(f'Selected Countries ({filter['year'].min( )}–{filter['year'].max( )})')
-selected=['Austrália'     ,'Canadá'    ,'China'     ,'Estados Unidos'     ,'Japão'    ]
+selected=['Austrália'     ,'Canadá'     ,'China'      ,'Estados Unidos'     ,'Japão'    ]
 flags   ={'Austrália':'🇦🇺','Canadá':'🇨🇦','China':'🇨🇳','Estados Unidos':'🇺🇸','Japão':'🇯🇵'}
-names   ={'Austrália':'Australia','Canadá':'Canada' ,'China':'China' ,'Estados Unidos':'United States','Japão':'Japan'}
-custom  =[  '#F030E0'     ,'#FF4500'   ,'#4CAF50'   ,'#0065FF'       ,'#00BFFF'       ]
+names   ={'Austrália':'Australia','Canadá':'Canada'   ,'China':'China' ,'Estados Unidos':'United States','Japão':'Japan'}
+custom  =[  '#F030E0'     ,'#FF4500'    ,'#4CAF50'    ,'#0065FF'       ,'#00BFFF'       ]
 PlotlyArrivals(filter, selected,'InterNational Tourist Arrivals in Brazil for Selected Countries', custom , labels=names, dash='dash')
 st.divider (          )
 plt.close  (    'all' )
