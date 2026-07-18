@@ -299,12 +299,12 @@ plt.close (fig)
 st.divider(   )
 # Top Countries
 st.subheader(f'Top Countries ({filter15['year'].min( )}–{filter15['year'].max( )})')
-group =filter15.groupby(   ['year','country'])['arrivals']  .sum( )        .reset_index( )
-group =group.sort_values(['year',            'arrivals'], ascending=[True, False])
-fig   ,axes=plt.subplots(8,    2,                           figsize=(12,    25), tight_layout=True)
-axes  =axes.flatten( )
-for i ,year in enumerate(range(start, end)):
-    df_year=group[group['year'] == year].head(11)
+group=filter15.groupby (['year','country'])['arrivals'].sum( ).reset_index( )
+group=group.sort_values(['year',            'arrivals'], ascending  =[True,              False])
+fig, axes=plt.subplots(rows, cols, figsize=(cols*6, rows*5), frameon= True, tight_layout=False)
+axes=axes.flatten( )
+for i, year in enumerate(period):
+    df_year=group[group['year']==year].head(11)
     sns.barplot(x='arrivals', y='country', hue='country', data=df_year, ax=axes[i], orient='h', palette='Blues_r', legend=False)
     axes[i].set_title(f'Top Arrivals in {year}', fontsize=15, fontweight='bold')
     axes[i].set_xlabel('')
