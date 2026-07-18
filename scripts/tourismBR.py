@@ -292,7 +292,7 @@ for i, year in enumerate(period):
        #values=df_year.value_counts(ascending=False).iloc[0:0].values
        #ax.bar_label(container=c, labels=values, fmt='{:,.0f}', fontsize=11, padding=5, fontweight='bold', rotation='vertical', color='#000000')
         ax.bar_label(container=c, fmt='{:,.0f}', fontsize=11, padding=5, fontweight='bold', rotation='vertical', color='#000000')
-for j in range(i+1, len(axes):fig.delaxes(axes[j])
+for j in range(i+1, len(axes)):fig.delaxes(axes[j])
 # fig.subplots_adjust(hspace=.4, wspace=.15)
 st.pyplot (fig, width='stretch')
 plt.close (fig)
