@@ -15,7 +15,7 @@ datetime
 wordcloud
 adjusttext
 folium
-streamlit>1.49.0
+streamlit
 streamlit_folium
 prophet
 wikipedia
