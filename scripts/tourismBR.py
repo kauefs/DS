@@ -124,13 +124,12 @@ WorldWideHeatMap(filter)
 st.divider      (      )
 # InterActive Seasonality HeatMap
 st.subheader(f'Seasonality HeatMap ({selected_years[0]}–{selected_years[1]})')
-#filter=DF[(DF['year']>=selected_years[0])&(DF['year']<=selected_years[1])]
 months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 data=filter.groupby(['year','month'])['arrivals'].sum( ).reset_index( )
 data['month']=pd.Categorical(data['month']  ,     categories=   months ,  ordered= True)
 pivot=data.pivot_table(index='year', columns='month', values='arrivals', observed=False)
 def fmt(x, pos):return f'{x/1e6:.1f}M'if x >= 1e6 else  f'{x/1e3:.0f}K'
-fig,ax=plt.subplots(figsize=(12, 8), frameon=True   ,  tight_layout=True)
+fig,ax=plt.subplots(figsize=(12, 8), frameon=True   ,  tight_layout=False)
 sns.heatmap(pivot, annot= False, cmap='RdYlGn_r', # Spectral_r
            #center=pivot_heatmap.stack( ).mean( ), # Colors shift at the average value
             linewidths=.5, cbar_kws={'format':ticker.FuncFormatter(fmt)}, ax=ax)
@@ -138,8 +137,8 @@ ax.collections[0].colorbar.ax.tick_params(length=0)
 plt.title ('Monthly Arrivals Intensity per Year', fontdict=FontT)
 plt.ylabel('')
 plt.xlabel('')
-plt.yticks(fontsize =  13, fontweight='semibold')
-plt.xticks(fontsize =  13, fontweight='semibold')
+plt.yticks(fontsize =  13, fontweight='semi-bold')
+plt.xticks(fontsize =  13, fontweight='semi-bold')
 plt.tick_params(axis='both',   which =    'both', length=0)
 st.pyplot(fig, width='stretch')
 plt.close(fig)
@@ -159,7 +158,7 @@ seasonality_index=(monthly_avg/overall_mean).reset_index( )
 # Visualization
 norm   =Normalize(seasonality_index['arrivals'].min( ), seasonality_index['arrivals'].max( ))
 season_palette=cm.RdYlGn_r(norm(seasonality_index['arrivals'].values)).tolist( ) # (RdYlGn_r) Red for High & Green for Low
-fig, ax=plt.subplots(figsize=(12, 8), frameon=True, tight_layout=True)
+fig, ax=plt.subplots(figsize=(12, 8), frameon=True, tight_layout=False)
 sns.barplot(x='month', y='arrivals', data=seasonality_index, palette=season_palette, hue='month', legend=False, ax=ax)
 # BaseLine@1.0
 ax.axhline(y=1., color='#000000', linestyle=':', linewidth=1.25, alpha=.75, label='Annual BaseLine Average')
@@ -170,8 +169,8 @@ plt.text  (x=.51, y=.91, s=f'total monthly volume averaged across years' , fonts
 plt.ylabel('')
 plt.xlabel('')
 plt.ylim(0, seasonality_index['arrivals'].max( )+.2 )
-plt.yticks(   fontsize= 13, fontweight='semibold')
-plt.xticks(   fontsize= 13, fontweight='semibold')
+plt.yticks(   fontsize= 13, fontweight='semi-bold')
+plt.xticks(   fontsize= 13, fontweight='semi-bold')
 plt.tick_params(  axis='both',  which =    'both', length=0)
 for spine in ax.spines.values( ):spine.set_visible(False)
 for p in ax.patches:ax.annotate(f'{p.get_height( ):.2f}',(p.get_x( )+p.get_width( )/2., p.get_height( )), ha='center', va='center', xytext=(0,9), textcoords='offset points', fontsize=11, fontweight='semibold')
@@ -185,7 +184,7 @@ st.subheader('Annual Time Series')
 annual=filter.groupby('year')['arrivals'].sum( ).reset_index( )
 norm  =Normalize(annual['arrivals'].min( ), annual['arrivals'].max( ))
 annual_palette=cm.viridis(norm(annual['arrivals'].values)).tolist ( )
-fig,ax=plt.subplots(figsize=(12,12), frameon= True , tight_layout=True)
+fig,ax=plt.subplots(figsize=(12,12), frameon= True , tight_layout=False)
 sns.barplot(y='arrivals', x='year' ,    data=annual, palette=annual_palette,  hue='year', saturation=.75, legend=False, ax=ax)
 plt.title(f"Annual InterNational Tourist Arrivals in Brazil ({annual['year'].min( )}–{annual['year'].max( )})", fontdict=FontT)
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
@@ -208,7 +207,7 @@ monthly=filter.groupby('month')['arrivals'].sum( ).reindex(months).reset_index( 
 values=monthly['arrivals'].values
 norm=Normalize(values.min( ),    values  .max ( ) )
 monthly_palette=cm.RdYlGn_r(norm(values)).tolist( ) # brg_r
-fig,ax=plt.subplots(figsize=(12, 12), frameon=True, tight_layout=True)
+fig,ax=plt.subplots(figsize=(12, 12), frameon=True, tight_layout=False)
 sns.barplot(data=monthly, y='arrivals',  x='month', hue='month', palette=monthly_palette, saturation=.75, legend=False)
 plt.title(f'Monthly InterNational Tourist Arrivals in Brazil ({selected_years[0]}–{selected_years[1]})', fontdict=FontT)
 plt.yticks(ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}')))
@@ -230,7 +229,7 @@ st.subheader('Means of Travel')
 def PlotBarsH(df, column, title, palette, loc=None):
     data=df.groupby(column)['arrivals'].sum( ).sort_values(ascending=False).reset_index( )
     if column=='country':data=data.head(12)
-    fig,ax=plt.subplots(figsize=(12, 6), frameon=True, tight_layout=True)
+    fig,ax=plt.subplots(figsize=(12, 6), frameon=True , tight_layout=False)
     sns.barplot(data=data, y=column, x='arrivals', hue=column, palette=palette, saturation=.75, legend=False, ax=ax)
     plt.title  (f'InterNational Tourist Arrivals in Brazil ({selected_years[0]}–{selected_years[1]}) {title}', fontdict=FontT, loc=loc)
     plt.yticks (fontsize=13, fontweight='semibold', rotation='horizontal')
