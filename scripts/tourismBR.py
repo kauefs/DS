@@ -328,7 +328,7 @@ st.pyplot       (fig,width='stretch' )
 plt.close       (fig)
 st.divider      (   )
 # Top 10 Arrivals
-st.subheader(f'Top 10 Arrivals ({filter['year'].min( )}–{filter['year'].max( )})')
+st.subheader(f'Top 10 Arrivals ({filter15['year'].min( )}–{filter15['year'].max( )})')
 def PlotlyArrivals(df, countries, title, palette, labels=None, dash=None):
     group =df.groupby(['country','ISO','year'])['arrivals'].sum( ).reset_index( )
     subset=group[group['country'].isin(countries)].copy(  )
@@ -352,26 +352,25 @@ def PlotlyArrivals(df, countries, title, palette, labels=None, dash=None):
     for i in range(1, len(last_points)):
         if  last_points[i]['val']-last_points[i-1]['val']< min_gap:
             last_points[i]['val']=last_points[i-1]['val']+ min_gap
-    for p in last_points:
-        annotations.append(dict(x=p['year'], y=p['val'], xref='x', yref='y', text=f'<b> {p['name']}</b>', showarrow=False, xanchor='left', xshift=5, font=dict( color=p['color'], size=13)))
+    for p in last_points:annotations.append(dict(x=p['year'], y=p['val'], xref='x', yref='y', text=f'<b> {p['name']}</b>', showarrow=False, xanchor='left', xshift=5, font=dict( color=p['color'], size=13)))
     fig.update_layout (title={'x':.05,'font':{'size':20}}, xaxis_title='', yaxis_title='', showlegend=False, hovermode='x unified', height=500, margin={'t':80,'b':40,'l':40,'r':80},
                        annotations=annotations, hoverlabel=dict(bgcolor='rgba(255,255,255,.9)', bordercolor='rgba(0,0,0,0)'), uirevision='constant')
     fig.update_yaxes  (type='log', showgrid=False, showticklabels=False, zeroline=False)
     fig.update_xaxes  (dtick= 2  , showgrid=False, tickfont={'size':15}, tickformat='d', showspikes=True, spikecolor='#C0C0C0', spikesnap='cursor', spikemode='across', spikethickness=1, spikedash=dash)
     st .plotly_chart  (fig, width='stretch')
-top10  =filter.groupby('country')['arrivals'].sum( ).nlargest(10).index.tolist( )
+top10  =filter15.groupby('country')['arrivals'].sum( ).nlargest(10).index.tolist( )
 names  ={'Argentina':'Argentina',   'Chile':'Chile'   ,'Estados Unidos':'United States','Paraguai':'Paraguay',    'Uruguai':'Uruguay'       ,
             'França':'France'   ,'Portugal':'Portugal',      'Alemanha':'Germany'      ,  'Itália':'Italy'   ,'Reino Unido':'United Kingdom'}
 palette=[  '#0065FF','#4CAF50'  , '#FF4500','#00BFFF' ,       '#F030E0','#7B70EE'      , '#800000','#BCBD11' ,    '#FF7F0E','#808080'       ]
-PlotlyArrivals(filter,    top10 ,'Top 10 InterNational Tourist Arrivals in Brazil'                , palette, labels=None , dash='dot' )
+PlotlyArrivals(filter15,    top10 ,'Top 10 InterNational Tourist Arrivals in Brazil'                , palette, labels=None , dash='dot' )
 st.divider(           )
 # Selected Countries
-st.subheader(f'Selected Countries ({filter['year'].min( )}–{filter['year'].max( )})')
+st.subheader(f'Selected Countries ({filter15['year'].min( )}–{filter15['year'].max( )})')
 selected=['Austrália'     ,'Canadá'     ,'China'      ,'Estados Unidos'     ,'Japão'    ]
 flags   ={'Austrália':'🇦🇺','Canadá':'🇨🇦','China':'🇨🇳','Estados Unidos':'🇺🇸','Japão':'🇯🇵'}
 names   ={'Austrália':'Australia','Canadá':'Canada'   ,'China':'China' ,'Estados Unidos':'United States','Japão':'Japan'}
 custom  =[  '#F030E0'     ,'#FF4500'    ,'#4CAF50'    ,'#0065FF'       ,'#00BFFF'       ]
-PlotlyArrivals(filter, selected,'InterNational Tourist Arrivals in Brazil for Selected Countries', custom , labels=names, dash='dash')
+PlotlyArrivals(filter15, selected,'InterNational Tourist Arrivals in Brazil for Selected Countries', custom , labels=names, dash='dash')
 st.divider (          )
 plt.close  (    'all' )
 st.toast   ('Travel!', icon='😎')
