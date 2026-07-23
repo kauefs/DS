@@ -21,7 +21,7 @@ DF       = LoadData   (    )
 FontT={'family':'sans-serif','color':'#000000','size':19,'fontweight':'bold'}
 # SIDE
 st.sidebar.title    ('ƊⱭȾɅViƧi🧿Ƞ&trade;'     )
-st.sidebar.markdown ('![AIaaS](https://img.shields.io/badge/Artificial_Intelligence_as_a_Service-000000)')
+st.sidebar.markdown ('![AIaaS](https://img.shields.io/badge/Artificial_Intelligence_as_a_Service-000000?style=plastic)')
 st.sidebar.divider  (                          )
 st.sidebar.header   ('Brazil 🇧🇷 InterNational Tourist Arrivals')
 st.sidebar.subheader('Time Series Data Analysis'               )
