@@ -141,9 +141,9 @@ plt.xlabel('')
 plt.yticks(fontsize =  13, fontweight='semibold')
 plt.xticks(fontsize =  13, fontweight='semibold')
 plt.tick_params(axis='both',   which =    'both', length=0)
-st .plotly_chart (fig, width='stretch')
-plt.close(fig)
-st.divider(  )
+st .plotly(fig, width='stretch')
+plt.close (fig)
+st.divider(   )
 # Seasonality Index
 st.subheader(f'Seasonality Index ({selected_years[0]}–{selected_years[1]})')
 # Total Arrivals for Every Year–Month Combination
