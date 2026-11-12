@@ -141,9 +141,9 @@ plt.xlabel('')
 plt.yticks(fontsize =  13, fontweight='semibold')
 plt.xticks(fontsize =  13, fontweight='semibold')
 plt.tick_params(axis='both',   which =    'both', length=0)
-st .plotly(fig, width='stretch')
-plt.close (fig)
-st.divider(   )
+st.pyplot(fig, width='stretch')
+plt.close(fig)
+st.divider(  )
 # Seasonality Index
 st.subheader(f'Seasonality Index ({selected_years[0]}–{selected_years[1]})')
 # Total Arrivals for Every Year–Month Combination
@@ -175,8 +175,8 @@ plt.xticks(   fontsize= 13, fontweight='semibold')
 plt.tick_params(  axis='both',  which =    'both', length=0)
 for spine in ax.spines.values( ):spine.set_visible(False)
 for p in ax.patches:ax.annotate(f'{p.get_height( ):.2f}',(p.get_x( )+p.get_width( )/2., p.get_height( )), ha='center', va='center', xytext=(0,9), textcoords='offset points', fontsize=11, fontweight='semibold')
-st .plotly(fig, width='stretch')
-plt.close (fig)
+st.pyplot(fig, width='stretch')
+plt.close(fig)
 # check=filtered_data.groupby('month')['arrivals'].agg(['count','sum','mean'])
 # st.write(check.reindex(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']))
 st.divider(  )
@@ -199,7 +199,7 @@ ax.yaxis                              .set_visible(False)
 ax.tick_params(axis='both', which='both', length=0)
 labels=[f'{v:,.0f}'for v in annual['arrivals']]
 for i, patch in enumerate(ax.patches):ax.text(x=patch.get_x( )+patch.get_width( )/2., y=patch.get_height( )-50000, s=labels[i], ha='center', va='top', fontsize=11, fontweight='bold', rotation='vertical', color='#FFFFFF')
-st .plotly( fig, width='stretch')
+st.pyplot ( fig, width='stretch')
 plt.close ( fig )
 st.divider(     )
 # Monthly
@@ -222,7 +222,7 @@ plt.gca( ).axes.get_yaxis    ( )      .set_visible(False)
 plt.tick_params(axis='both', which ='both', length=0)
 labels=[f'{v:,.0f}' for v in monthly['arrivals']]
 for i, patch in enumerate(ax.patches):ax.text(x=patch.get_x( )+patch.get_width( )/2., y=patch.get_height( )-100000, s=labels[i], ha='center', va='top', fontsize=13, fontweight='bold', rotation='vertical', color='#FFFFFF')
-st .plotly( fig, width='stretch')
+st.pyplot ( fig, width='stretch')
 plt.close ( fig )
 st.divider(     )
 # Means of Travel
@@ -244,8 +244,8 @@ def PlotBarsH(df, column, title, palette, loc=None):
     for p in ax.patches:
         width=p.get_width( )
         if width > 0:ax.text(width+(data['arrivals'].max( )*.02), p.get_y( )+p.get_height( )/2,f'{width:,.0f}', va='center', ha='left', fontsize=13, fontweight='bold')
-    st .plotly(fig, width='stretch')
-    plt.close (fig)
+    st.pyplot(fig, width='stretch')
+    plt.close(fig)
 PlotBarsH(filter,'via','Means of Travel',   'GnBu_r')
 st.divider   (   )
 # Continent
@@ -295,7 +295,7 @@ for i, year in enumerate(period):
         ax.bar_label(container=c, fmt='{:,.0f}', fontsize=11, padding=5, fontweight='bold', rotation='vertical', color='#000000')
 for j in range(i+1, len(axes)):fig.delaxes(axes[j])
 # fig.subplots_adjust(hspace=.4, wspace=.15)
-st .plotly(fig, width='stretch')
+st.pyplot (fig, width='stretch')
 plt.close (fig)
 st.divider(   )
 # Top Countries
@@ -325,9 +325,9 @@ for i, year in enumerate(period):
                 ha        ='left',
                 fontsize  =  11,
                 fontweight='semibold')
-st .plotly      (fig, width='stretch')
+st.pyplot       (fig,width='stretch' )
 plt.close       (fig)
-st .divider     (   )
+st.divider      (   )
 # Top 10 Arrivals
 st.subheader(f'Top 10 Arrivals ({filter15['year'].min( )}–{filter15['year'].max( )})')
 def PlotlyArrivals(df, countries, title, palette, labels=None, dash=None):
